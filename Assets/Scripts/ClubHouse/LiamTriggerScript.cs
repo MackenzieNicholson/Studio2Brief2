@@ -27,7 +27,7 @@ public class LiamTriggerScript : MonoBehaviour
         {
             if(inDoorTrigger== true)
             {
-                SceneManager.LoadScene(1);
+                SceneManager.LoadScene(3);
             }
             else if(inRodTrigger== true)
             {

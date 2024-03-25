@@ -36,6 +36,8 @@ public class FishManager : MonoBehaviour
     private bool CanThrow;
     private bool CanKeep;
 
+    public GameObject ReturnButton;
+
     //int randomValue = Random.Range(0,99);
 
     public FishScript fishLength;
@@ -70,6 +72,7 @@ public class FishManager : MonoBehaviour
             CanFish = false;
             Debug.Log("finished fishing");
             Instructions.text = "The Day is over the fish are asleep";
+            ReturnButton.SetActive(true);
         }
         
         pointEarner.text = "Points: " + totalPoints;
@@ -85,7 +88,9 @@ public class FishManager : MonoBehaviour
             Debug.Log("finished fishing");
             CanFish = false;
             Instructions.text = "The Day is over the fish are asleep";
+            ReturnButton.SetActive(true);
         }
+
 
 
         foreach (var item in fishBasket)
