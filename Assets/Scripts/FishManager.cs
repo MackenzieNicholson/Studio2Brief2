@@ -38,12 +38,15 @@ public class FishManager : MonoBehaviour
         CanFish = true;
         CanThrow = false;
         CanKeep = false;
+
         
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        
 
         if(fishBasket.Count >= 8)
         {
