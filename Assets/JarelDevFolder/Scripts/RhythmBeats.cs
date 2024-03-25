@@ -6,11 +6,11 @@ using TMPro;
 
 public class RhythmBeats : MonoBehaviour
 {
-    public Image playKeyA;
-    public Image playKeyB;
-    public Image playKeyC;
-    public Image playKeyD;
-    public Image rhythmNote;
+    public GameObject playKeyA;
+    public GameObject playKeyB;
+    public GameObject playKeyC;
+    public GameObject playKeyD;
+    public GameObject rhythmNote;
 
     public GameObject columnA;
     public GameObject columnB;
@@ -19,9 +19,18 @@ public class RhythmBeats : MonoBehaviour
 
     List<GameObject> spawnColumns = new List<GameObject>();
 
+    SpriteRenderer noteSpriteA;
+    SpriteRenderer noteSpriteB;
+    SpriteRenderer noteSpriteC;
+    SpriteRenderer noteSpriteD;
+
     // Start is called before the first frame update
     void Start()
     {
+        noteSpriteA = playKeyA.GetComponent<SpriteRenderer>();
+        noteSpriteB = playKeyB.GetComponent<SpriteRenderer>();
+        noteSpriteC = playKeyC.GetComponent<SpriteRenderer>();
+        noteSpriteD = playKeyD.GetComponent<SpriteRenderer>();
         RhythmGameStart();
     }
 
@@ -31,81 +40,81 @@ public class RhythmBeats : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.A))
         {
             Debug.Log("Keypress: A");
-            playKeyA.color = Color.yellow;
+            noteSpriteA.color = Color.yellow;
         }
         else if (Input.GetKeyUp(KeyCode.A))
         {
             if(!Input.GetKey(KeyCode.Space))
             {
-                playKeyA.color = Color.white;
+                noteSpriteA.color = Color.white;
             }
         }
 
         if (Input.GetKeyDown(KeyCode.S))
         {
             Debug.Log("Keypress: S");
-            playKeyB.color = Color.green;
+            noteSpriteB.color = Color.green;
         }
         else if (Input.GetKeyUp(KeyCode.S))
         {
             if (!Input.GetKey(KeyCode.Space))
             {
-                playKeyB.color = Color.white;
+                noteSpriteB.color = Color.white;
             }
         }
 
         if (Input.GetKeyDown(KeyCode.K))
         {
             Debug.Log("Keypress: D");
-            playKeyC.color = Color.blue;
+            noteSpriteC.color = Color.blue;
         }
         else if (Input.GetKeyUp(KeyCode.K))
         {
             if (!Input.GetKey(KeyCode.Space))
             {
-                playKeyC.color = Color.white;
+                noteSpriteC.color = Color.white;
             }
         }
 
         if (Input.GetKeyDown(KeyCode.L))
         {
             Debug.Log("Keypress: F");
-            playKeyD.color = Color.red;
+            noteSpriteD.color = Color.red;
         }
         else if (Input.GetKeyUp(KeyCode.L))
         {
             if (!Input.GetKey(KeyCode.Space))
             {
-                playKeyD.color = Color.white;
+                noteSpriteD.color = Color.white;
             }
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Debug.Log("Keypress: All");
-            playKeyA.color = Color.yellow;
-            playKeyB.color = Color.green;
-            playKeyC.color = Color.blue;
-            playKeyD.color = Color.red;
+            noteSpriteA.color = Color.yellow;
+            noteSpriteB.color = Color.green;
+            noteSpriteC.color = Color.blue;
+            noteSpriteD.color = Color.red;
         }
         else if (Input.GetKeyUp(KeyCode.Space))
         {
             if(!Input.GetKey(KeyCode.A))
             {
-                playKeyA.color = Color.white;
+                noteSpriteA.color = Color.white;
                 Debug.Log("Not pressing A");
             }
             if(!Input.GetKey(KeyCode.S))
             {
-                playKeyB.color = Color.white;
+                noteSpriteB.color = Color.white;
             }
             if (!Input.GetKey(KeyCode.K))
             {
-                playKeyC.color = Color.white;
+                noteSpriteC.color = Color.white;
             }
             if (!Input.GetKey(KeyCode.L))
             {
-                playKeyD.color = Color.white;
+                noteSpriteD.color = Color.white;
             }
         }
     }
