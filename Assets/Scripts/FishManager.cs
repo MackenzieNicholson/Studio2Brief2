@@ -53,7 +53,9 @@ public class FishManager : MonoBehaviour
         CanFish = true;
         CanThrow = false;
         CanKeep = false;
+
         
+
     }
     public void PointEarner()
     {
@@ -63,6 +65,7 @@ public class FishManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+<<<<<<< HEAD
         if(Casts == 12)
         {
             CanFish = false;
@@ -71,6 +74,9 @@ public class FishManager : MonoBehaviour
         }
         
         pointEarner.text = "Points: " + totalPoints;
+=======
+        
+>>>>>>> JoshBranch
 
         CarpSize = Random.Range(40, 80);
         bassSize = Random.Range(48, 56);

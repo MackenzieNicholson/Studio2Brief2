@@ -250,7 +250,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 100
   jumpSpeed: 0
-  gravity: 0
+  gravity: 100
 --- !u!136 &649580881
 CapsuleCollider:
   m_ObjectHideFlags: 0
