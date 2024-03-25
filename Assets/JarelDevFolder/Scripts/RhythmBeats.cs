@@ -17,12 +17,18 @@ public class RhythmBeats : MonoBehaviour
     public GameObject columnC; 
     public GameObject columnD;
 
+    public GameObject worldCanvas;
+
     List<GameObject> spawnColumns = new List<GameObject>();
 
     SpriteRenderer noteSpriteA;
     SpriteRenderer noteSpriteB;
     SpriteRenderer noteSpriteC;
     SpriteRenderer noteSpriteD;
+
+    int selectSpawn = 0;
+    int noteGap = 0;
+    float noteGapF = 0f;
 
     // Start is called before the first frame update
     void Start()
@@ -31,7 +37,13 @@ public class RhythmBeats : MonoBehaviour
         noteSpriteB = playKeyB.GetComponent<SpriteRenderer>();
         noteSpriteC = playKeyC.GetComponent<SpriteRenderer>();
         noteSpriteD = playKeyD.GetComponent<SpriteRenderer>();
-        RhythmGameStart();
+
+        spawnColumns.Add(columnA);
+        spawnColumns.Add(columnB);
+        spawnColumns.Add(columnC);
+        spawnColumns.Add(columnD);
+
+        StartCoroutine(RhythmGameStart());
     }
 
     // Update is called once per frame
@@ -119,9 +131,17 @@ public class RhythmBeats : MonoBehaviour
         }
     }
 
-    void RhythmGameStart()
+    IEnumerator RhythmGameStart()
     {
-        int noteCount = Random.Range(0, 32);
-
+        int noteCount = Random.Range(16, 32);
+        for (int i = 0; i < noteCount; i++)
+        {
+            selectSpawn = Random.Range(0, 4);
+            noteGap = Random.Range(0, 5);
+            noteGapF = (float)noteGap;
+            GameObject newNote = Instantiate(rhythmNote, spawnColumns[selectSpawn].transform.position, Quaternion.identity);
+            newNote.transform.SetParent(spawnColumns[selectSpawn].transform);
+            yield return new WaitForSeconds(noteGapF);
+        }
     }
 }
