@@ -13,6 +13,8 @@ public class NoteManager : MonoBehaviour
     private Vector2 initialPosition;
     private Vector2 targetPosition;
 
+    public bool hasCollided = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -50,7 +52,5 @@ public class NoteManager : MonoBehaviour
         spriteRectTransform.anchoredPosition = targetPosition;
 
         // Optionally, perform any action when the sprite reaches the target position
-        Debug.Log("Sprite reached the bottom of the canvas.");
-        Destroy(gameObject);
     }
 }
