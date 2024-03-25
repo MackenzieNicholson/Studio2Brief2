@@ -441,7 +441,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_UiScaleMode: 0
   m_ReferencePixelsPerUnit: 100
-  m_ScaleFactor: 0.78
+  m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
@@ -668,18 +668,10 @@ MonoBehaviour:
   - Goldfish
   - Carp
   fishCollection: 
-  GoldfishSize: 0
-  CarpSize: 0
-  bassSize: 0
+  pointEarner: {fileID: 0}
   CurrentFish: {fileID: 485106073}
   Instructions: {fileID: 628823658}
   Basket: {fileID: 1140728952}
-  pointEarner: {fileID: 421019906}
-  Size: {fileID: 1586005604}
-  Weight: {fileID: 1399087951}
-  totalPoints: 0
-  points: 0
-  Casts: 0
   fishLength: {fileID: 0}
   fishWeight: {fileID: 0}
   fishPoints: {fileID: 0}
