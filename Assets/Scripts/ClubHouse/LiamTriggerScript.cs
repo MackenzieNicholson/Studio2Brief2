@@ -23,7 +23,6 @@ public class LiamTriggerScript : MonoBehaviour
 
     public TextMeshProUGUI promptUI;
     public Image promptBack;
-    public string popUp;
 
     private void Start()
     {
@@ -47,7 +46,8 @@ public class LiamTriggerScript : MonoBehaviour
             }
             else if(inClubTrigger== true)
             {
-                
+                player.speed = 0;
+                animator.SetTrigger("open");
             }
             else if(inFishTrigger== true)
             {
@@ -57,8 +57,25 @@ public class LiamTriggerScript : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.E))
         {
-            player.speed = 0;
-            animator.SetTrigger("open");
+            if (inDoorTrigger == true)
+            {
+                SceneManager.LoadScene(3);
+            }
+            else if (inRodTrigger == true)
+            {
+                player.speed = 0;
+                animator.SetTrigger("open");
+            }
+            else if (inClubTrigger == true)
+            {
+                player.speed = 0;
+                animator.SetTrigger("open");
+            }
+            else if (inFishTrigger == true)
+            {
+
+            }
+
         }
 
         if (inRodTrigger== true)
@@ -70,7 +87,15 @@ public class LiamTriggerScript : MonoBehaviour
             }
             
         }
-                
+        else if (inClubTrigger == true)
+        {
+            if (Input.GetButton("Cancel"))
+            {
+                animator.SetTrigger("close");
+                player.speed = 100;
+            }
+        }
+
     }
 
     private void OnTriggerEnter(Collider other)
