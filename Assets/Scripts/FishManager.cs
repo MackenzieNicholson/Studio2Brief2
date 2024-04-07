@@ -57,13 +57,10 @@ public class FishManager : MonoBehaviour
         CanFish = true;
         CanThrow = false;
         CanKeep = false;
-<<<<<<< Updated upstream
-        
-=======
+
 
         Casts = 12;
 
->>>>>>> Stashed changes
     }
     public void PointEarner()
     {
