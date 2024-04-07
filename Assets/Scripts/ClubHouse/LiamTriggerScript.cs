@@ -55,14 +55,20 @@ public class LiamTriggerScript : MonoBehaviour
             }
 
         }
+        else if (Input.GetKeyDown(KeyCode.E))
+        {
+            player.speed = 0;
+            animator.SetTrigger("open");
+        }
 
-        if(inRodTrigger== true)
+        if (inRodTrigger== true)
         {
             if (Input.GetButton("Cancel"))
             {
                 animator.SetTrigger("close");
                 player.speed = 100;
             }
+            
         }
                 
     }
