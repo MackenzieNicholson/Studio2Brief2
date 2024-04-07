@@ -7,10 +7,13 @@ using UnityEngine.SceneManagement;
 public class UIButtons : MonoBehaviour
 {
 
+    public GameObject OptionsMenu;
+    public GameObject StartMenu;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        OptionsMenu.SetActive(false);
     }
 
     // Update is called once per frame
@@ -36,8 +39,14 @@ public class UIButtons : MonoBehaviour
     {
 
     }
+    public void OptionsExit()
+    {
+        SceneManager.LoadScene(0);
+        
+    }
     public void Options()
     {
-
+        OptionsMenu.SetActive(true);
+        StartMenu.SetActive(false);
     }
 }
