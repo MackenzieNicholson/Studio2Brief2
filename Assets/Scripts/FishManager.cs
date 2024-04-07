@@ -20,7 +20,8 @@ public class FishManager : MonoBehaviour
     public TextMeshProUGUI CurrentFish;
     public TextMeshProUGUI Instructions;
     public TextMeshProUGUI Basket;
-    
+    public TextMeshProUGUI CastsNum;
+
     public TextMeshProUGUI pointEarner;
     public TextMeshProUGUI Size;
     public TextMeshProUGUI Weight;
@@ -41,29 +42,56 @@ public class FishManager : MonoBehaviour
     public FishScript fishLength;
     public FishScript fishWeight;
     public FishScript fishPoints;
+
     // Start is called before the first frame update
     void Start()
     {
         fish.Add("bass");
         fish.Add("Goldfish");
         fish.Add("Carp");
+
         Instructions.text = "Instructions: Press A to fish";
 
         Debug.Log("Press A to fish");
+
         CanFish = true;
         CanThrow = false;
         CanKeep = false;
+<<<<<<< Updated upstream
         
+=======
+
+        Casts = 12;
+
+>>>>>>> Stashed changes
     }
     public void PointEarner()
     {
         totalPoints = totalPoints + points;
     }
 
+    public void AddRareFish()
+    {
+        //fish.Add();
+        //fish.Add();
+        //fish.Add();
+
+    }
+    public void AddExoticFish()
+    {
+        //fish.Add();
+        //fish.Add();
+        //fish.Add();
+    }
+
     // Update is called once per frame
     void Update()
     {
-        if(Casts == 12)
+        CastsNum.text = "" + Casts; 
+
+
+
+        if(Casts == 0)
         {
             CanFish = false;
             Debug.Log("finished fishing");
@@ -113,7 +141,7 @@ public class FishManager : MonoBehaviour
                 CanKeep = true;
                 CanThrow = true;
 
-                Casts++;
+                Casts--;
 
                 Instructions.text = "Instructions: Press Q to Put fish in basket   Press E to throw fish in pond";
                 Debug.Log("Press Q to Put fish in basket");
