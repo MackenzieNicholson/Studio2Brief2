@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LiamTriggerScript : MonoBehaviour
 {
@@ -17,8 +18,17 @@ public class LiamTriggerScript : MonoBehaviour
     private bool inClubTrigger;
     private bool inFishTrigger;
 
-    public TextMeshProUGUI promptUI;
+    public PlayerMovement player;
+    public Animator animator;
 
+    public TextMeshProUGUI promptUI;
+    public Image promptBack;
+
+    private void Start()
+    {
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
+        promptBack.enabled = false;
+    }
 
     // Update is called once per frame
     void Update()
@@ -31,11 +41,13 @@ public class LiamTriggerScript : MonoBehaviour
             }
             else if(inRodTrigger== true)
             {
-
+                player.speed = 0;
+                animator.SetTrigger("open");
             }
             else if(inClubTrigger== true)
             {
-
+                player.speed = 0;
+                animator.SetTrigger("open");
             }
             else if(inFishTrigger== true)
             {
@@ -43,6 +55,47 @@ public class LiamTriggerScript : MonoBehaviour
             }
 
         }
+        else if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (inDoorTrigger == true)
+            {
+                SceneManager.LoadScene(3);
+            }
+            else if (inRodTrigger == true)
+            {
+                player.speed = 0;
+                animator.SetTrigger("open");
+            }
+            else if (inClubTrigger == true)
+            {
+                player.speed = 0;
+                animator.SetTrigger("open");
+            }
+            else if (inFishTrigger == true)
+            {
+
+            }
+
+        }
+
+        if (inRodTrigger== true)
+        {
+            if (Input.GetButton("Cancel"))
+            {
+                animator.SetTrigger("close");
+                player.speed = 100;
+            }
+            
+        }
+        else if (inClubTrigger == true)
+        {
+            if (Input.GetButton("Cancel"))
+            {
+                animator.SetTrigger("close");
+                player.speed = 100;
+            }
+        }
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -51,24 +104,28 @@ public class LiamTriggerScript : MonoBehaviour
         {
             inDoorTrigger = true;
             Debug.Log("is in door");
+            promptBack.enabled = true;
             promptUI.text = "Enter: Go Fishing";
         }
         else if(isRod == true)
         {
             inRodTrigger = true;
             Debug.Log("is in rod upgrade");
+            promptBack.enabled = true;
             promptUI.text = "Enter: Upgrade Gear";
         }
         else if(isClub == true)
         {
             inClubTrigger = true;
             Debug.Log("is in club upgrade");
+            promptBack.enabled = true;
             promptUI.text = "Enter: Upgrade Club";
         }
         else if(isFish == true)
         {
             inFishTrigger = true;
             Debug.Log("is in fish tank");
+            promptBack.enabled = true;
             promptUI.text = "Enter: Check Fish";
         }
     }
@@ -81,5 +138,6 @@ public class LiamTriggerScript : MonoBehaviour
         inClubTrigger = false;
         inFishTrigger = false;
         promptUI.text = "";
+        promptBack.enabled = false;
     }
 }
