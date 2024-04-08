@@ -50,7 +50,5 @@ public class NoteManager : MonoBehaviour
 
         // Ensure the sprite is at the target position
         spriteRectTransform.anchoredPosition = targetPosition;
-
-        // Optionally, perform any action when the sprite reaches the target position
     }
 }
