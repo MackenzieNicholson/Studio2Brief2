@@ -27,7 +27,7 @@ public class FishManager : MonoBehaviour
     public TextMeshProUGUI Weight;
 
     //point collection
-    public int totalPoints;
+    public static int totalPoints;
     public int points;
 
     public static int earnedpoints;

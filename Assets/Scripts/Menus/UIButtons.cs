@@ -24,6 +24,8 @@ public class UIButtons : MonoBehaviour
 
     public void StartGame()
     {
+        FishManager.earnedpoints = FishManager.earnedpoints + FishManager.totalPoints;
+        FishManager.totalPoints = 0;
         SceneManager.GetActiveScene();
         SceneManager.LoadScene(2);
     }
