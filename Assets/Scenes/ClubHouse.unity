@@ -247,6 +247,7 @@ MonoBehaviour:
   isFish: 0
   player: {fileID: 0}
   animator: {fileID: 1821466085}
+  menu: {fileID: 1821466081}
   promptUI: {fileID: 1148914509}
   promptBack: {fileID: 1416736380}
 --- !u!1 &20992787
@@ -1558,6 +1559,7 @@ MonoBehaviour:
   isFish: 0
   player: {fileID: 0}
   animator: {fileID: 255940834}
+  menu: {fileID: 255940832}
   promptUI: {fileID: 1148914509}
   promptBack: {fileID: 1416736380}
 --- !u!1 &255940832
@@ -1574,11 +1576,11 @@ GameObject:
   - component: {fileID: 255940834}
   m_Layer: 5
   m_Name: ClubUpgradeMenu
-  m_TagString: Untagged
+  m_TagString: ClubManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &255940833
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3725,6 +3727,7 @@ MonoBehaviour:
   isFish: 0
   player: {fileID: 0}
   animator: {fileID: 1670882681}
+  menu: {fileID: 0}
   promptUI: {fileID: 1148914509}
   promptBack: {fileID: 1416736380}
 --- !u!1 &1272149363
@@ -4476,6 +4479,7 @@ MonoBehaviour:
   isFish: 1
   player: {fileID: 0}
   animator: {fileID: 1932210677}
+  menu: {fileID: 0}
   promptUI: {fileID: 1148914509}
   promptBack: {fileID: 1416736380}
 --- !u!1 &1642008170
@@ -5007,11 +5011,11 @@ GameObject:
   - component: {fileID: 1821466085}
   m_Layer: 5
   m_Name: RodUpgradeMenu
-  m_TagString: Untagged
+  m_TagString: RodUpgrade
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1821466082
 RectTransform:
   m_ObjectHideFlags: 0

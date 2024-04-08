@@ -20,6 +20,7 @@ public class LiamTriggerScript : MonoBehaviour
 
     public PlayerMovement player;
     public Animator animator;
+    public GameObject menu;
 
     public TextMeshProUGUI promptUI;
     public Image promptBack;
@@ -28,6 +29,7 @@ public class LiamTriggerScript : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
         promptBack.enabled = false;
+
     }
 
     // Update is called once per frame
@@ -113,6 +115,7 @@ public class LiamTriggerScript : MonoBehaviour
             Debug.Log("is in rod upgrade");
             promptBack.enabled = true;
             promptUI.text = "Enter: Upgrade Gear";
+            menu.SetActive(true);
         }
         else if(isClub == true)
         {
@@ -120,6 +123,7 @@ public class LiamTriggerScript : MonoBehaviour
             Debug.Log("is in club upgrade");
             promptBack.enabled = true;
             promptUI.text = "Enter: Upgrade Club";
+            menu.SetActive(true);
         }
         else if(isFish == true)
         {
@@ -139,6 +143,7 @@ public class LiamTriggerScript : MonoBehaviour
         inFishTrigger = false;
         promptUI.text = "";
         promptBack.enabled = false;
+        menu.SetActive(false);
     }
 
     public void CloseMenu()
