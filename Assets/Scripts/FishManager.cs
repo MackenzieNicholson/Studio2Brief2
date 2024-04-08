@@ -30,6 +30,8 @@ public class FishManager : MonoBehaviour
     public int totalPoints;
     public int points;
 
+    public static int earnedpoints;
+
     public int Casts;
 
     // can and cant do actions
@@ -86,7 +88,7 @@ public class FishManager : MonoBehaviour
     {
         CastsNum.text = "" + Casts; 
 
-
+        
 
         if(Casts == 0)
         {
