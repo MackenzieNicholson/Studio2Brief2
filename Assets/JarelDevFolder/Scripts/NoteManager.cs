@@ -3,52 +3,125 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class NoteManager : MonoBehaviour
 {
     public RectTransform spriteRectTransform;
-    float slideSpeed = 10f;
-
-    private Vector2 initialPosition;
-    private Vector2 targetPosition;
+    float slideSpeed = 5f;
 
     public bool hasCollided = false;
+    public bool hasLeft = false;
+
+    float noteRadius;
+    float noteDistance;
+
+    bool longNote = false;
+
+    GameObject parentKeynote;
+    KeyCode parentKeyCtrl;
+    ScoreManager scoreManager;
+
+    int ratingScale = 0; //send to score manager; 0 - miss; 1 - bad; 2 - good; 3 - perfect
 
     // Start is called before the first frame update
     void Start()
     {
-        int noteSize = Random.Range(1, 10);
-        Debug.Log("Note size is " + noteSize);
-        float noteSizeY = (float)noteSize;
-
-        Vector3 currentScale = transform.localScale;
-        currentScale.y = noteSizeY;
-        transform.localScale = currentScale;
-
-        // Get the initial position of the sprite
-        initialPosition = spriteRectTransform.anchoredPosition;
-
-        // Calculate the target position outside of the canvas bounds
-        Vector2 canvasSize = GetComponentInParent<Canvas>().GetComponent<RectTransform>().sizeDelta;
-        float canvasHeight = canvasSize.y;
-        targetPosition = initialPosition - new Vector2(0, canvasHeight);
-        
-        // Start sliding the sprite
-        StartCoroutine(SlideCoroutine());
-    }
-
-    IEnumerator SlideCoroutine()
-    {
-        while (spriteRectTransform.anchoredPosition.y > targetPosition.y)
+        if (transform.parent.gameObject.name == "pipSpawnA")
         {
-            // Move the sprite downwards
-            spriteRectTransform.anchoredPosition -= new Vector2(0, slideSpeed * Time.deltaTime);
-
-            yield return null;
+            parentKeynote = GameObject.Find("keynoteA");
+            parentKeyCtrl = KeyCode.A;
+        }
+        else if (transform.parent.gameObject.name == "pipSpawnB")
+        {
+            parentKeynote = GameObject.Find("keynoteB");
+            parentKeyCtrl = KeyCode.S;
+        }
+        else if (transform.parent.gameObject.name == "pipSpawnC")
+        {
+            parentKeynote = GameObject.Find("keynoteC");
+            parentKeyCtrl = KeyCode.K;
+        }
+        else if (transform.parent.gameObject.name == "pipSpawnD")
+        {
+            parentKeynote = GameObject.Find("keynoteD");
+            parentKeyCtrl = KeyCode.L;
         }
 
-        // Ensure the sprite is at the target position
-        spriteRectTransform.anchoredPosition = targetPosition;
+        scoreManager = GameObject.Find("scoreUI").GetComponent<ScoreManager>();
+
+
+        if (longNote)
+        {
+            int noteSize = Random.Range(5, 10);
+            //Debug.Log("Note size is " + noteSize);
+            float noteSizeY = (float)noteSize;
+
+            Vector3 currentScale = transform.localScale;
+            currentScale.y = currentScale.y * noteSizeY;
+            transform.localScale = currentScale;
+        }
+
+        Bounds bounds = GetComponent<SpriteRenderer>().bounds;
+        noteRadius = bounds.size.y / 2;
+    }
+
+    void Update()
+    {
+        //downward movement
+        Vector3 downwardMovement = Vector3.down * slideSpeed * Time.deltaTime;
+        transform.position += downwardMovement;
+
+        noteDistance = Vector3.Distance(gameObject.transform.position, parentKeynote.transform.position);
+
+        if (hasCollided)
+        {
+            if (Input.GetKeyDown(parentKeyCtrl))
+            {
+                if (noteDistance > (noteRadius * 1.50f)) //miss
+                {
+                    ratingScale = 0;
+                    scoreManager.ScoreUpdate(ratingScale);
+                    Destroy(gameObject);
+                }
+                else if ((noteDistance <= (noteRadius * 1.50f)) && (noteDistance >= (noteRadius * 0.85f))) //perfect
+                {
+                    ratingScale = 3;
+                    if (Input.GetKey(parentKeyCtrl))
+                    {
+                        scoreManager.ScoreUpdate(ratingScale);
+                    }
+                    //Destroy(gameObject);
+                }
+                else if ((noteDistance < (noteRadius * 0.85f)) && (noteDistance >= (noteRadius * 0.35f))) //good
+                {
+                    ratingScale = 2;
+                    if (Input.GetKey(parentKeyCtrl))
+                    {
+                        scoreManager.ScoreUpdate(ratingScale);
+                    }
+                    //Destroy(gameObject);
+                }
+                else if ((noteDistance < (noteRadius * 0.35f))) //bad
+                {
+                    ratingScale = 1;
+                    if (Input.GetKey(parentKeyCtrl))
+                    {
+                        scoreManager.ScoreUpdate(ratingScale);
+                    }
+                    //Destroy(gameObject);
+                }
+            }
+            else if (Input.GetKeyUp(parentKeyCtrl))
+            {
+                if (noteDistance <= noteRadius) //bad
+                {
+                    ratingScale = 1;
+                    scoreManager.ScoreUpdate(ratingScale);
+                    Destroy(gameObject);
+                }
+            }
+        }
     }
 }
