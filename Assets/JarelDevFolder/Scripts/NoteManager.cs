@@ -7,31 +7,50 @@ using UnityEngine.UI;
 
 public class NoteManager : MonoBehaviour
 {
-    public RectTransform uiElement; // Reference to the UI element
-    public float speed = 200f; // Speed of the sliding movement
+    public RectTransform spriteRectTransform;
+    float slideSpeed = 10f;
+
+    private Vector2 initialPosition;
+    private Vector2 targetPosition;
+
+    public bool hasCollided = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        int noteSize = Random.Range(1, 9);
+        int noteSize = Random.Range(1, 10);
         Debug.Log("Note size is " + noteSize);
-        float noteSizeY = (float)noteSize * 100;
+        float noteSizeY = (float)noteSize;
 
         Vector3 currentScale = transform.localScale;
-
-        // Set the new Y scale
         currentScale.y = noteSizeY;
-
-        // Apply the new scale to the GameObject
         transform.localScale = currentScale;
+
+        // Get the initial position of the sprite
+        initialPosition = spriteRectTransform.anchoredPosition;
+
+        // Calculate the target position outside of the canvas bounds
+        Vector2 canvasSize = GetComponentInParent<Canvas>().GetComponent<RectTransform>().sizeDelta;
+        float canvasHeight = canvasSize.y;
+        targetPosition = initialPosition - new Vector2(0, canvasHeight);
+        
+        // Start sliding the sprite
+        StartCoroutine(SlideCoroutine());
     }
 
-    // Update is called once per frame
-    void Update()
+    IEnumerator SlideCoroutine()
     {
-        Vector3 moveDirection = Vector3.down * speed * Time.deltaTime;
+        while (spriteRectTransform.anchoredPosition.y > targetPosition.y)
+        {
+            // Move the sprite downwards
+            spriteRectTransform.anchoredPosition -= new Vector2(0, slideSpeed * Time.deltaTime);
 
-        // Move the GameObject downwards
-        transform.position += moveDirection;
+            yield return null;
+        }
+
+        // Ensure the sprite is at the target position
+        spriteRectTransform.anchoredPosition = targetPosition;
+
+        // Optionally, perform any action when the sprite reaches the target position
     }
 }
