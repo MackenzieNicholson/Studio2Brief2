@@ -140,4 +140,10 @@ public class LiamTriggerScript : MonoBehaviour
         promptUI.text = "";
         promptBack.enabled = false;
     }
+
+    public void CloseMenu()
+    {
+        animator.SetTrigger("close");
+        player.speed = 100;
+    }
 }
