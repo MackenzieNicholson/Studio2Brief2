@@ -17,11 +17,6 @@ public class RhythmBeats : MonoBehaviour
     public GameObject columnC; 
     public GameObject columnD;
 
-    public bool pressedKeyA = false;
-    public bool pressedKeyB = false;
-    public bool pressedKeyC = false;
-    public bool pressedKeyD = false;
-
     public GameObject worldCanvas;
 
     List<GameObject> spawnColumns = new List<GameObject>();
@@ -57,98 +52,41 @@ public class RhythmBeats : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.A))
         {
             Debug.Log("Keypress: A");
-            pressedKeyA = true;
             noteSpriteA.color = Color.yellow;
         }
         else if (Input.GetKeyUp(KeyCode.A))
         {
-            if(!Input.GetKey(KeyCode.Space))
-            {
-                pressedKeyA = false;
-                noteSpriteA.color = Color.white;
-            }
+            noteSpriteA.color = Color.white;
         }
 
         if (Input.GetKeyDown(KeyCode.S))
         {
             Debug.Log("Keypress: S");
-            pressedKeyB = true;
             noteSpriteB.color = Color.green;
         }
         else if (Input.GetKeyUp(KeyCode.S))
         {
-            if (!Input.GetKey(KeyCode.Space))
-            {
-                pressedKeyB = false;
-                noteSpriteB.color = Color.white;
-            }
+            noteSpriteB.color = Color.white;
         }
 
         if (Input.GetKeyDown(KeyCode.K))
         {
             Debug.Log("Keypress: D");
-            pressedKeyC = true;
             noteSpriteC.color = Color.blue;
         }
         else if (Input.GetKeyUp(KeyCode.K))
         {
-            if (!Input.GetKey(KeyCode.Space))
-            {
-                pressedKeyC = false;
-                noteSpriteC.color = Color.white;
-            }
+            noteSpriteC.color = Color.white;
         }
 
         if (Input.GetKeyDown(KeyCode.L))
         {
             Debug.Log("Keypress: F");
-            pressedKeyD = true;
             noteSpriteD.color = Color.red;
         }
         else if (Input.GetKeyUp(KeyCode.L))
         {
-            if (!Input.GetKey(KeyCode.Space))
-            {
-                pressedKeyD = false;
-                noteSpriteD.color = Color.white;
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Debug.Log("Keypress: All");
-            pressedKeyA = true;
-            noteSpriteA.color = Color.yellow;
-            pressedKeyB = true;
-            noteSpriteB.color = Color.green;
-            pressedKeyC = true;
-            noteSpriteC.color = Color.blue;
-            pressedKeyD = true;
-            noteSpriteD.color = Color.red;
-        }
-        else if (Input.GetKeyUp(KeyCode.Space))
-        {
-            if(!Input.GetKey(KeyCode.A))
-            {
-                pressedKeyA = false;
-                noteSpriteA.color = Color.white;
-                Debug.Log("Not pressing A");
-            }
-            if(!Input.GetKey(KeyCode.S))
-            {
-                pressedKeyB = false;
-                noteSpriteB.color = Color.white;
-            }
-            if (!Input.GetKey(KeyCode.K))
-            {
-                pressedKeyC = false;
-                noteSpriteC.color = Color.white;
-            }
-            if (!Input.GetKey(KeyCode.L))
-            {
-                pressedKeyD = false;
-                noteSpriteD.color = Color.white;
-            }
+            noteSpriteD.color = Color.white;
         }
     }
 

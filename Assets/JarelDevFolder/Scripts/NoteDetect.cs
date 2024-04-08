@@ -104,45 +104,6 @@ public class NoteDetect : MonoBehaviour
         }
     }
 
-    /*private void OnTriggerStay2D(Collider2D other)
-    {
-        Debug.Log("Note passing");
-        noteState = other.gameObject.GetComponent<NoteManager>();
-        noteState.hasCollided = true;
-        if(gameObject.name == "keynoteA")
-        {
-            if (Input.GetKey(KeyCode.A))
-            {
-                scoreManager.scoreCount++;
-                scoreManager.score.text = scoreManager.scoreCount.ToString();
-            }
-        }
-        else if (gameObject.name == "keynoteB")
-        {
-            if (Input.GetKey(KeyCode.S))
-            {
-                scoreManager.scoreCount++;
-                scoreManager.score.text = scoreManager.scoreCount.ToString();
-            }
-        }
-        else if (gameObject.name == "keynoteC")
-        {
-            if (Input.GetKey(KeyCode.K))
-            {
-                scoreManager.scoreCount++;
-                scoreManager.score.text = scoreManager.scoreCount.ToString();
-            }
-        }
-        else if (gameObject.name == "keynoteD")
-        {
-            if (Input.GetKey(KeyCode.L))
-            {
-                scoreManager.scoreCount++;
-                scoreManager.score.text = scoreManager.scoreCount.ToString();
-            }
-        }
-    }*/
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log("Note passing");
@@ -164,13 +125,6 @@ public class NoteDetect : MonoBehaviour
             collisionCheckD = true;
         }
     }
-
-    /*private void OnTriggerExit2D(Collider2D other)
-    {
-        Debug.Log("Note has passed");
-        noteState.hasCollided = false;
-        Destroy(other.gameObject);
-    }*/
 
     private void OnTriggerExit2D(Collider2D other)
     {
