@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -9,21 +11,23 @@ using UnityEngine.UI;
 public class NoteManager : MonoBehaviour
 {
     public RectTransform spriteRectTransform;
-    float slideSpeed = 5f;
-
     public bool hasCollided = false;
     public bool hasLeft = false;
-
+    
+    float slideSpeed = 3f;
+    float noteEdgeUp;
+    float noteEdgeDown;
     float noteRadius;
-    float noteDistance;
-
     bool longNote = false;
+    bool activeNote = true;
+    int noteSize;
 
+    SpriteRenderer spriteRenderer;
+    Bounds noteBounds;
     GameObject parentKeynote;
+    GameObject keyLine;
     KeyCode parentKeyCtrl;
     ScoreManager scoreManager;
-
-    int ratingScale = 0; //send to score manager; 0 - miss; 1 - bad; 2 - good; 3 - perfect
 
     // Start is called before the first frame update
     void Start()
@@ -50,12 +54,13 @@ public class NoteManager : MonoBehaviour
         }
 
         scoreManager = GameObject.Find("scoreUI").GetComponent<ScoreManager>();
+        keyLine = GameObject.Find("keyLine");
 
-
-        if (longNote)
+        noteSize = Random.Range(1, 10);
+        if (noteSize > 7)
         {
-            int noteSize = Random.Range(5, 10);
-            //Debug.Log("Note size is " + noteSize);
+            longNote = true;
+            //this just expands the note into something longer
             float noteSizeY = (float)noteSize;
 
             Vector3 currentScale = transform.localScale;
@@ -63,8 +68,9 @@ public class NoteManager : MonoBehaviour
             transform.localScale = currentScale;
         }
 
-        Bounds bounds = GetComponent<SpriteRenderer>().bounds;
-        noteRadius = bounds.size.y / 2;
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        noteBounds = spriteRenderer.bounds;
+        noteRadius = noteBounds.size.y / 2;
     }
 
     void Update()
@@ -73,54 +79,87 @@ public class NoteManager : MonoBehaviour
         Vector3 downwardMovement = Vector3.down * slideSpeed * Time.deltaTime;
         transform.position += downwardMovement;
 
-        noteDistance = Vector3.Distance(gameObject.transform.position, parentKeynote.transform.position);
+        noteEdgeUp = transform.position.y + noteRadius;
+        noteEdgeDown = transform.position.y - noteRadius;
 
         if (hasCollided)
         {
             if (Input.GetKeyDown(parentKeyCtrl))
             {
-                if (noteDistance > (noteRadius * 1.50f)) //miss
+                if (noteEdgeDown > keyLine.transform.position.y) //miss
                 {
-                    ratingScale = 0;
-                    scoreManager.ScoreUpdate(ratingScale);
+                    gameObject.SetActive(false);
+                    scoreManager.ScoreMiss();
                     Destroy(gameObject);
                 }
-                else if ((noteDistance <= (noteRadius * 1.50f)) && (noteDistance >= (noteRadius * 0.85f))) //perfect
+                else if ((noteEdgeDown < keyLine.transform.position.y) && (transform.position.y > keyLine.transform.position.y)) //perfect
                 {
-                    ratingScale = 3;
-                    if (Input.GetKey(parentKeyCtrl))
+                    if (longNote)
                     {
-                        scoreManager.ScoreUpdate(ratingScale);
+                        scoreManager.ScorePerfect();
                     }
-                    //Destroy(gameObject);
+                    else
+                    {
+                        gameObject.SetActive(false);
+                        scoreManager.ScorePerfect();
+                        Destroy(gameObject);
+                    }
                 }
-                else if ((noteDistance < (noteRadius * 0.85f)) && (noteDistance >= (noteRadius * 0.35f))) //good
+                else if ((transform.position.y < keyLine.transform.position.y) && (noteEdgeUp > keyLine.transform.position.y)) //good
                 {
-                    ratingScale = 2;
-                    if (Input.GetKey(parentKeyCtrl))
-                    {
-                        scoreManager.ScoreUpdate(ratingScale);
-                    }
-                    //Destroy(gameObject);
+                    gameObject.SetActive(false);
+                    scoreManager.ScoreGood();
+                    Destroy(gameObject);
                 }
-                else if ((noteDistance < (noteRadius * 0.35f))) //bad
+                else if (noteEdgeUp < keyLine.transform.position.y) //bad
                 {
-                    ratingScale = 1;
-                    if (Input.GetKey(parentKeyCtrl))
-                    {
-                        scoreManager.ScoreUpdate(ratingScale);
-                    }
-                    //Destroy(gameObject);
+                    gameObject.SetActive(false);
+                    scoreManager.ScoreBad();
+                    Destroy(gameObject);
                 }
             }
             else if (Input.GetKeyUp(parentKeyCtrl))
             {
-                if (noteDistance <= noteRadius) //bad
+                if ((noteEdgeDown < keyLine.transform.position.y) && (noteEdgeUp > keyLine.transform.position.y)) //miss
                 {
-                    ratingScale = 1;
-                    scoreManager.ScoreUpdate(ratingScale);
+                    scoreManager.ScoreMiss();
                     Destroy(gameObject);
                 }
+            }
+
+            if (noteEdgeDown > keyLine.transform.position.y) //miss
+            {
+                gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
+            }
+            else if ((noteEdgeDown < keyLine.transform.position.y) && (transform.position.y > keyLine.transform.position.y)) //perfect
+            {
+                gameObject.GetComponent<SpriteRenderer>().color = Color.yellow;
+            }
+            else if ((transform.position.y < keyLine.transform.position.y) && (noteEdgeUp > keyLine.transform.position.y)) //good
+            {
+                gameObject.GetComponent<SpriteRenderer>().color = Color.green;
+            }
+            else if (noteEdgeUp < keyLine.transform.position.y) //bad
+            {
+                gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+            }
+
+            if (noteEdgeUp < keyLine.transform.position.y)
+            {
+                activeNote = false;
+                Destroy(gameObject);
+            }
+        }
+    }
+
+    IEnumerator LongNoteScore()
+    {
+        for (int i = 0; i < noteSize; i++)
+        {
+            if (activeNote)
+            {
+                scoreManager.ScorePerfect();
+                yield return new WaitForSeconds(1f);
             }
         }
     }

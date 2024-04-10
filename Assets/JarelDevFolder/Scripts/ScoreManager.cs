@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class ScoreManager : MonoBehaviour
 {
@@ -25,29 +26,35 @@ public class ScoreManager : MonoBehaviour
         
     }
 
-    public void ScoreUpdate(int rating)
+    public void ScoreMiss()
     {
-        switch (rating)
-        {
-            case 0:     //miss
-                accuracy.text = "Miss!";
-                ratingAnimator.Play("ratingAnim_bad");
-                break;
-            case 1:     //bad
-                accuracy.text = "Bad!";
-                ratingAnimator.Play("ratingAnim_bad");
-                break;
-            case 2:     //good
-                accuracy.text = "Good!";
-                ratingAnimator.Play("ratingAnim_good");
-                break;
-            case 3:     //perfect
-                accuracy.text = "Perfect!";
-                ratingAnimator.Play("ratingAnim_perfect");
-                break;
-            default:
-                break;
-        }
-        
+        accuracy.text = "Miss!";
+        scoreCount -= 10;
+        score.text = scoreCount.ToString();
+        ratingAnimator.Play("ratingAnim_miss");
+    }
+
+    public void ScoreBad()
+    {
+        accuracy.text = "Bad!";
+        scoreCount += 1;
+        score.text = scoreCount.ToString();
+        ratingAnimator.Play("ratingAnim_bad");
+    }
+
+    public void ScoreGood()
+    {
+        accuracy.text = "Good!";
+        scoreCount += 5;
+        score.text = scoreCount.ToString();
+        ratingAnimator.Play("ratingAnim_good");
+    }
+
+    public void ScorePerfect()
+    {
+        accuracy.text = "Perfect!";
+        scoreCount += 10;
+        score.text = scoreCount.ToString();
+        ratingAnimator.Play("ratingAnim_perfect");
     }
 }
