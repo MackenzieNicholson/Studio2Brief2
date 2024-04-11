@@ -20,25 +20,25 @@ public class AnimateAccuracy : MonoBehaviour
 
     public void ScoreMiss()
     {
-        scoreManager.scoreCount -= 5;
+        scoreManager.scoreCount -= 10;
         scoreManager.score.text = scoreManager.scoreCount.ToString();
     }
 
     public void ScoreBad()
     {
-        scoreManager.scoreCount--;
+        scoreManager.scoreCount++;
         scoreManager.score.text = scoreManager.scoreCount.ToString();
     }
 
     public void ScoreGood()
     {
-        scoreManager.scoreCount++;
+        scoreManager.scoreCount += 3;
         scoreManager.score.text = scoreManager.scoreCount.ToString();
     }
 
     public void ScorePerfect()
     {
-        scoreManager.scoreCount += 5;
+        scoreManager.scoreCount += 6;
         scoreManager.score.text = scoreManager.scoreCount.ToString();
     }
 

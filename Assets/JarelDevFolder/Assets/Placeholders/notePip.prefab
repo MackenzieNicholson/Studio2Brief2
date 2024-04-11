@@ -105,6 +105,7 @@ MonoBehaviour:
   spriteRectTransform: {fileID: 6029878882863252128}
   hasCollided: 0
   hasLeft: 0
+  helper: {fileID: 8533028880114475830, guid: 46b28a412265df449824f041c759cf79, type: 3}
 --- !u!61 &1931648598166565783
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -51,7 +51,6 @@ public class RhythmBeats : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
-            Debug.Log("Keypress: A");
             noteSpriteA.color = Color.yellow;
         }
         else if (Input.GetKeyUp(KeyCode.A))
@@ -61,7 +60,6 @@ public class RhythmBeats : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.S))
         {
-            Debug.Log("Keypress: S");
             noteSpriteB.color = Color.green;
         }
         else if (Input.GetKeyUp(KeyCode.S))
@@ -71,7 +69,6 @@ public class RhythmBeats : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.K))
         {
-            Debug.Log("Keypress: D");
             noteSpriteC.color = Color.blue;
         }
         else if (Input.GetKeyUp(KeyCode.K))
@@ -81,7 +78,6 @@ public class RhythmBeats : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.L))
         {
-            Debug.Log("Keypress: F");
             noteSpriteD.color = Color.red;
         }
         else if (Input.GetKeyUp(KeyCode.L))

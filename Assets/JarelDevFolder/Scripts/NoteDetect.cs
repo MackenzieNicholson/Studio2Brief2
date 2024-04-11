@@ -34,8 +34,6 @@ public class NoteDetect : MonoBehaviour
     private void OnTriggerExit2D(Collider2D other)
     {
         Debug.Log("Note has passed");
-        noteObject = other.gameObject;
-        noteState = noteObject.GetComponent<NoteManager>();
-        noteState.hasLeft = true;
+        //Destroy(other.gameObject);
     }
 }
