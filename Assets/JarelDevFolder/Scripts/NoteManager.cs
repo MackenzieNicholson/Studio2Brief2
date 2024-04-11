@@ -30,6 +30,7 @@ public class NoteManager : MonoBehaviour
     Bounds noteBounds;
     GameObject parentKeynote;
     GameObject keyLine;
+    GameObject parentObject;
     KeyCode parentKeyCtrl;
     ScoreManager scoreManager;
 
@@ -39,21 +40,25 @@ public class NoteManager : MonoBehaviour
         
         if (transform.parent.gameObject.name == "pipSpawnA")
         {
+            parentObject = GameObject.Find("pipSpawnA");
             parentKeynote = GameObject.Find("keynoteA");
             parentKeyCtrl = KeyCode.A;
         }
         else if (transform.parent.gameObject.name == "pipSpawnB")
         {
+            parentObject = GameObject.Find("pipSpawnB");
             parentKeynote = GameObject.Find("keynoteB");
             parentKeyCtrl = KeyCode.S;
         }
         else if (transform.parent.gameObject.name == "pipSpawnC")
         {
+            parentObject = GameObject.Find("pipSpawnC");
             parentKeynote = GameObject.Find("keynoteC");
             parentKeyCtrl = KeyCode.K;
         }
         else if (transform.parent.gameObject.name == "pipSpawnD")
         {
+            parentObject = GameObject.Find("pipSpawnD");
             parentKeynote = GameObject.Find("keynoteD");
             parentKeyCtrl = KeyCode.L;
         }
@@ -91,6 +96,28 @@ public class NoteManager : MonoBehaviour
         helperUp.transform.SetParent(gameObject.transform);
         GameObject helperDown = Instantiate(helper, boundLower, Quaternion.identity);
         helperDown.transform.SetParent(gameObject.transform);*/
+
+        noteEdgeUp = transform.position.y + noteRadius;
+        noteEdgeDown = transform.position.y - noteRadius;
+        int noteIndex = transform.GetSiblingIndex();
+
+        if (transform.GetSiblingIndex() > 0) //this is resolve issues with overlapping notes when a note is instantiated
+        {
+            Transform precedingNote = parentObject.transform.GetChild(noteIndex - 1);
+            NoteManager precedingNoteManager = precedingNote.GetComponent<NoteManager>();
+
+            if (noteEdgeDown < precedingNoteManager.noteEdgeUp)
+            {
+                Debug.Log("Resolving note overlap");
+                Vector3 noteBoundA = new Vector3(transform.position.x, noteEdgeDown, transform.position.z);
+                Vector3 noteBoundB = new Vector3(precedingNoteManager.transform.position.x, precedingNoteManager.noteEdgeUp, precedingNoteManager.transform.position.z);
+                float noteDistance = Vector3.Distance(noteBoundA, noteBoundB);
+                float newPos = transform.position.y + noteDistance + 0.1f;
+                Vector3 adjustPos = new Vector3(transform.position.x, newPos, transform.position.z);
+                transform.position = adjustPos;
+                Debug.Log("Overlap resolved");
+            }
+        } 
     }
 
     void Update()
@@ -162,7 +189,6 @@ public class NoteManager : MonoBehaviour
                 if ((noteEdgeUp > keyLine.transform.position.y) && (noteEdgeDown < keyLine.transform.position.y)) //bad
                 {
                     scoreManager.ScoreBad();
-                    Destroy(gameObject);
                 }
             }
 
