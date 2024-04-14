@@ -1144,7 +1144,10 @@ MonoBehaviour:
   fishCollection: 
   GoldfishSize: 0
   CarpSize: 0
-  bassSize: 0
+  BassSize: 0
+  KoiSize: 0
+  SturgeonSize: 0
+  BluegillSize: 0
   CurrentFish: {fileID: 485106073}
   Instructions: {fileID: 628823658}
   Basket: {fileID: 1140728952}
@@ -1152,7 +1155,6 @@ MonoBehaviour:
   pointEarner: {fileID: 421019906}
   Size: {fileID: 1586005604}
   Weight: {fileID: 1399087951}
-  totalPoints: 0
   points: 0
   Casts: 0
   fishLength: {fileID: 0}
