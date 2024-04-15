@@ -31,7 +31,7 @@ public class FishManager : MonoBehaviour
     public static int earnedpoints;
     public int Casts;
     // can and cant do actions
-    private bool CanFish;
+    public bool CanFish;
     private bool CanThrow;
     private bool CanKeep;
     //int randomValue = Random.Range(0,99);

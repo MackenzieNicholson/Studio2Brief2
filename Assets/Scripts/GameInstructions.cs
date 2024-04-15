@@ -5,19 +5,26 @@ using UnityEngine.SceneManagement;
 
 public class GameInstructions : MonoBehaviour
 {
+    public FishManager fishmanager;
+
     public GameObject CastInstructions;
     public GameObject HookInstructions;
     public GameObject CatchingInstructions;
     public GameObject KeepThrowInstructions;
     public GameObject MenuInstructions;
+
+    public GameObject GameUI;
     // Start is called before the first frame update
     void Start()
     {
+        fishmanager.CanFish = false;
+
         CastInstructions.SetActive(true);
         HookInstructions.SetActive(false);
         CatchingInstructions.SetActive(false);
         KeepThrowInstructions.SetActive(false);
         MenuInstructions.SetActive(false);
+        GameUI.SetActive(false);
     }
 
     public void HookIN()
@@ -42,6 +49,8 @@ public class GameInstructions : MonoBehaviour
     }
     public void FinishIN()
     {
-        SceneManager.LoadScene(1);
+        MenuInstructions.SetActive(false);
+        GameUI.SetActive(true);
+        fishmanager.CanFish = true;
     }
 }
