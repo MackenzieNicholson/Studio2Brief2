@@ -28,7 +28,7 @@ RectTransform:
   m_GameObject: {fileID: 3386885529379096943}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0}
+  m_LocalScale: {x: 0.8, y: 0.5, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -103,6 +103,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRectTransform: {fileID: 6029878882863252128}
+  hasCollided: 0
+  hasLeft: 0
+  helper: {fileID: 8533028880114475830, guid: 46b28a412265df449824f041c759cf79, type: 3}
 --- !u!61 &1931648598166565783
 BoxCollider2D:
   m_ObjectHideFlags: 0

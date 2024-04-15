@@ -18,7 +18,7 @@ public class LiamTriggerScript : MonoBehaviour
     private bool inClubTrigger;
     private bool inFishTrigger;
 
-    public PlayerMovement player;
+    PlayerMovement player;
     public Animator animator;
     public GameObject menu;
 
@@ -27,7 +27,7 @@ public class LiamTriggerScript : MonoBehaviour
 
     private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
+        player = GameObject.Find("player").GetComponent<PlayerMovement>();
         promptBack.enabled = false;
 
     }
