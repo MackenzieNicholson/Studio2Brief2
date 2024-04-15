@@ -10,12 +10,18 @@ using UnityEngine.UI;
 
 public class NoteManager : MonoBehaviour
 {
-    public RectTransform spriteRectTransform;
+    Image noteImage;
+    public Sprite noteYellow;
+    public Sprite noteGreen;
+    public Sprite noteBlue;
+    public Sprite noteOrange;
+
+
     public bool hasCollided = false;
     public bool hasLeft = false;
     //public GameObject helper;
     
-    float slideSpeed = 3f;
+    float slideSpeed = 150f;
     float noteEdgeUp;
     float noteEdgeDown;
     float noteCenterUp;
@@ -30,94 +36,93 @@ public class NoteManager : MonoBehaviour
     Bounds noteBounds;
     GameObject parentKeynote;
     GameObject keyLine;
-    GameObject parentObject;
+    GameObject checkLine;
+    RectTransform parentObject;
     KeyCode parentKeyCtrl;
     ScoreManager scoreManager;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        noteImage = GetComponent<Image>();
+        noteImage.rectTransform.localScale = new Vector3(1f, 1f, 1f);
         if (transform.parent.gameObject.name == "pipSpawnA")
         {
-            parentObject = GameObject.Find("pipSpawnA");
+            parentObject = GameObject.Find("pipSpawnA").GetComponent<RectTransform>();
             parentKeynote = GameObject.Find("keynoteA");
             parentKeyCtrl = KeyCode.A;
+            noteImage.sprite = noteYellow;
         }
         else if (transform.parent.gameObject.name == "pipSpawnB")
         {
-            parentObject = GameObject.Find("pipSpawnB");
+            parentObject = GameObject.Find("pipSpawnB").GetComponent<RectTransform>();
             parentKeynote = GameObject.Find("keynoteB");
             parentKeyCtrl = KeyCode.S;
+            noteImage.sprite = noteGreen;
         }
         else if (transform.parent.gameObject.name == "pipSpawnC")
         {
-            parentObject = GameObject.Find("pipSpawnC");
+            parentObject = GameObject.Find("pipSpawnC").GetComponent<RectTransform>();
             parentKeynote = GameObject.Find("keynoteC");
             parentKeyCtrl = KeyCode.K;
+            noteImage.sprite = noteBlue;
         }
         else if (transform.parent.gameObject.name == "pipSpawnD")
         {
-            parentObject = GameObject.Find("pipSpawnD");
+            parentObject = GameObject.Find("pipSpawnD").GetComponent<RectTransform>();
             parentKeynote = GameObject.Find("keynoteD");
             parentKeyCtrl = KeyCode.L;
+            noteImage.sprite = noteOrange;
         }
 
         scoreManager = GameObject.Find("scoreUI").GetComponent<ScoreManager>();
-        keyLine = GameObject.Find("keyLine");
+        keyLine = GameObject.Find("keyLineImage");
+        checkLine = GameObject.Find("checkLineImage");
 
         noteSize = Random.Range(1, 10);
         if (noteSize > 5)
         {
             longNote = true;
-            //this just expands the note into something longer
+            // This just expands the note into something longer
             float noteSizeY = (float)noteSize;
 
-            Vector3 currentScale = transform.localScale;
-            currentScale.y = currentScale.y * noteSizeY;
-            transform.localScale = currentScale;
+            noteImage.rectTransform.localScale = new Vector3(1f, (1f * noteSizeY), 1f);
         }
 
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        noteBounds = spriteRenderer.bounds;
-        noteRadius = (noteBounds.size.y / 2) + 0.25f; // 0.25f is to give the player a wider margin of error when timing hits; any larger than 0.25f is no good and would remove the challenge of timing hits;
-        noteCenterRadius = (noteRadius / 4);
+        // Calculate y-bounds
+        Vector3[] corners = new Vector3[4];
+        noteImage.rectTransform.GetWorldCorners(corners);
 
-        ///
-        /// Enable for visual aid; assign noteHelper prefab to helper GameObject reference
-        ///
-        /*noteEdgeUp = transform.position.y + noteRadius;
-        noteEdgeDown = transform.position.y - noteRadius;
+        float topY = corners[1].y; // Top-right corner's y-coordinate
+        float bottomY = corners[0].y; // Bottom-left corner's y-coordinate
 
-        Vector3 boundUpper = new Vector3(transform.position.x, noteEdgeUp, transform.position.z);
-        Vector3 boundLower = new Vector3(transform.position.x, noteEdgeDown, transform.position.z);
+        Vector2 yBounds = new Vector2(topY, bottomY);
+        noteRadius = (yBounds.x - yBounds.y) / 2f + 0.25f; // 0.25f is to give a wider margin of error when timing hits; any larger than 0.25f is no good and would remove the challenge of timing hits;
+        noteCenterRadius = noteRadius / 4f;
 
-        GameObject helperUp = Instantiate(helper, boundUpper, Quaternion.identity);;
-        helperUp.transform.SetParent(gameObject.transform);
-        GameObject helperDown = Instantiate(helper, boundLower, Quaternion.identity);
-        helperDown.transform.SetParent(gameObject.transform);*/
+        noteEdgeUp = noteImage.rectTransform.position.y + noteRadius;
+        noteEdgeDown = noteImage.rectTransform.position.y - noteRadius;
 
-        noteEdgeUp = transform.position.y + noteRadius;
-        noteEdgeDown = transform.position.y - noteRadius;
-        int noteIndex = transform.GetSiblingIndex();
+        int noteIndex = noteImage.rectTransform.GetSiblingIndex();
 
-        if (transform.GetSiblingIndex() > 0) //this is resolve issues with overlapping notes when a note is instantiated
+        if (noteImage.rectTransform.GetSiblingIndex() > 0) // Resolve issues with overlapping notes when a note is instantiated
         {
-            Transform precedingNote = parentObject.transform.GetChild(noteIndex - 1);
-            NoteManager precedingNoteManager = precedingNote.GetComponent<NoteManager>();
+            Transform precedingNoteTransform = parentObject.GetChild(noteIndex - 1);
+            RectTransform precedingNote = precedingNoteTransform.GetComponent<RectTransform>();
+            NoteManager precedingNoteManager = precedingNoteTransform.GetComponent<NoteManager>();
 
             if (noteEdgeDown < precedingNoteManager.noteEdgeUp)
             {
                 Debug.Log("Resolving note overlap");
-                Vector3 noteBoundA = new Vector3(transform.position.x, noteEdgeDown, transform.position.z);
-                Vector3 noteBoundB = new Vector3(precedingNoteManager.transform.position.x, precedingNoteManager.noteEdgeUp, precedingNoteManager.transform.position.z);
-                float noteDistance = Vector3.Distance(noteBoundA, noteBoundB);
-                float newPos = transform.position.y + noteDistance + 0.1f;
-                Vector3 adjustPos = new Vector3(transform.position.x, newPos, transform.position.z);
-                transform.position = adjustPos;
+                Vector2 noteBoundA = new Vector2(noteImage.rectTransform.position.x, noteEdgeDown);
+                Vector2 noteBoundB = new Vector2(precedingNoteManager.noteImage.rectTransform.position.x, precedingNoteManager.noteEdgeUp);
+                float noteDistance = Vector2.Distance(noteBoundA, noteBoundB);
+                float newPos = noteImage.rectTransform.position.y + noteDistance + 0.1f;
+                Vector2 adjustPos = new Vector3(noteImage.rectTransform.position.x, newPos);
+                noteImage.rectTransform.position = adjustPos;
                 Debug.Log("Overlap resolved");
             }
-        } 
+        }
     }
 
     void Update()
@@ -133,10 +138,15 @@ public class NoteManager : MonoBehaviour
         Vector3 downwardMovement = Vector3.down * slideSpeed * Time.deltaTime;
         transform.position += downwardMovement;
 
-        noteEdgeUp = transform.position.y + noteRadius;
-        noteEdgeDown = transform.position.y - noteRadius;
-        noteCenterUp = transform.position.y + noteCenterRadius;
-        noteCenterDown = transform.position.y - noteCenterRadius;
+        noteEdgeUp = noteImage.rectTransform.position.y + noteRadius;
+        noteEdgeDown = noteImage.rectTransform.position.y - noteRadius;
+        noteCenterUp = noteImage.rectTransform.position.y - noteCenterRadius;
+        noteCenterDown = noteImage.rectTransform.position.y - noteCenterRadius;
+
+        if (noteEdgeDown <= checkLine.transform.position.y)
+        {
+            hasCollided = true;
+        }
 
         if (hasCollided && activeNote)
         {
@@ -193,22 +203,22 @@ public class NoteManager : MonoBehaviour
             }
 
             ///For troubleshooting
-            /*if (noteEdgeDown > keyLine.transform.position.y) //miss
+            if (noteEdgeDown > keyLine.transform.position.y) //miss
             {
-                gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
+                gameObject.GetComponent<Image>().color = Color.gray;
             }
             else if ((noteEdgeDown < keyLine.transform.position.y) && (noteCenterDown > keyLine.transform.position.y)) //perfect
             {
-                gameObject.GetComponent<SpriteRenderer>().color = Color.yellow;
+                gameObject.GetComponent<Image>().color = Color.yellow;
             }
             else if ((noteCenterDown < keyLine.transform.position.y) && (noteCenterUp > keyLine.transform.position.y)) //good
             {
-                gameObject.GetComponent<SpriteRenderer>().color = Color.green;
+                gameObject.GetComponent<Image>().color = Color.green;
             }
             else if ((noteEdgeUp > keyLine.transform.position.y) && (noteCenterUp < keyLine.transform.position.y)) //bad
             {
-                gameObject.GetComponent<SpriteRenderer>().color = Color.red;
-            }*/
+                gameObject.GetComponent<Image>().color = Color.red;
+            }
 
             if (noteEdgeUp < keyLine.transform.position.y)
             {
