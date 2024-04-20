@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEditor;
@@ -21,24 +22,22 @@ public class NoteManager : MonoBehaviour
     public bool hasLeft = false;
     //public GameObject helper;
     
-    float slideSpeed = 150f;
+    float slideSpeed = 250f;
     float noteEdgeUp;
     float noteEdgeDown;
-    float noteCenterUp;
-    float noteCenterDown;
     float noteRadius;
-    float noteCenterRadius;
     bool longNote = false;
     bool activeNote = false;
     int noteSize;
 
-    SpriteRenderer spriteRenderer;
-    Bounds noteBounds;
-    GameObject parentKeynote;
+    Animator ratingAnimator;
+    GameObject accuracyUI;
     GameObject keyLine;
+    GameObject keyLineGood;
     GameObject checkLine;
     RectTransform parentObject;
     KeyCode parentKeyCtrl;
+
     ScoreManager scoreManager;
 
     // Start is called before the first frame update
@@ -49,35 +48,39 @@ public class NoteManager : MonoBehaviour
         if (transform.parent.gameObject.name == "pipSpawnA")
         {
             parentObject = GameObject.Find("pipSpawnA").GetComponent<RectTransform>();
-            parentKeynote = GameObject.Find("keynoteA");
+            accuracyUI = GameObject.Find("hitRatingA");
             parentKeyCtrl = KeyCode.A;
             noteImage.sprite = noteYellow;
         }
         else if (transform.parent.gameObject.name == "pipSpawnB")
         {
             parentObject = GameObject.Find("pipSpawnB").GetComponent<RectTransform>();
-            parentKeynote = GameObject.Find("keynoteB");
+            accuracyUI = GameObject.Find("hitRatingB");
             parentKeyCtrl = KeyCode.S;
             noteImage.sprite = noteGreen;
         }
         else if (transform.parent.gameObject.name == "pipSpawnC")
         {
             parentObject = GameObject.Find("pipSpawnC").GetComponent<RectTransform>();
-            parentKeynote = GameObject.Find("keynoteC");
+            accuracyUI = GameObject.Find("hitRatingC");
             parentKeyCtrl = KeyCode.K;
             noteImage.sprite = noteBlue;
         }
         else if (transform.parent.gameObject.name == "pipSpawnD")
         {
             parentObject = GameObject.Find("pipSpawnD").GetComponent<RectTransform>();
-            parentKeynote = GameObject.Find("keynoteD");
+            accuracyUI = GameObject.Find("hitRatingD");
             parentKeyCtrl = KeyCode.L;
             noteImage.sprite = noteOrange;
         }
 
+        ratingAnimator = accuracyUI.GetComponent<Animator>();
         scoreManager = GameObject.Find("scoreUI").GetComponent<ScoreManager>();
-        keyLine = GameObject.Find("keyLineImage");
+        keyLine = GameObject.Find("keyLinePerfect");
+        keyLineGood = GameObject.Find("keyLineGood");
         checkLine = GameObject.Find("checkLineImage");
+
+        slideSpeed = 250 + (50 * PlayerData.rhythmDiff);
 
         noteSize = Random.Range(1, 10);
         if (noteSize > 5)
@@ -97,8 +100,7 @@ public class NoteManager : MonoBehaviour
         float bottomY = corners[0].y; // Bottom-left corner's y-coordinate
 
         Vector2 yBounds = new Vector2(topY, bottomY);
-        noteRadius = (yBounds.x - yBounds.y) / 2f + 0.25f; // 0.25f is to give a wider margin of error when timing hits; any larger than 0.25f is no good and would remove the challenge of timing hits;
-        noteCenterRadius = noteRadius / 4f;
+        noteRadius = (yBounds.x - yBounds.y) / 2f + 3f; // 3f is to give a wider margin of error when timing hits; any larger than 3f is no good and would probably break the challenge;
 
         noteEdgeUp = noteImage.rectTransform.position.y + noteRadius;
         noteEdgeDown = noteImage.rectTransform.position.y - noteRadius;
@@ -113,14 +115,14 @@ public class NoteManager : MonoBehaviour
 
             if (noteEdgeDown < precedingNoteManager.noteEdgeUp)
             {
-                Debug.Log("Resolving note overlap");
+                //Debug.Log("Resolving note overlap");
                 Vector2 noteBoundA = new Vector2(noteImage.rectTransform.position.x, noteEdgeDown);
                 Vector2 noteBoundB = new Vector2(precedingNoteManager.noteImage.rectTransform.position.x, precedingNoteManager.noteEdgeUp);
                 float noteDistance = Vector2.Distance(noteBoundA, noteBoundB);
                 float newPos = noteImage.rectTransform.position.y + noteDistance + 0.1f;
                 Vector2 adjustPos = new Vector3(noteImage.rectTransform.position.x, newPos);
                 noteImage.rectTransform.position = adjustPos;
-                Debug.Log("Overlap resolved");
+                //Debug.Log("Overlap resolved");
             }
         }
     }
@@ -135,13 +137,16 @@ public class NoteManager : MonoBehaviour
         {
             activeNote = false;
         }
+        if (!PlayerData.beatPlaying)
+        {
+            Destroy(gameObject);
+        }
+
         Vector3 downwardMovement = Vector3.down * slideSpeed * Time.deltaTime;
         transform.position += downwardMovement;
 
         noteEdgeUp = noteImage.rectTransform.position.y + noteRadius;
         noteEdgeDown = noteImage.rectTransform.position.y - noteRadius;
-        noteCenterUp = noteImage.rectTransform.position.y - noteCenterRadius;
-        noteCenterDown = noteImage.rectTransform.position.y - noteCenterRadius;
 
         if (noteEdgeDown <= checkLine.transform.position.y)
         {
@@ -154,10 +159,11 @@ public class NoteManager : MonoBehaviour
             {
                 if (noteEdgeDown > keyLine.transform.position.y) //miss
                 {
-                    scoreManager.ScoreMiss();
+                    scoreManager.finishedNotes++;
+                    ratingAnimator.Play("ratingAnim_miss");
                     Destroy(gameObject);
                 }
-                else if ((noteEdgeDown < keyLine.transform.position.y) && (noteCenterDown > keyLine.transform.position.y)) //perfect
+                else if ((noteEdgeDown <= keyLine.transform.position.y) && (noteEdgeDown > keyLineGood.transform.position.y)) //perfect
                 {
                     if (longNote && Input.GetKey(parentKeyCtrl))
                     {
@@ -165,11 +171,12 @@ public class NoteManager : MonoBehaviour
                     }
                     else
                     {
-                        scoreManager.ScorePerfect();
+                        scoreManager.finishedNotes++;
+                        ratingAnimator.Play("ratingAnim_perfect");
                         Destroy(gameObject);
                     }
                 }
-                else if ((noteCenterDown < keyLine.transform.position.y) && (noteCenterUp > keyLine.transform.position.y)) //good
+                else if ((noteEdgeDown <= keyLineGood.transform.position.y) && (transform.position.y > keyLine.transform.position.y)) //good
                 {
                     if (longNote && Input.GetKey(parentKeyCtrl))
                     {
@@ -177,11 +184,12 @@ public class NoteManager : MonoBehaviour
                     }
                     else
                     {
-                        scoreManager.ScoreGood();
+                        scoreManager.finishedNotes++;
+                        ratingAnimator.Play("ratingAnim_good");
                         Destroy(gameObject);
                     }
                 }
-                else if ((noteEdgeUp > keyLine.transform.position.y) && (noteCenterUp < keyLine.transform.position.y)) //bad
+                else if ((transform.position.y <= keyLineGood.transform.position.y) && (noteEdgeUp > keyLine.transform.position.y)) //bad
                 {
                     if (longNote && Input.GetKey(parentKeyCtrl))
                     {
@@ -189,7 +197,8 @@ public class NoteManager : MonoBehaviour
                     }
                     else
                     {
-                        scoreManager.ScoreBad();
+                        scoreManager.finishedNotes++;
+                        ratingAnimator.Play("ratingAnim_bad");
                         Destroy(gameObject);
                     }
                 }
@@ -198,34 +207,35 @@ public class NoteManager : MonoBehaviour
             {
                 if ((noteEdgeUp > keyLine.transform.position.y) && (noteEdgeDown < keyLine.transform.position.y)) //bad
                 {
-                    scoreManager.ScoreBad();
+                    ratingAnimator.Play("ratingAnim_bad");
                 }
             }
 
-            ///For troubleshooting
+            /*///For troubleshooting
             if (noteEdgeDown > keyLine.transform.position.y) //miss
             {
                 gameObject.GetComponent<Image>().color = Color.gray;
             }
-            else if ((noteEdgeDown < keyLine.transform.position.y) && (noteCenterDown > keyLine.transform.position.y)) //perfect
+            else if ((noteEdgeDown <= keyLine.transform.position.y) && (noteEdgeDown > keyLineGood.transform.position.y)) //perfect
             {
                 gameObject.GetComponent<Image>().color = Color.yellow;
             }
-            else if ((noteCenterDown < keyLine.transform.position.y) && (noteCenterUp > keyLine.transform.position.y)) //good
+            else if ((noteEdgeDown <= keyLineGood.transform.position.y) && (transform.position.y > keyLine.transform.position.y)) //good
             {
-                gameObject.GetComponent<Image>().color = Color.green;
+                gameObject.GetComponent<Image>().color = Color.blue;
             }
-            else if ((noteEdgeUp > keyLine.transform.position.y) && (noteCenterUp < keyLine.transform.position.y)) //bad
+            else if ((transform.position.y <= keyLineGood.transform.position.y) && (noteEdgeUp > keyLine.transform.position.y)) //bad
             {
                 gameObject.GetComponent<Image>().color = Color.red;
-            }
+            }*/
 
             if (noteEdgeUp < keyLine.transform.position.y)
             {
                 if (!Input.GetKey(parentKeyCtrl))
                 {
-                    scoreManager.ScoreMiss();
+                    ratingAnimator.Play("ratingAnim_miss");
                 }
+                scoreManager.finishedNotes++;
                 Destroy(gameObject);
             }
         }
@@ -235,7 +245,7 @@ public class NoteManager : MonoBehaviour
     {
         while (Input.GetKey(parentKeyCtrl) && (noteEdgeUp > keyLine.transform.position.y))
         {
-            scoreManager.ScorePerfect();
+            ratingAnimator.Play("ratingAnim_perfect");
             yield return null;
         }
     }
@@ -244,7 +254,7 @@ public class NoteManager : MonoBehaviour
     {
         while (Input.GetKey(parentKeyCtrl) && (noteEdgeUp > keyLine.transform.position.y))
         {
-            scoreManager.ScoreGood();
+            ratingAnimator.Play("ratingAnim_good");
             yield return null;
         }
     }
@@ -253,7 +263,7 @@ public class NoteManager : MonoBehaviour
     {
         while (Input.GetKey(parentKeyCtrl) && (noteEdgeUp > keyLine.transform.position.y))
         {
-            scoreManager.ScoreBad();
+            ratingAnimator.Play("ratingAnim_bad");
             yield return null;
         }
     }

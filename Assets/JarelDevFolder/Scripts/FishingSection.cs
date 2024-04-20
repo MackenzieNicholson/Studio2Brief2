@@ -1,21 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class FishingSection : MonoBehaviour
 {
-    Animator playerAnimator;
+    
     public Animator alertAnimator;
-    PlayerMovement playerMovement;
+    public ScoreManager scoreManager;
     public RhythmBeats rhythmGame;
     public GameObject rhythmSet;
-
-    int chanceToBite;
-    int fishID;
-    int selectFromPool;
-    bool hasCatch = false;
-    bool isJunk = false;
-    bool castWaiting = false;
 
     public GameObject carp;
     public GameObject koi;
@@ -24,17 +18,49 @@ public class FishingSection : MonoBehaviour
 
     public GameObject fishingAlert;
 
-    GameObject fishingHook;
+    public float diffSpeed = 50f;
 
+    int chanceToBite;
+    int fishID;
+    int selectFromPool = 0;
+    int catchDiff = 1;
+    bool hasCatch = false;
+    bool isJunk = false;
+    bool castWaiting = false;
+    bool inWater = false; //for when there is a catch alert; see WaitToCatch coroutine
+
+    GameObject fishingHook;
+    GameObject newCatch;
+    Animator playerAnimator;
+    Rigidbody rb;
+
+    PlayerMovement playerMovement;
+
+    List<GameObject> pondFishList = new List<GameObject>();
+    
     // Start is called before the first frame update
     void Start()
     {
         playerAnimator = GameObject.Find("playerSprite").GetComponent<Animator>();
         playerMovement = GameObject.Find("player").GetComponent<PlayerMovement>();
         fishingHook = GameObject.Find("hookDetector");
+        isJunk = false;
         fishingAlert.SetActive(false);
         alertAnimator.StopPlayback();
         rhythmSet.SetActive(false);
+
+        pondFishList.Add(carp);
+        pondFishList.Add(carp);
+        pondFishList.Add(carp);
+        pondFishList.Add(junkBoot);
+        pondFishList.Add(junkBoot);
+        pondFishList.Add(junkBoot);
+        pondFishList.Add(koi);
+        pondFishList.Add(koi);
+        pondFishList.Add(koi);
+        pondFishList.Add(goldfish);
+        pondFishList.Add(goldfish);
+        pondFishList.Add(goldfish);
     }
 
     // Update is called once per frame
@@ -45,22 +71,24 @@ public class FishingSection : MonoBehaviour
             if(!playerMovement.isFishing)
             {
                 Debug.Log("Fishing start!");
-                playerMovement.isFishing = true;
+                playerMovement.isFishing = true; //reset to false via keyframe event at the end of "player_rod_catch" animation
                 playerAnimator.Play("player_cast");
             }
             else if (hasCatch)
             {
+                inWater = false;
+                StopCoroutine(WaitToCatch());
+                alertAnimator.StopPlayback();
+                fishingAlert.SetActive(false);
                 if (isJunk)
                 {
-                    GameObject junkCatch = Instantiate(junkBoot, fishingHook.transform.position, Quaternion.identity);
-                    junkCatch.transform.SetParent(fishingHook.transform);
                     playerAnimator.Play("player_rod_catch");
-                    alertAnimator.StopPlayback();
-                    fishingAlert.SetActive(false);
-                    isJunk = false;
+                    StartCoroutine(GenerateCatch());
                 }
                 else
                 {
+                    scoreManager.scoreCount = 100;
+                    diffSpeed = 50f * rhythmGame.rhythmDiff;
                     rhythmSet.SetActive(true);
                     StartCoroutine(rhythmGame.RhythmGameStart());
                 }
@@ -69,6 +97,43 @@ public class FishingSection : MonoBehaviour
             {
                 castWaiting = false;
                 playerAnimator.Play("player_rod_catch");
+            }
+        }
+        if (PlayerData.beatPlaying)
+        {
+            if (scoreManager.finishedNotes == scoreManager.totalNotes)
+            {
+                /*if (scoreManager.scoreCount >= scoreManager.scoreMaxPerfect)
+                {
+                    playerAnimator.Play("player_rod_catch");
+                    rhythmGame.beatsStart = false;
+                }
+                else if (scoreManager.scoreCount >= scoreManager.scoreMaxGood)
+                {
+                    playerAnimator.Play("player_rod_catch");
+                    rhythmGame.beatsStart = false;
+                }*/
+                if (scoreManager.scoreCount >= scoreManager.scoreMaxBad)
+                {
+                    playerAnimator.Play("player_rod_catch");
+                    StartCoroutine(GenerateCatch());
+                    PlayerData.beatPlaying = false;
+                    rhythmSet.SetActive(false);
+                }
+                else if (scoreManager.scoreCount >= 0)
+                {
+                    playerAnimator.Play("player_rod_catch");
+                    PlayerData.beatPlaying = false;
+                    rhythmSet.SetActive(false);
+                }
+                scoreManager.scoreCount = 0;
+            }
+            else if (scoreManager.scoreCount <= 0)
+            {
+                playerAnimator.Play("player_rod_catch");
+                scoreManager.scoreCount = 0;
+                PlayerData.beatPlaying = false;
+                rhythmSet.SetActive(false);
             }
         }
     }
@@ -84,21 +149,24 @@ public class FishingSection : MonoBehaviour
 
     IEnumerator SpawnTablePond()
     {
+        inWater = true;
         castWaiting = true;
         while (castWaiting)
         {
             Debug.Log("Waiting for catch");
             chanceToBite = Random.Range(0, 100);
-            if (chanceToBite >= 30 && chanceToBite <= 69) //common fish and junk pool
+            chanceToBite = PlayerData.CatchChanceMod(chanceToBite); //dependent on active lure
+            yield return new WaitForSeconds(5f);
+            if (chanceToBite >= 45 && chanceToBite <= 79) //common fish and junk pool
             {
                 selectFromPool = Random.Range(0, 6);
-                rhythmGame.rhythmDiff = 1;
+                catchDiff = 1;
                 switch (selectFromPool)
                 {
-                    case 1:
+                    case 3:
                         isJunk = true;
                         break;
-                    case 3:
+                    case 4:
                         isJunk = true;
                         break;
                     case 5:
@@ -109,48 +177,70 @@ public class FishingSection : MonoBehaviour
                         break;
                 }
             }
-            else if (chanceToBite >= 70 && chanceToBite <= 84) //rare pool
+            else if (chanceToBite >= 80 && chanceToBite <= 94) //rare fish
             {
-                selectFromPool = Random.Range(6, 3);
-                rhythmGame.rhythmDiff = 2;
-                switch (selectFromPool)
-                {
-                    case 6:
-                        break;
-                    case 7:
-                        break;
-                    case 8:
-                        break;
-                }
+                selectFromPool = Random.Range(6, 9);
+                catchDiff = 3;
+                PlayerData.CatchDiffMod(catchDiff); //pass into PlayerData to cache difficulty for next rhythm minigame
             }
-            else if (chanceToBite >= 85 && chanceToBite <= 94) //exotic pool
+            else if (chanceToBite >= 95 && chanceToBite <= 99) //exotic fish
             {
-                selectFromPool = Random.Range(9, 3);
-                rhythmGame.rhythmDiff = 3;
-                switch (selectFromPool)
-                {
-                    case 9:
-                        break;
-                    case 10:
-                        break;
-                    case 11:
-                        break;
-                }
+                selectFromPool = Random.Range(9, 12);
+                catchDiff = 5;
+                PlayerData.CatchDiffMod(catchDiff);
             }
-            else if (chanceToBite >= 95 && chanceToBite <= 99) //legendary
+            if (chanceToBite > 29) //as soon as there's a "bite", this includes junk
             {
-                selectFromPool = 12;
-                rhythmGame.rhythmDiff = 4;
-            }
-            if (chanceToBite > 29)
-            {
-                Debug.Log("There's a bite: " + chanceToBite);
-                fishingAlert.SetActive(true);
+                Debug.Log("There's a bite: " + chanceToBite + " Pool: " + selectFromPool);
+                fishingAlert.SetActive(true); //alert UI pops up
                 alertAnimator.Play("catchAlert_start");
-                hasCatch = true;
+                hasCatch = true; //player can press Q to reel in catch
+                StartCoroutine(WaitToCatch()); //timer for player to reel in catch before it escapes
                 castWaiting = false;
             }
             yield return new WaitForSeconds(1.5f);
         }
+    }
+
+    IEnumerator WaitToCatch() 
+    {
+        float castTimer = 2.0f + PlayerData.bobberID;
+        yield return new WaitForSeconds(castTimer);
+        if (inWater)
+        {
+            hasCatch = false;
+            inWater = false;
+            alertAnimator.StopPlayback();
+            fishingAlert.SetActive(false);
+            playerAnimator.Play("player_rod_catch");
+            Debug.Log("Fish got away!");
+        }
+    }
+
+    IEnumerator GenerateCatch()
+    {
+        if (selectFromPool < 0) //in case random value becomes less than 0 because of bugs; hopefully useful
+        {
+            selectFromPool = 0;
+        }
+        if (isJunk)
+        {
+            newCatch = Instantiate(junkBoot, fishingHook.transform.position, Quaternion.identity);
+            rb = newCatch.GetComponent<Rigidbody>();
+            isJunk = false;
+        }
+        else
+        {
+            newCatch = Instantiate(pondFishList[selectFromPool], fishingHook.transform.position, Quaternion.identity);
+            rb = newCatch.GetComponent<Rigidbody>();
+            
+        }
+        while (newCatch.transform.position.y < transform.position.y)
+        {
+            rb.AddForce(Vector3.up * 150f);
+            rb.AddForce(Vector3.left * 30f);
+            yield return null;
+        }
+        hasCatch = false;
     }
 }

@@ -11,13 +11,21 @@ public class ScoreManager : MonoBehaviour
     public TextMeshProUGUI accuracy;
 
     public int scoreCount = 0;
-    public int noteID = -1;
+    public int totalNotes;
+    public int finishedNotes = 0;
+
+    public int scoreMaxPerfect;
+    public int scoreMaxGood;
+    public int scoreMaxBad;
 
     public Animator ratingAnimator;
+    public Animator playerAnimator;
+    public RhythmBeats rhythmGame;
 
     // Start is called before the first frame update
     void Start()
     {
+        playerAnimator = GameObject.Find("playerSprite").GetComponent<Animator>();
         score.text = scoreCount.ToString();
     }
 
@@ -25,37 +33,5 @@ public class ScoreManager : MonoBehaviour
     void Update()
     {
         
-    }
-
-    public void ScoreMiss()
-    {
-        accuracy.text = "Miss!";
-        /*scoreCount -= 10;
-        score.text = scoreCount.ToString();*/
-        ratingAnimator.Play("ratingAnim_miss");
-    }
-
-    public void ScoreBad()
-    {
-        accuracy.text = "Bad!";
-        /*scoreCount += 1;
-        score.text = scoreCount.ToString();*/
-        ratingAnimator.Play("ratingAnim_bad");
-    }
-
-    public void ScoreGood()
-    {
-        accuracy.text = "Good!";
-        /*scoreCount += 5;
-        score.text = scoreCount.ToString();*/
-        ratingAnimator.Play("ratingAnim_good");
-    }
-
-    public void ScorePerfect()
-    {
-        accuracy.text = "Perfect!";
-        /*scoreCount += 10;
-        score.text = scoreCount.ToString();*/
-        ratingAnimator.Play("ratingAnim_perfect");
     }
 }

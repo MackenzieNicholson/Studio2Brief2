@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
 
 public class RhythmBeats : MonoBehaviour
 {
@@ -18,7 +19,6 @@ public class RhythmBeats : MonoBehaviour
     public GameObject columnD;
 
     public int rhythmDiff = 1;
-    public bool beatsStart = false;
 
     List<GameObject> spawnColumns = new List<GameObject>();
 
@@ -30,6 +30,8 @@ public class RhythmBeats : MonoBehaviour
     int selectSpawn = 0;
     int noteGap = 0;
     float noteGapF = 0f;
+
+    public ScoreManager scoreManager;
 
     // Start is called before the first frame update
     void Start()
@@ -48,7 +50,7 @@ public class RhythmBeats : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (beatsStart)
+        if (PlayerData.beatPlaying)
         {
             if (Input.GetKeyDown(KeyCode.A))
             {
@@ -90,16 +92,30 @@ public class RhythmBeats : MonoBehaviour
 
     public IEnumerator RhythmGameStart()
     {
-        beatsStart = true;
-        int noteCount = 32 * rhythmDiff;
+        PlayerData.beatPlaying = true;
+        int noteCount = 16 * rhythmDiff;
+        scoreManager.totalNotes = noteCount;
+        scoreManager.finishedNotes = 0;
+
+        scoreManager.scoreMaxPerfect = noteCount * 6;
+        scoreManager.scoreMaxGood = noteCount * 3;
+        scoreManager.scoreMaxBad = noteCount;
+
         for (int i = 0; i < noteCount; i++)
         {
-            selectSpawn = Random.Range(0, 4);
-            noteGap = Random.Range(0, 5);
-            noteGapF = (float)noteGap + 0.5f;
-            GameObject newNote = Instantiate(rhythmNote, spawnColumns[selectSpawn].transform.position, Quaternion.identity);
-            newNote.transform.SetParent(spawnColumns[selectSpawn].transform);
-            yield return new WaitForSeconds(noteGapF);
+            if (PlayerData.beatPlaying)
+            {
+                selectSpawn = Random.Range(0, 4);
+                noteGap = Random.Range(0, 5);
+                noteGapF = (float)noteGap + 0.5f;
+                GameObject newNote = Instantiate(rhythmNote, spawnColumns[selectSpawn].transform.position, Quaternion.identity);
+                newNote.transform.SetParent(spawnColumns[selectSpawn].transform);
+                yield return new WaitForSeconds(noteGapF);
+            }
+            else
+            {
+                StopCoroutine(RhythmGameStart());
+            }
         }
     }
 }
