@@ -45,3 +45,9 @@ TagManager:
   - name: Ground
     uniqueID: 953016093
     locked: 0
+  - name: Player
+    uniqueID: 4281601099
+    locked: 0
+  - name: Fish
+    uniqueID: 1265989097
+    locked: 0

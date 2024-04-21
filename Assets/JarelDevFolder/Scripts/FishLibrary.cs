@@ -10,7 +10,7 @@ public static class FishLibrary
     public static int fishQuality = 0; //0 - bad; 1 - good; 2 - perfect; 3 - garbage
     public static float fishWeight;
     public static float fishSize;
-    public static float fishValue;
+    public static int fishValue;
 
     static float newWeight;
     static float roundedWeight;
