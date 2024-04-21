@@ -17,6 +17,8 @@ public class FishManager : MonoBehaviour
     public int KoiSize;
     public int SturgeonSize;
     public int BluegillSize;
+    //returning to club
+    public GameObject ReturnClub;  
     //UI stuff
     public TextMeshProUGUI CurrentFish;
     public TextMeshProUGUI Instructions;
@@ -41,13 +43,15 @@ public class FishManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        ReturnClub.SetActive(false);
+
         fish.Add("Bass");
         fish.Add("Goldfish");
         fish.Add("Carp");
         fish.Add("Koi");
         fish.Add("Sturgeon");
         fish.Add("Bluegill");
-        Instructions.text = "Instructions: Press A to fish";
+        Instructions.text = "Instructions: Press SpaceBar to fish";
         Debug.Log("Press A to fish");
         CanFish = true;
         CanThrow = false;
@@ -79,8 +83,9 @@ public class FishManager : MonoBehaviour
             CanFish = false;
             Debug.Log("finished fishing");
             Instructions.text = "The Day is over the fish are asleep";
+            ReturnClub.SetActive(true);
         }
-        pointEarner.text = "Points: " + totalPoints;
+        pointEarner.text = "" + totalPoints;
         CarpSize = Random.Range(40, 80);
         BassSize = Random.Range(48, 56);
         GoldfishSize = Random.Range(12, 22);
@@ -92,6 +97,7 @@ public class FishManager : MonoBehaviour
             Debug.Log("finished fishing");
             CanFish = false;
             Instructions.text = "The Day is over the fish are asleep";
+            ReturnClub.SetActive(true);
         }
         foreach (var item in fishBasket)
         {
@@ -103,8 +109,8 @@ public class FishManager : MonoBehaviour
             result += item.ToString() + ", ";
         }
         //Debug.Log(result);
-        Basket.text = "Fish: " + result;
-        if (Input.GetKeyDown(KeyCode.A))
+        Basket.text = "" + result;
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             while (CanFish)
             {
@@ -193,7 +199,7 @@ public class FishManager : MonoBehaviour
                 CurrentFish.text = "Look you Got a: ";
                 Weight.text = "Weight: ";
                 Size.text = "Size: ";
-                Instructions.text = "Instructions: Press A to fish";
+                Instructions.text = "Instructions: Press SpaceBar to fish";
                 Debug.Log("Press A to fish");
                 CanFish = true;
                 CanKeep = false;
@@ -210,7 +216,7 @@ public class FishManager : MonoBehaviour
                 CurrentFish.text = "Look you Got a: ";
                 Weight.text = "Weight: ";
                 Size.text = "Size: ";
-                Instructions.text = "Instructions: Press A to fish";
+                Instructions.text = "Instructions: Press SpaceBar to fish";
                 Debug.Log("Press A to fish");
                 CanFish = true;
                 CanThrow = false;

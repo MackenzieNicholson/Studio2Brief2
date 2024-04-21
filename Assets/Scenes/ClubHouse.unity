@@ -245,7 +245,6 @@ MonoBehaviour:
   isRod: 1
   isClub: 0
   isFish: 0
-  player: {fileID: 0}
   animator: {fileID: 1821466085}
   menu: {fileID: 1821466081}
   promptUI: {fileID: 1148914509}
@@ -4275,7 +4274,6 @@ MonoBehaviour:
   isRod: 0
   isClub: 1
   isFish: 0
-  player: {fileID: 0}
   animator: {fileID: 255940834}
   menu: {fileID: 255940832}
   promptUI: {fileID: 1148914509}
@@ -5036,8 +5034,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 100
-  jumpSpeed: 0
-  gravity: 100
+  isFishing: 0
 --- !u!136 &649580881
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -6401,7 +6398,6 @@ MonoBehaviour:
   isRod: 0
   isClub: 0
   isFish: 0
-  player: {fileID: 0}
   animator: {fileID: 1670882681}
   menu: {fileID: 1698929278}
   promptUI: {fileID: 1148914509}
@@ -7667,7 +7663,6 @@ MonoBehaviour:
   isRod: 0
   isClub: 0
   isFish: 1
-  player: {fileID: 0}
   animator: {fileID: 1932210677}
   menu: {fileID: 1932210675}
   promptUI: {fileID: 1148914509}
