@@ -93,7 +93,7 @@ public class RhythmBeats : MonoBehaviour
     public IEnumerator RhythmGameStart()
     {
         PlayerData.beatPlaying = true;
-        int noteCount = 16 * rhythmDiff;
+        int noteCount = 16 * PlayerData.rhythmDiff;
         scoreManager.totalNotes = noteCount;
         scoreManager.finishedNotes = 0;
 
@@ -105,6 +105,7 @@ public class RhythmBeats : MonoBehaviour
         {
             if (PlayerData.beatPlaying)
             {
+                int noteLength = Random.Range(1, 10);
                 selectSpawn = Random.Range(0, 4);
                 noteGap = Random.Range(0, 5);
                 noteGapF = (float)noteGap + 0.5f;

@@ -26,11 +26,18 @@ public class PlayerAnimStates : MonoBehaviour
 
     public void EnableFishing()
     {
-        playerMovement.isFishing = true;
+        PlayerData.isFishing = true;
     }
 
     public void DisableFishing()
     {
-        playerMovement.isFishing = false;
+        if (!PlayerData.isInUI)
+        {
+            PlayerData.isFishing = false;
+        }
+        else
+        {
+            PlayerData.isFishing = true;
+        }
     }
 }

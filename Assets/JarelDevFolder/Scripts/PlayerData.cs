@@ -8,6 +8,26 @@ using UnityEngine;
 /// </summary>
 public static class PlayerData
 {
+
+    [System.Serializable]
+    public class FishManager
+    {
+        public int fishID;
+        public float fishWeight;
+        public float fishSize;
+        public int fishQuality;
+        public int fishValue;
+
+        public FishManager (int id, float weight, float size, int quality, int value)
+        {
+            fishID = id;
+            fishWeight = weight;
+            fishSize = size;
+            fishQuality = quality;
+            fishValue = value;
+        }
+    }
+
     public static int castLimit = 12;
     public static int playerSkinID = 0;
     public static int rodID = 0; //default bamboo rod - determines cast limit
@@ -17,10 +37,14 @@ public static class PlayerData
     public static int fishScore = 0;
     public static int bucketID = 0; //determines fish capacity per session
 
+    public static List<FishManager> keptFishID = new List<FishManager>();
+
     //for game logic
     public static bool beatPlaying = false;
     public static int noteSpeed = 1;
     public static int rhythmDiff = 1;
+    public static bool isFishing = false;
+    public static bool isInUI = false;
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public static int CatchChanceMod(int modifier)
     {

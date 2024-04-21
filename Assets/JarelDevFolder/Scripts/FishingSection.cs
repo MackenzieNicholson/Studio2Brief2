@@ -2,27 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
+using UnityEngine.UI;
 
 public class FishingSection : MonoBehaviour
 {
-    
+
+    public Animator catchUIanimator;
     public Animator alertAnimator;
     public ScoreManager scoreManager;
     public RhythmBeats rhythmGame;
     public GameObject rhythmSet;
-
-    public GameObject carp;
-    public GameObject koi;
-    public GameObject goldfish;
-    public GameObject junkBoot;
+    public GameObject catchCanvas;
 
     public GameObject fishingAlert;
 
-    public float diffSpeed = 50f;
-
     int chanceToBite;
-    int fishID;
-    int selectFromPool = 0;
     int catchDiff = 1;
     bool hasCatch = false;
     bool isJunk = false;
@@ -31,36 +26,18 @@ public class FishingSection : MonoBehaviour
 
     GameObject fishingHook;
     GameObject newCatch;
+    
     Animator playerAnimator;
     Rigidbody rb;
-
-    PlayerMovement playerMovement;
-
-    List<GameObject> pondFishList = new List<GameObject>();
     
     // Start is called before the first frame update
     void Start()
     {
         playerAnimator = GameObject.Find("playerSprite").GetComponent<Animator>();
-        playerMovement = GameObject.Find("player").GetComponent<PlayerMovement>();
         fishingHook = GameObject.Find("hookDetector");
         isJunk = false;
         fishingAlert.SetActive(false);
-        alertAnimator.StopPlayback();
         rhythmSet.SetActive(false);
-
-        pondFishList.Add(carp);
-        pondFishList.Add(carp);
-        pondFishList.Add(carp);
-        pondFishList.Add(junkBoot);
-        pondFishList.Add(junkBoot);
-        pondFishList.Add(junkBoot);
-        pondFishList.Add(koi);
-        pondFishList.Add(koi);
-        pondFishList.Add(koi);
-        pondFishList.Add(goldfish);
-        pondFishList.Add(goldfish);
-        pondFishList.Add(goldfish);
     }
 
     // Update is called once per frame
@@ -68,59 +45,65 @@ public class FishingSection : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            if(!playerMovement.isFishing)
+            if(!PlayerData.isInUI) //none of these trigger if true
             {
-                Debug.Log("Fishing start!");
-                playerMovement.isFishing = true; //reset to false via keyframe event at the end of "player_rod_catch" animation
-                playerAnimator.Play("player_cast");
-            }
-            else if (hasCatch)
-            {
-                inWater = false;
-                StopCoroutine(WaitToCatch());
-                alertAnimator.StopPlayback();
-                fishingAlert.SetActive(false);
-                if (isJunk)
+                if (!PlayerData.isFishing)
                 {
-                    playerAnimator.Play("player_rod_catch");
-                    StartCoroutine(GenerateCatch());
+                    Debug.Log("Fishing start!");
+                    PlayerData.isFishing = true; //reset to false via keyframe event at the end of "player_rod_catch" animation
+                    playerAnimator.Play("player_cast");
+                }
+                else if (hasCatch)
+                {
+                    inWater = false;
+                    StopCoroutine(WaitToCatch());
+                    fishingAlert.SetActive(false);
+                    if (isJunk)
+                    {
+                        playerAnimator.Play("player_rod_catch");
+                        StartCoroutine(GenerateCatch());
+                    }
+                    else
+                    {
+                        scoreManager.scoreCount = 100;
+                        rhythmSet.SetActive(true);
+                        playerAnimator.Play("player_rod_pull");
+                        StartCoroutine(rhythmGame.RhythmGameStart());
+                    }
                 }
                 else
                 {
-                    scoreManager.scoreCount = 100;
-                    diffSpeed = 50f * rhythmGame.rhythmDiff;
-                    rhythmSet.SetActive(true);
-                    StartCoroutine(rhythmGame.RhythmGameStart());
+                    castWaiting = false;
+                    playerAnimator.Play("player_rod_catch");
                 }
-            }
-            else
-            {
-                castWaiting = false;
-                playerAnimator.Play("player_rod_catch");
             }
         }
+
         if (PlayerData.beatPlaying)
         {
+            if (scoreManager.finishedNotes >= (scoreManager.totalNotes / 2))
+            {
+                playerAnimator.Play("player_rod_pull_high");
+            }
+
             if (scoreManager.finishedNotes == scoreManager.totalNotes)
             {
-                /*if (scoreManager.scoreCount >= scoreManager.scoreMaxPerfect)
+                if (scoreManager.scoreCount >= (scoreManager.scoreMaxPerfect - 100))
                 {
-                    playerAnimator.Play("player_rod_catch");
-                    rhythmGame.beatsStart = false;
+                    FishLibrary.fishQuality = 2;
+                    NewCatch();
                 }
-                else if (scoreManager.scoreCount >= scoreManager.scoreMaxGood)
+                else if ((scoreManager.scoreCount >= (scoreManager.scoreMaxGood - 100)) && (scoreManager.scoreCount < (scoreManager.scoreMaxPerfect - 100)))
                 {
-                    playerAnimator.Play("player_rod_catch");
-                    rhythmGame.beatsStart = false;
-                }*/
-                if (scoreManager.scoreCount >= scoreManager.scoreMaxBad)
-                {
-                    playerAnimator.Play("player_rod_catch");
-                    StartCoroutine(GenerateCatch());
-                    PlayerData.beatPlaying = false;
-                    rhythmSet.SetActive(false);
+                    FishLibrary.fishQuality = 1;
+                    NewCatch();
                 }
-                else if (scoreManager.scoreCount >= 0)
+                else if ((scoreManager.scoreCount >= (scoreManager.scoreMaxBad - 100)) && (scoreManager.scoreCount < (scoreManager.scoreMaxGood - 100)))
+                {
+                    FishLibrary.fishQuality = 0;
+                    NewCatch();
+                }
+                else if ((scoreManager.scoreCount > 0) && (scoreManager.scoreCount < (scoreManager.scoreMaxBad - 100)))
                 {
                     playerAnimator.Play("player_rod_catch");
                     PlayerData.beatPlaying = false;
@@ -147,6 +130,15 @@ public class FishingSection : MonoBehaviour
         }
     }
 
+    void NewCatch()
+    {
+        PlayerData.isInUI = true;
+        playerAnimator.Play("player_rod_catch");
+        PlayerData.beatPlaying = false;
+        rhythmSet.SetActive(false);
+        StartCoroutine(GenerateCatch());
+    }
+
     IEnumerator SpawnTablePond()
     {
         inWater = true;
@@ -159,18 +151,25 @@ public class FishingSection : MonoBehaviour
             yield return new WaitForSeconds(5f);
             if (chanceToBite >= 45 && chanceToBite <= 79) //common fish and junk pool
             {
-                selectFromPool = Random.Range(0, 6);
+                FishLibrary.fishID = Random.Range(0, 6);
+                if (FishLibrary.fishID < 0) //in case random value becomes bugged, set to lowest; hopefully useful
+                {
+                    FishLibrary.fishID = 0;
+                }
                 catchDiff = 1;
-                switch (selectFromPool)
+                switch (FishLibrary.fishID)
                 {
                     case 3:
                         isJunk = true;
+                        FishLibrary.fishQuality = 3;
                         break;
                     case 4:
                         isJunk = true;
+                        FishLibrary.fishQuality = 3;
                         break;
                     case 5:
                         isJunk = true;
+                        FishLibrary.fishQuality = 3;
                         break;
                     default:
                         isJunk = false;
@@ -179,19 +178,27 @@ public class FishingSection : MonoBehaviour
             }
             else if (chanceToBite >= 80 && chanceToBite <= 94) //rare fish
             {
-                selectFromPool = Random.Range(6, 9);
+                FishLibrary.fishID = Random.Range(6, 9);
+                if (FishLibrary.fishID < 0) //in case random value becomes bugged, set to lowest; hopefully useful
+                {
+                    FishLibrary.fishID = 6;
+                }
                 catchDiff = 3;
                 PlayerData.CatchDiffMod(catchDiff); //pass into PlayerData to cache difficulty for next rhythm minigame
             }
             else if (chanceToBite >= 95 && chanceToBite <= 99) //exotic fish
             {
-                selectFromPool = Random.Range(9, 12);
+                FishLibrary.fishID = Random.Range(9, 12);
+                if (FishLibrary.fishID < 0) //in case random value becomes bugged, set to lowest; hopefully useful
+                {
+                    FishLibrary.fishID = 9;
+                }
                 catchDiff = 5;
                 PlayerData.CatchDiffMod(catchDiff);
             }
             if (chanceToBite > 29) //as soon as there's a "bite", this includes junk
             {
-                Debug.Log("There's a bite: " + chanceToBite + " Pool: " + selectFromPool);
+                Debug.Log("There's a bite: " + chanceToBite + " Pool: " + FishLibrary.fishID);
                 fishingAlert.SetActive(true); //alert UI pops up
                 alertAnimator.Play("catchAlert_start");
                 hasCatch = true; //player can press Q to reel in catch
@@ -204,13 +211,13 @@ public class FishingSection : MonoBehaviour
 
     IEnumerator WaitToCatch() 
     {
+        playerAnimator.Play("player_rod_tension");
         float castTimer = 2.0f + PlayerData.bobberID;
         yield return new WaitForSeconds(castTimer);
         if (inWater)
         {
             hasCatch = false;
             inWater = false;
-            alertAnimator.StopPlayback();
             fishingAlert.SetActive(false);
             playerAnimator.Play("player_rod_catch");
             Debug.Log("Fish got away!");
@@ -219,21 +226,19 @@ public class FishingSection : MonoBehaviour
 
     IEnumerator GenerateCatch()
     {
-        if (selectFromPool < 0) //in case random value becomes less than 0 because of bugs; hopefully useful
-        {
-            selectFromPool = 0;
-        }
         if (isJunk)
         {
-            newCatch = Instantiate(junkBoot, fishingHook.transform.position, Quaternion.identity);
+            newCatch = Instantiate(FishLibrary.fishObjects[FishLibrary.fishID], fishingHook.transform.position, Quaternion.identity);
             rb = newCatch.GetComponent<Rigidbody>();
             isJunk = false;
         }
         else
         {
-            newCatch = Instantiate(pondFishList[selectFromPool], fishingHook.transform.position, Quaternion.identity);
+            newCatch = Instantiate(FishLibrary.fishObjects[FishLibrary.fishID], fishingHook.transform.position, Quaternion.identity);
             rb = newCatch.GetComponent<Rigidbody>();
-            
+            FishLibrary.fishWeight = FishLibrary.GetWeight();
+            FishLibrary.fishSize = FishLibrary.GetSize();
+            FishLibrary.fishValue = FishLibrary.GetValue();
         }
         while (newCatch.transform.position.y < transform.position.y)
         {
@@ -241,6 +246,10 @@ public class FishingSection : MonoBehaviour
             rb.AddForce(Vector3.left * 30f);
             yield return null;
         }
-        hasCatch = false;
+        yield return new WaitForSeconds(1f);
+
+        catchCanvas.SetActive(true);
+        catchUIanimator.Play("catchUI_start");
+        //hasCatch = false;
     }
 }

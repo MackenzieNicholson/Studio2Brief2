@@ -545,7 +545,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 175887952}
-  - component: {fileID: 175887953}
   m_Layer: 5
   m_Name: scale_dial
   m_TagString: Untagged
@@ -575,27 +574,6 @@ RectTransform:
   m_AnchoredPosition: {x: 406, y: 306}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!95 &175887953
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 175887951}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c55e98fc20137e94bb170c1fd69fdf75, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &181308543
 GameObject:
   m_ObjectHideFlags: 0
@@ -852,13 +830,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 304320659}
+  - component: {fileID: 304320661}
+  - component: {fileID: 304320660}
   m_Layer: 5
   m_Name: catchUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &304320659
 RectTransform:
   m_ObjectHideFlags: 0
@@ -869,7 +849,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 97041977}
   - {fileID: 175887952}
@@ -883,6 +863,47 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &304320660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 304320658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a495632dec3e4b6489b6a9efaba80be4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogBoxText: {fileID: 1788211349}
+  ratingBoxText: {fileID: 2103243932}
+  dialogTextUI: {fileID: 1788211347}
+  ratingTextUI: {fileID: 2103243930}
+  carpImageUI: {fileID: 8755499267656022383, guid: 24d2e3dad17790f4bb830e3d42594ece, type: 3}
+  goldfishImageUI: {fileID: 6929820852827895007, guid: a4a926d79b8c26944ad69196a47b9b23, type: 3}
+  koiImageUI: {fileID: 1726119298645069735, guid: 5f4114e293fcb654381d3cb572a48d94, type: 3}
+  fishResultImage: {fileID: 1543272344}
+--- !u!95 &304320661
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 304320658}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 91e60362f0a00ab4a91db6e87f8b758f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &308505382
 GameObject:
   m_ObjectHideFlags: 0
@@ -2089,14 +2110,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44190d2d6f1a3e14b9f73da75bcb2118, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  catchUIanimator: {fileID: 304320661}
   alertAnimator: {fileID: 866476340}
   scoreManager: {fileID: 1335544186}
   rhythmGame: {fileID: 780024251}
   rhythmSet: {fileID: 336807654}
-  carp: {fileID: 84456107062246924, guid: d0c39cdae79adb24d99480595c6a4564, type: 3}
-  koi: {fileID: 5782556550065036881, guid: 0247ef428dd6193449ba02eb71b80e89, type: 3}
-  goldfish: {fileID: 7568366373226535642, guid: c11c99483cc088b478494bfe8671d6cd, type: 3}
-  junkBoot: {fileID: 9000695027957501580, guid: 6f9b6f3c4dfac7f43aea8bd4d324395b, type: 3}
+  catchCanvas: {fileID: 304320658}
   fishingAlert: {fileID: 866476336}
   diffSpeed: 50
 --- !u!65 &780024250
@@ -2842,9 +2861,6 @@ MonoBehaviour:
   scoreMaxPerfect: 0
   scoreMaxGood: 0
   scoreMaxBad: 0
-  ratingAnimator: {fileID: 0}
-  playerAnimator: {fileID: 0}
-  rhythmGame: {fileID: 780024251}
 --- !u!114 &1335544187
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3373,8 +3389,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1543272345}
-  - component: {fileID: 1543272347}
-  - component: {fileID: 1543272346}
   m_Layer: 5
   m_Name: fishImage
   m_TagString: Untagged
@@ -3391,7 +3405,7 @@ RectTransform:
   m_GameObject: {fileID: 1543272344}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 304320659}
@@ -3399,46 +3413,8 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 100}
-  m_SizeDelta: {x: 150, y: 100}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1543272346
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1543272344}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ac0e30c3ec16ce343b538818eed2b377, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &1543272347
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1543272344}
-  m_CullTransparentMesh: 1
 --- !u!1 &1585279287
 GameObject:
   m_ObjectHideFlags: 0
@@ -3821,6 +3797,54 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0.5850432
       objectReference: {fileID: 0}
+    - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
+      propertyPath: koiImageUI
+      value: 
+      objectReference: {fileID: 1726119298645069735, guid: 5f4114e293fcb654381d3cb572a48d94, type: 3}
+    - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
+      propertyPath: bassImageUI
+      value: 
+      objectReference: {fileID: 8755499267656022383, guid: 24d2e3dad17790f4bb830e3d42594ece, type: 3}
+    - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
+      propertyPath: bootImageUI
+      value: 
+      objectReference: {fileID: 1726119298645069735, guid: 334fd991ee01e124ea69a6455bd29c4b, type: 3}
+    - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
+      propertyPath: carpImageUI
+      value: 
+      objectReference: {fileID: 8755499267656022383, guid: 24d2e3dad17790f4bb830e3d42594ece, type: 3}
+    - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
+      propertyPath: junkImageUI
+      value: 
+      objectReference: {fileID: 1726119298645069735, guid: 334fd991ee01e124ea69a6455bd29c4b, type: 3}
+    - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
+      propertyPath: bluegillImageUI
+      value: 
+      objectReference: {fileID: 1726119298645069735, guid: 5f4114e293fcb654381d3cb572a48d94, type: 3}
+    - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
+      propertyPath: bullroutImageUI
+      value: 
+      objectReference: {fileID: 6929820852827895007, guid: a4a926d79b8c26944ad69196a47b9b23, type: 3}
+    - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
+      propertyPath: goldfishImageUI
+      value: 
+      objectReference: {fileID: 6929820852827895007, guid: a4a926d79b8c26944ad69196a47b9b23, type: 3}
+    - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
+      propertyPath: mustacheImageUI
+      value: 
+      objectReference: {fileID: 6929820852827895007, guid: a4a926d79b8c26944ad69196a47b9b23, type: 3}
+    - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
+      propertyPath: sturgeonImageUI
+      value: 
+      objectReference: {fileID: 1726119298645069735, guid: 5f4114e293fcb654381d3cb572a48d94, type: 3}
+    - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
+      propertyPath: controllerImageUI
+      value: 
+      objectReference: {fileID: 1726119298645069735, guid: 334fd991ee01e124ea69a6455bd29c4b, type: 3}
+    - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
+      propertyPath: silverfishImageUI
+      value: 
+      objectReference: {fileID: 8755499267656022383, guid: 24d2e3dad17790f4bb830e3d42594ece, type: 3}
     - target: {fileID: 2353797646625497294, guid: 11028158d73cdfa4680ff016184115da, type: 3}
       propertyPath: m_Layer
       value: 3
@@ -5773,7 +5797,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1788211348}
   m_Father: {fileID: 304320659}
@@ -6107,7 +6131,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2103243931}
   m_Father: {fileID: 304320659}

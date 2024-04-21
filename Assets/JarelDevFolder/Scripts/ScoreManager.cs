@@ -18,14 +18,9 @@ public class ScoreManager : MonoBehaviour
     public int scoreMaxGood;
     public int scoreMaxBad;
 
-    public Animator ratingAnimator;
-    public Animator playerAnimator;
-    public RhythmBeats rhythmGame;
-
     // Start is called before the first frame update
     void Start()
     {
-        playerAnimator = GameObject.Find("playerSprite").GetComponent<Animator>();
         score.text = scoreCount.ToString();
     }
 

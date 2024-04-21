@@ -11,7 +11,7 @@ using UnityEngine.UI;
 
 public class NoteManager : MonoBehaviour
 {
-    Image noteImage;
+    public Image noteImage;
     public Sprite noteYellow;
     public Sprite noteGreen;
     public Sprite noteBlue;
@@ -26,9 +26,10 @@ public class NoteManager : MonoBehaviour
     float noteEdgeUp;
     float noteEdgeDown;
     float noteRadius;
-    bool longNote = false;
+    public bool longNote = false;
     bool activeNote = false;
-    int noteSize;
+    public int noteLength;
+    public int noteSize = 1;
 
     Animator ratingAnimator;
     GameObject accuracyUI;
@@ -90,6 +91,10 @@ public class NoteManager : MonoBehaviour
             float noteSizeY = (float)noteSize;
 
             noteImage.rectTransform.localScale = new Vector3(1f, (1f * noteSizeY), 1f);
+
+            scoreManager.scoreMaxPerfect = scoreManager.scoreMaxPerfect + ((noteSize - 1) * 6);
+            scoreManager.scoreMaxGood = scoreManager.scoreMaxGood + ((noteSize - 1) * 3);
+            scoreManager.scoreMaxBad = scoreManager.scoreMaxGood + (noteSize - 1);
         }
 
         // Calculate y-bounds
@@ -119,7 +124,7 @@ public class NoteManager : MonoBehaviour
                 Vector2 noteBoundA = new Vector2(noteImage.rectTransform.position.x, noteEdgeDown);
                 Vector2 noteBoundB = new Vector2(precedingNoteManager.noteImage.rectTransform.position.x, precedingNoteManager.noteEdgeUp);
                 float noteDistance = Vector2.Distance(noteBoundA, noteBoundB);
-                float newPos = noteImage.rectTransform.position.y + noteDistance + 0.1f;
+                float newPos = noteImage.rectTransform.position.y + noteDistance + 0.5f;
                 Vector2 adjustPos = new Vector3(noteImage.rectTransform.position.x, newPos);
                 noteImage.rectTransform.position = adjustPos;
                 //Debug.Log("Overlap resolved");
@@ -229,7 +234,7 @@ public class NoteManager : MonoBehaviour
                 gameObject.GetComponent<Image>().color = Color.red;
             }*/
 
-            if (noteEdgeUp < keyLine.transform.position.y)
+            if (noteEdgeUp < keyLine.transform.position.y) //once the whole note is past the keyline
             {
                 if (!Input.GetKey(parentKeyCtrl))
                 {

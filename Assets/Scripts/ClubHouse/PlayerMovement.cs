@@ -31,7 +31,7 @@ public class PlayerMovement : MonoBehaviour
         verticalInput = Input.GetAxisRaw("Vertical");
         /*moveDirection = new Vector3(horizontalInput, 0, verticalInput).normalized;
         transform.position += moveDirection * speed * Time.deltaTime;*/
-        if (!isFishing)
+        if (!PlayerData.isFishing)
         {
             moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
             moveDirection = transform.TransformDirection(moveDirection);
