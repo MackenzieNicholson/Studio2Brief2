@@ -43,12 +43,12 @@ public class LiamTriggerScript : MonoBehaviour
             }
             else if(inRodTrigger== true)
             {
-                player.speed = 0;
+                PlayerMovement.speed = 0;
                 animator.SetTrigger("open");
             }
             else if(inClubTrigger== true)
             {
-                player.speed = 0;
+                PlayerMovement.speed = 0;
                 animator.SetTrigger("open");
             }
             else if(inFishTrigger== true)
@@ -65,12 +65,12 @@ public class LiamTriggerScript : MonoBehaviour
             }
             else if (inRodTrigger == true)
             {
-                player.speed = 0;
+                PlayerMovement.speed = 0;
                 animator.SetTrigger("open");
             }
             else if (inClubTrigger == true)
             {
-                player.speed = 0;
+                PlayerMovement.speed = 0;
                 animator.SetTrigger("open");
             }
             else if (inFishTrigger == true)
@@ -85,7 +85,7 @@ public class LiamTriggerScript : MonoBehaviour
             if (Input.GetButton("Cancel"))
             {
                 animator.SetTrigger("close");
-                player.speed = 100;
+                PlayerMovement.speed = 100;
             }
             
         }
@@ -94,7 +94,7 @@ public class LiamTriggerScript : MonoBehaviour
             if (Input.GetButton("Cancel"))
             {
                 animator.SetTrigger("close");
-                player.speed = 100;
+                PlayerMovement.speed = 100;
             }
         }
 
@@ -149,6 +149,6 @@ public class LiamTriggerScript : MonoBehaviour
     public void CloseMenu()
     {
         animator.SetTrigger("close");
-        player.speed = 100;
+        PlayerMovement.speed = 100;
     }
 }
