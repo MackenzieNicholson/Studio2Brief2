@@ -50,7 +50,7 @@ public class ClubManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        points.text = "Points: " + PlayerData.playerMoney;
+        points.text = "Points: " + PlayerData.playerScore.ToString() + "\nMoney: " + PlayerData.playerMoney.ToString();
     }
 
     public void Next()

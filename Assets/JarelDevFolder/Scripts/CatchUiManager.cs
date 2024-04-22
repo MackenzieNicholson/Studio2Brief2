@@ -125,6 +125,7 @@ public class CatchUiManager : MonoBehaviour
     public void KeepFish()
     {
         PlayerData.playerScore += FishLibrary.fishValue;
+        PlayerData.playerMoney += FishLibrary.fishValue;
         fishingScoreText.text = PlayerData.playerScore.ToString();
         PlayerData.playerFish++;
         keptFishText.text = PlayerData.playerFish.ToString() + "/" + PlayerData.fishLimit.ToString();
@@ -141,13 +142,15 @@ public class CatchUiManager : MonoBehaviour
 
     public void CloseUI()
     {
+        Debug.Log("Closing Canvas");
         if (FishLibrary.fishQuality == 3)
         {
             Destroy(fishingGame.newCatch);
         }
         dialogTextUI.SetActive(false);
         ratingTextUI.SetActive(false);
-        animator.Play("catchUI_close");
+        SetUItoFalse();
+        //animator.Play("catchUI_close");
     }
 
     void SetUItoFalse()
@@ -163,8 +166,8 @@ public class CatchUiManager : MonoBehaviour
     {
         while (fishingGame.newCatch.transform.position.y < 11.5f)
         {
-            fishingGame.rb.AddForce(Vector3.up * 150f);
-            fishingGame.rb.AddForce(Vector3.right * 50f);
+            fishingGame.rb.AddForce(Vector3.up * 65000f * Time.deltaTime);
+            fishingGame.rb.AddForce(Vector3.right * 1000f * Time.deltaTime);
             yield return null;
         }
     }

@@ -30,14 +30,14 @@ public static class FishLibrary
     {
         "Majestic Carp",
         "Drop Bass",
-        "Silver Goldfish",
+        "Silverfish",
         "Leather Boot",
         "Broken Controller",
         "???",
         "Neon Koi",
         "Doctor Sturgeon",
         "Cobalt Bluegill",
-        "Gold Goldfish",
+        "Goldfish",
         "Pencilstache Fish",
         "Raging Bullrout"
     };
