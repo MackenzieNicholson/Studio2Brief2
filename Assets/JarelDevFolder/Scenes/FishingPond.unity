@@ -372,6 +372,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1726119298645069735, guid: 5f4114e293fcb654381d3cb572a48d94, type: 3}
     - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
+      propertyPath: silverfish
+      value: 
+      objectReference: {fileID: 5782556550065036881, guid: 20f64ec6105d3bb4287313c252098184, type: 3}
+    - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
       propertyPath: bassImageUI
       value: 
       objectReference: {fileID: 8755499267656022383, guid: 24d2e3dad17790f4bb830e3d42594ece, type: 3}
@@ -414,7 +418,7 @@ PrefabInstance:
     - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
       propertyPath: silverfishImageUI
       value: 
-      objectReference: {fileID: 8755499267656022383, guid: 24d2e3dad17790f4bb830e3d42594ece, type: 3}
+      objectReference: {fileID: 1726119298645069735, guid: 5de7e224c3debd14c9948a8a9bfe0670, type: 3}
     - target: {fileID: 2353797646625497294, guid: 11028158d73cdfa4680ff016184115da, type: 3}
       propertyPath: m_Layer
       value: 3
@@ -878,6 +882,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1443146464970897028, guid: 68e60042df23127468e1d911b6740e93, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1638025037856988871, guid: 68e60042df23127468e1d911b6740e93, type: 3}
       propertyPath: m_Name
       value: Canvas
@@ -1121,9 +1129,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6517642722129198172, guid: 75eb7deab4a96424291ffb9b80cb4a17, type: 3}
+      propertyPath: horzSpeed
+      value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 6517642722129198172, guid: 75eb7deab4a96424291ffb9b80cb4a17, type: 3}
       propertyPath: rhythmSet
       value: 
       objectReference: {fileID: 336807654}
+    - target: {fileID: 6517642722129198172, guid: 75eb7deab4a96424291ffb9b80cb4a17, type: 3}
+      propertyPath: vertSpeed
+      value: 70000
+      objectReference: {fileID: 0}
     - target: {fileID: 6517642722129198172, guid: 75eb7deab4a96424291ffb9b80cb4a17, type: 3}
       propertyPath: catchCanvas
       value: 

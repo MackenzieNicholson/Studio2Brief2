@@ -99,7 +99,6 @@ public class RhythmBeats : MonoBehaviour
 
         scoreManager.scoreMaxPerfect = noteCount * 6;
         scoreManager.scoreMaxGood = noteCount * 3;
-        scoreManager.scoreMaxBad = noteCount;
 
         for (int i = 0; i < noteCount; i++)
         {
@@ -107,7 +106,7 @@ public class RhythmBeats : MonoBehaviour
             {
                 int noteLength = Random.Range(1, 10);
                 selectSpawn = Random.Range(0, 4);
-                noteGap = Random.Range(0, 5);
+                noteGap = Random.Range(0, 2);
                 noteGapF = (float)noteGap + 0.5f;
                 GameObject newNote = Instantiate(rhythmNote, spawnColumns[selectSpawn].transform.position, Quaternion.identity);
                 newNote.transform.SetParent(spawnColumns[selectSpawn].transform);

@@ -22,7 +22,7 @@ public class NoteManager : MonoBehaviour
     public bool hasLeft = false;
     //public GameObject helper;
     
-    float slideSpeed = 250f;
+    float slideSpeed = 350f;
     float noteEdgeUp;
     float noteEdgeDown;
     float noteRadius;
@@ -94,7 +94,6 @@ public class NoteManager : MonoBehaviour
 
             scoreManager.scoreMaxPerfect = scoreManager.scoreMaxPerfect + ((noteSize - 1) * 6);
             scoreManager.scoreMaxGood = scoreManager.scoreMaxGood + ((noteSize - 1) * 3);
-            scoreManager.scoreMaxBad = scoreManager.scoreMaxGood + (noteSize - 1);
         }
 
         // Calculate y-bounds
@@ -124,7 +123,7 @@ public class NoteManager : MonoBehaviour
                 Vector2 noteBoundA = new Vector2(noteImage.rectTransform.position.x, noteEdgeDown);
                 Vector2 noteBoundB = new Vector2(precedingNoteManager.noteImage.rectTransform.position.x, precedingNoteManager.noteEdgeUp);
                 float noteDistance = Vector2.Distance(noteBoundA, noteBoundB);
-                float newPos = noteImage.rectTransform.position.y + noteDistance + 0.5f;
+                float newPos = noteImage.rectTransform.position.y + noteDistance + 2f;
                 Vector2 adjustPos = new Vector3(noteImage.rectTransform.position.x, newPos);
                 noteImage.rectTransform.position = adjustPos;
                 //Debug.Log("Overlap resolved");
@@ -162,7 +161,7 @@ public class NoteManager : MonoBehaviour
         {
             if (Input.GetKeyDown(parentKeyCtrl))
             {
-                if (noteEdgeDown > keyLine.transform.position.y) //miss
+                if ((noteEdgeDown > keyLine.transform.position.y) || (noteEdgeUp < keyLine.transform.position.y)) //miss
                 {
                     scoreManager.finishedNotes++;
                     ratingAnimator.Play("ratingAnim_miss");
