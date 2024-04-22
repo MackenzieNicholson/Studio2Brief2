@@ -320,7 +320,6 @@ MonoBehaviour:
   isRod: 1
   isClub: 0
   isFish: 0
-  player: {fileID: 0}
   animator: {fileID: 1821466085}
   menu: {fileID: 1821466081}
   promptUI: {fileID: 1148914509}
@@ -4211,6 +4210,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ff7e42ec85ba9b4d9c1e917823dec0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  upgradeCap: 3
+  upgradeCount1: 0
+  upgradeCost1: 100
+  upgradeCount2: 0
+  upgradeCost2: 100
+  upgradeCount3: 0
+  upgradeCost3: 100
+  upgradeCount4: 0
+  upgradeCost4: 100
+  upgradeCost5: 1000
+  lureText: {fileID: 699769648}
+  rodText: {fileID: 748237645}
+  bucketText: {fileID: 2007260834}
+  baitText: {fileID: 848317557}
+  areaText: {fileID: 20992789}
+  capText: {fileID: 216355812}
 --- !u!4 &207836846
 Transform:
   m_ObjectHideFlags: 0
@@ -4616,7 +4631,6 @@ MonoBehaviour:
   isRod: 0
   isClub: 1
   isFish: 0
-  player: {fileID: 0}
   animator: {fileID: 255940834}
   menu: {fileID: 255940832}
   promptUI: {fileID: 1148914509}
@@ -5168,7 +5182,7 @@ GameObject:
   - component: {fileID: 484054906}
   - component: {fileID: 484054905}
   m_Layer: 5
-  m_Name: BasketButton
+  m_Name: BucketButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5991,8 +6005,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69b092892e4e52944b735a8f9cac0ca3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpSpeed: 0
-  gravity: 100
+  isFishing: 0
 --- !u!136 &649580881
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -6850,7 +6863,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Fish Value 5000p
+  m_text: Easy Catch 5000p
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -7898,7 +7911,6 @@ MonoBehaviour:
   isRod: 0
   isClub: 0
   isFish: 0
-  player: {fileID: 0}
   animator: {fileID: 1670882681}
   menu: {fileID: 1698929278}
   promptUI: {fileID: 1148914509}
@@ -7921,7 +7933,7 @@ GameObject:
   - component: {fileID: 1272149366}
   - component: {fileID: 1272149365}
   m_Layer: 5
-  m_Name: HookButton
+  m_Name: BaitButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7993,7 +8005,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 207836845}
         m_TargetAssemblyTypeName: UpgradeManager, Assembly-CSharp
-        m_MethodName: MorePoints
+        m_MethodName: EasierGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9298,7 +9310,6 @@ MonoBehaviour:
   isRod: 0
   isClub: 0
   isFish: 1
-  player: {fileID: 0}
   animator: {fileID: 1932210677}
   menu: {fileID: 1932210675}
   promptUI: {fileID: 1148914509}
@@ -9652,7 +9663,7 @@ GameObject:
   - component: {fileID: 1696102595}
   - component: {fileID: 1696102594}
   m_Layer: 5
-  m_Name: BaitButton
+  m_Name: LureButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
