@@ -33,6 +33,7 @@ public class ClubManager : MonoBehaviour
         if (tutorialSeen == false)
         {
             tutorialMenu.SetActive(true);
+            PlayerMovement.speed = 0;
         }
 
         rodImage.enabled = false;
@@ -90,5 +91,6 @@ public class ClubManager : MonoBehaviour
     {
         tutorialMenu.SetActive(false);
         tutorialSeen = true;
+        PlayerMovement.speed = 100;
     }
 }
