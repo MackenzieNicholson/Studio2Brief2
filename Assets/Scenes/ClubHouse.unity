@@ -4281,15 +4281,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: New Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -4306,13 +4306,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -6003,6 +6003,58 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0.58504325
       objectReference: {fileID: 0}
+    - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
+      propertyPath: koiImageUI
+      value: 
+      objectReference: {fileID: 1726119298645069735, guid: 5f4114e293fcb654381d3cb572a48d94, type: 3}
+    - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
+      propertyPath: silverfish
+      value: 
+      objectReference: {fileID: 5782556550065036881, guid: 20f64ec6105d3bb4287313c252098184, type: 3}
+    - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
+      propertyPath: bassImageUI
+      value: 
+      objectReference: {fileID: 8755499267656022383, guid: 24d2e3dad17790f4bb830e3d42594ece, type: 3}
+    - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
+      propertyPath: bootImageUI
+      value: 
+      objectReference: {fileID: 1726119298645069735, guid: 334fd991ee01e124ea69a6455bd29c4b, type: 3}
+    - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
+      propertyPath: carpImageUI
+      value: 
+      objectReference: {fileID: 8755499267656022383, guid: 24d2e3dad17790f4bb830e3d42594ece, type: 3}
+    - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
+      propertyPath: junkImageUI
+      value: 
+      objectReference: {fileID: 1726119298645069735, guid: 334fd991ee01e124ea69a6455bd29c4b, type: 3}
+    - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
+      propertyPath: bluegillImageUI
+      value: 
+      objectReference: {fileID: 1726119298645069735, guid: 5f4114e293fcb654381d3cb572a48d94, type: 3}
+    - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
+      propertyPath: bullroutImageUI
+      value: 
+      objectReference: {fileID: 6929820852827895007, guid: a4a926d79b8c26944ad69196a47b9b23, type: 3}
+    - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
+      propertyPath: goldfishImageUI
+      value: 
+      objectReference: {fileID: 6929820852827895007, guid: a4a926d79b8c26944ad69196a47b9b23, type: 3}
+    - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
+      propertyPath: mustacheImageUI
+      value: 
+      objectReference: {fileID: 6929820852827895007, guid: a4a926d79b8c26944ad69196a47b9b23, type: 3}
+    - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
+      propertyPath: sturgeonImageUI
+      value: 
+      objectReference: {fileID: 1726119298645069735, guid: 5f4114e293fcb654381d3cb572a48d94, type: 3}
+    - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
+      propertyPath: controllerImageUI
+      value: 
+      objectReference: {fileID: 1726119298645069735, guid: 334fd991ee01e124ea69a6455bd29c4b, type: 3}
+    - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
+      propertyPath: silverfishImageUI
+      value: 
+      objectReference: {fileID: 1726119298645069735, guid: 5de7e224c3debd14c9948a8a9bfe0670, type: 3}
     - target: {fileID: 2954124239419941152, guid: 11028158d73cdfa4680ff016184115da, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.052124504

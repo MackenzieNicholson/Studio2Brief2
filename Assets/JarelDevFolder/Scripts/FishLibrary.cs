@@ -324,7 +324,13 @@ public static class FishLibrary
     public static int GetValue()
     {
         float newScoreF = (fishWeight / fishSize) * 100;
-        int fishScore = Mathf.RoundToInt(newScoreF) * fishQuality;
+        /*if (newScoreF < 0)
+        {
+            newScoreF = newScoreF * fishWeight;
+        }*/
+        Debug.Log("Calculated raw value: " + newScoreF);
+        int fishScore = Mathf.CeilToInt(newScoreF) * fishQuality;
+        Debug.Log("Calculated final value: " + fishScore);
 
         return fishScore;
     }

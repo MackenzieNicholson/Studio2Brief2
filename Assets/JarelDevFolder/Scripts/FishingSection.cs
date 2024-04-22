@@ -50,9 +50,9 @@ public class FishingSection : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!PlayerData.beatPlaying)
+        if (Input.GetKeyDown(KeyCode.Q))
         {
-            if (Input.GetKeyDown(KeyCode.Q))
+            if (!PlayerData.beatPlaying)
             {
                 if (!PlayerData.isInUI) //none of these trigger if true
                 {

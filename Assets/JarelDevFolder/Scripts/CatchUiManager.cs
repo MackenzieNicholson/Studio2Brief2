@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEditor.Search;
+//using UnityEditor.Search;
 
 public class CatchUiManager : MonoBehaviour
 {
@@ -147,6 +147,9 @@ public class CatchUiManager : MonoBehaviour
         {
             Destroy(fishingGame.newCatch);
         }
+        continueButtonUI.SetActive(false);
+        keepButtonUI.SetActive(false);
+        returnButtonUI.SetActive(false);
         dialogTextUI.SetActive(false);
         ratingTextUI.SetActive(false);
         SetUItoFalse();
@@ -158,6 +161,7 @@ public class CatchUiManager : MonoBehaviour
         PlayerData.isInUI = false;
         PlayerData.isFishing = false;
         PlayerData.hasCatch = false;
+        fishOptionsUI.SetActive(false);
         Destroy(newFishUI);
         gameObject.SetActive(false);
     }
