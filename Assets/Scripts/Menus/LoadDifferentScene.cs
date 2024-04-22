@@ -14,7 +14,7 @@ public class LoadDifferentScene : MonoBehaviour
     public void Pond()
     {
         SceneManager.GetActiveScene();
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene("FishingPond");
     }
     
 }

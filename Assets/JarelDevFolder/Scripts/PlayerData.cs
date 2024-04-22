@@ -18,7 +18,7 @@ public static class PlayerData
         public int fishQuality;
         public int fishValue;
 
-        public FishManager (int id, float weight, float size, int quality, int value)
+        public FishManager(int id, float weight, float size, int quality, int value)
         {
             fishID = id;
             fishWeight = weight;
@@ -27,6 +27,7 @@ public static class PlayerData
             fishValue = value;
         }
     }
+
 
     public static int castLimit = 12;
     public static int playerSkinID = 0;
@@ -39,7 +40,7 @@ public static class PlayerData
     public static int fishLimit = 6;
     public static int bucketID = 0; //determines fish capacity per session
 
-    public static List<FishManager> keptFishID = new List<FishManager>();
+    public static List<FishManager> fishData = new List<FishManager>();
 
     //for game logic
     public static bool beatPlaying = false;
@@ -70,5 +71,11 @@ public static class PlayerData
         {
             rhythmDiff = 1;
         }
+    }
+
+    public static void PassFishValues()
+    {
+        FishManager addFish = new FishManager(FishLibrary.fishID, FishLibrary.fishWeight, FishLibrary.fishSize, FishLibrary.fishQuality, FishLibrary.fishValue);
+        fishData.Add(addFish);
     }
 }

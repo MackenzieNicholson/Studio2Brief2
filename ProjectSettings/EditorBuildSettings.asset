@@ -17,6 +17,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/DifferentSceneLoader.unity
     guid: 2347ab8b96e0d4b4e84e2c685a45067c
+  - enabled: 1
+    path: Assets/JarelDevFolder/Scenes/FishingPond.unity
+    guid: b1dd7f6fa1de26340b11aa462e22cce2
   - enabled: 0
     path: Assets/Scenes/Main.unity
     guid: 2cda990e2423bbf4892e6590ba056729

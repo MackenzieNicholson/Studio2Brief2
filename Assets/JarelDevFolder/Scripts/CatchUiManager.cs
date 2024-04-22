@@ -27,6 +27,8 @@ public class CatchUiManager : MonoBehaviour
 
     public FishingSection fishingGame;
 
+    GameObject newFishUI;
+
     List<GameObject> fishImageList = new List<GameObject>();
 
     Animator animator;
@@ -99,7 +101,7 @@ public class CatchUiManager : MonoBehaviour
 
     void UpdateFishImage()
     {
-        fishResultImage = Instantiate(FishLibrary.fishImages[FishLibrary.fishID], fishResultImage.transform);
+        newFishUI = Instantiate(FishLibrary.fishImages[FishLibrary.fishID], fishResultImage.transform);
     }
 
     IEnumerator ShowOptions()
@@ -124,7 +126,9 @@ public class CatchUiManager : MonoBehaviour
     {
         PlayerData.playerScore += FishLibrary.fishValue;
         fishingScoreText.text = PlayerData.playerScore.ToString();
+        PlayerData.playerFish++;
         keptFishText.text = PlayerData.playerFish.ToString() + "/" + PlayerData.fishLimit.ToString();
+        PlayerData.PassFishValues();
         Destroy(fishingGame.newCatch);
         CloseUI();
     }
@@ -151,7 +155,7 @@ public class CatchUiManager : MonoBehaviour
         PlayerData.isInUI = false;
         PlayerData.isFishing = false;
         PlayerData.hasCatch = false;
-        Destroy(fishResultImage);
+        Destroy(newFishUI);
         gameObject.SetActive(false);
     }
 

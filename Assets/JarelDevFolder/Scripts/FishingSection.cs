@@ -18,6 +18,8 @@ public class FishingSection : MonoBehaviour
     public GameObject catchCanvas;
 
     public GameObject fishingAlert;
+    public float vertSpeed = 65000f;
+    public float horzSpeed = 1000f;
 
     int chanceToBite;
     int catchDiff = 1;
@@ -41,7 +43,7 @@ public class FishingSection : MonoBehaviour
         rhythmSet.SetActive(false);
         PlayerData.playerFish = 0;
         playerFishText.text = PlayerData.playerFish.ToString() + "/" + PlayerData.fishLimit.ToString();
-        PlayerData.playerCasts = 0;
+        PlayerData.playerCasts = 12;
         playerCastsText.text = PlayerData.playerCasts.ToString() + "/" + PlayerData.castLimit.ToString();
     }
 
@@ -54,7 +56,7 @@ public class FishingSection : MonoBehaviour
             {
                 if (!PlayerData.isFishing)
                 {
-                    if (PlayerData.playerCasts < PlayerData.castLimit)
+                    if (PlayerData.playerCasts > 0)
                     {
                         if (PlayerData.playerFish < PlayerData.fishLimit)
                         {
@@ -185,7 +187,7 @@ public class FishingSection : MonoBehaviour
             }
             if (chanceToBite > 29) //as soon as there's a "bite", this includes junk
             {
-                PlayerData.playerCasts++;
+                PlayerData.playerCasts--;
                 playerCastsText.text = PlayerData.playerCasts.ToString() + "/" + PlayerData.castLimit.ToString();
                 Debug.Log("There's a bite: " + chanceToBite + " Pool: " + FishLibrary.fishID);
                 fishingAlert.SetActive(true); //alert UI pops up
@@ -232,14 +234,15 @@ public class FishingSection : MonoBehaviour
 
         while (newCatch.transform.position.y < transform.position.y)
         {
-            rb.AddForce(Vector3.up * 250f);
-            rb.AddForce(Vector3.left * 50f);
+            rb.AddForce(Vector3.up * vertSpeed * Time.deltaTime);
+            rb.AddForce(Vector3.left * horzSpeed * Time.deltaTime);
             yield return null;
         }
 
         yield return new WaitForSeconds(1f);
         Debug.Log("Enabling canvas");
         catchCanvas.SetActive(true);
+        PlayerData.isInUI = true;
         catchUIanimator.Play("catchUI_start");
     }
 
