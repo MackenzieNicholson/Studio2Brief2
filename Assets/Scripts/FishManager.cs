@@ -10,71 +10,59 @@ public class FishManager : MonoBehaviour
     public List<string> fish = new List<string> { };
     public string fishCollection;
     private string lastGeneratedFish;
-
-    //fish values 
+    //fish values
     public int GoldfishSize;
     public int CarpSize;
-    public int bassSize;
-    
+    public int BassSize;
+    public int KoiSize;
+    public int SturgeonSize;
+    public int BluegillSize;
     //UI stuff
     public TextMeshProUGUI CurrentFish;
     public TextMeshProUGUI Instructions;
     public TextMeshProUGUI Basket;
     public TextMeshProUGUI CastsNum;
-
     public TextMeshProUGUI pointEarner;
     public TextMeshProUGUI Size;
     public TextMeshProUGUI Weight;
-
     //point collection
     public static int totalPoints;
     public int points;
-
     public static int earnedpoints;
-
     public int Casts;
-
     // can and cant do actions
     private bool CanFish;
     private bool CanThrow;
     private bool CanKeep;
-
     //int randomValue = Random.Range(0,99);
-
     public FishScript fishLength;
     public FishScript fishWeight;
     public FishScript fishPoints;
-
     // Start is called before the first frame update
     void Start()
     {
-        fish.Add("bass");
+        fish.Add("Bass");
         fish.Add("Goldfish");
         fish.Add("Carp");
-
+        fish.Add("Koi");
+        fish.Add("Sturgeon");
+        fish.Add("Bluegill");
         Instructions.text = "Instructions: Press A to fish";
-
         Debug.Log("Press A to fish");
-
         CanFish = true;
         CanThrow = false;
         CanKeep = false;
-                                
-
         Casts = 12;
-
     }
     public void PointEarner()
     {
         totalPoints = totalPoints + points;
     }
-
     public void AddRareFish()
     {
         //fish.Add();
         //fish.Add();
         //fish.Add();
-
     }
     public void AddExoticFish()
     {
@@ -82,51 +70,40 @@ public class FishManager : MonoBehaviour
         //fish.Add();
         //fish.Add();
     }
-
     // Update is called once per frame
     void Update()
     {
-        CastsNum.text = "" + Casts; 
-
-        
-
-        if(Casts == 0)
+        CastsNum.text = "" + Casts;
+        if (Casts == 0)
         {
             CanFish = false;
             Debug.Log("finished fishing");
             Instructions.text = "The Day is over the fish are asleep";
         }
-        
         pointEarner.text = "Points: " + totalPoints;
-
         CarpSize = Random.Range(40, 80);
-        bassSize = Random.Range(48, 56);
+        BassSize = Random.Range(48, 56);
         GoldfishSize = Random.Range(12, 22);
-
+        KoiSize = Random.Range(12, 15);
+        SturgeonSize = Random.Range(200, 300);
+        BluegillSize = Random.Range(15, 19);
         if (fishBasket.Count >= 8)
         {
             Debug.Log("finished fishing");
             CanFish = false;
             Instructions.text = "The Day is over the fish are asleep";
         }
-
-
         foreach (var item in fishBasket)
         {
             //Debug.Log(item.ToString());
         }
-
         string result = " ";
         foreach (var item in fishBasket)
         {
             result += item.ToString() + ", ";
-
         }
         //Debug.Log(result);
-
         Basket.text = "Fish: " + result;
-        
-
         if (Input.GetKeyDown(KeyCode.A))
         {
             while (CanFish)
@@ -139,36 +116,40 @@ public class FishManager : MonoBehaviour
                 CanFish = false;
                 CanKeep = true;
                 CanThrow = true;
-
                 Casts--;
-
                 Instructions.text = "Instructions: Press Q to Put fish in basket   Press E to throw fish in pond";
                 Debug.Log("Press Q to Put fish in basket");
-
                 Debug.Log("Press E to throw fish in pond");
-
-
-                //fish values 
-                if (lastGeneratedFish == "bass")
+                //fish values
+                if (lastGeneratedFish == "Bass")
                 {
-                    
                     Weight.text = "Weight: " + Random.Range(6, 12) + "Kg";
-                    Size.text = "Size: " + bassSize + "CM";
-                    
+                    Size.text = "Size: " + BassSize + "CM";
                 }
                 if (lastGeneratedFish == "Carp")
                 {
-
                     Weight.text = "Weight: " + Random.Range(3.8f, 5.5f) + "Kg";
                     Size.text = "Size: " + CarpSize + "CM";
-                    
                 }
                 if (lastGeneratedFish == "Goldfish")
                 {
-                    
                     Weight.text = "Weight: " + Random.Range(0.10f, 0.30f) + "Kg";
                     Size.text = "Size: " + GoldfishSize + "CM";
-                    
+                }
+                if (lastGeneratedFish == "Koi")
+                {
+                    Weight.text = "Weight: " + Random.Range(10, 16) + "Kg";
+                    Size.text = "Size: " + KoiSize + "CM";
+                }
+                if (lastGeneratedFish == "Sturgeon")
+                {
+                    Weight.text = "Weight: " + Random.Range(180, 227) + "Kg";
+                    Size.text = "Size: " + SturgeonSize + "CM";
+                }
+                if (lastGeneratedFish == "Bluegill")
+                {
+                    Weight.text = "Weight: " + Random.Range(1f, 1.2f) + "Kg";
+                    Size.text = "Size: " + BluegillSize + "CM";
                 }
             }
         }
@@ -188,12 +169,27 @@ public class FishManager : MonoBehaviour
                     points = CarpSize * 12;
                     PointEarner();
                 }
-                if (lastGeneratedFish == "bass")
+                if (lastGeneratedFish == "Bass")
                 {
-                    points = bassSize * 12;
+                    points = BassSize * 12;
                     PointEarner();
                 }
-                    Debug.Log("u keep fish");
+                if (lastGeneratedFish == "Koi")
+                {
+                    points = KoiSize * 24;
+                    PointEarner();
+                }
+                if (lastGeneratedFish == "Sturgeon")
+                {
+                    points = SturgeonSize * 24;
+                    PointEarner();
+                }
+                if (lastGeneratedFish == "Bluegill")
+                {
+                    points = BluegillSize * 24;
+                    PointEarner();
+                }
+                Debug.Log("u keep fish");
                 CurrentFish.text = "Look you Got a: ";
                 Weight.text = "Weight: ";
                 Size.text = "Size: ";
@@ -222,6 +218,4 @@ public class FishManager : MonoBehaviour
             }
         }
     }
-
-   
 }
