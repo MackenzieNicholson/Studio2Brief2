@@ -18,16 +18,17 @@ public class LiamTriggerScript : MonoBehaviour
     private bool inClubTrigger;
     private bool inFishTrigger;
 
-    PlayerMovement player;
-    public Animator animator;
-    public GameObject menu;
+    public Animator clubVendorAnimator;
+    public GameObject vendorCanvasUI;
+    public GameObject fishVendorUI;
+    public GameObject clubVendorUI;
+    public GameObject playerStatsUI;
 
     public TextMeshProUGUI promptUI;
     public Image promptBack;
 
     private void Start()
     {
-        player = GameObject.Find("player").GetComponent<PlayerMovement>();
         promptBack.enabled = false;
 
     }
@@ -35,7 +36,7 @@ public class LiamTriggerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButton("Submit"))
+        if (Input.GetButton("Submit") || Input.GetKeyDown(KeyCode.E))
         {
             if(inDoorTrigger== true)
             {
@@ -43,49 +44,31 @@ public class LiamTriggerScript : MonoBehaviour
             }
             else if(inRodTrigger== true)
             {
-                PlayerMovement.speed = 0;
-                animator.SetTrigger("open");
+                PlayerData.speed = 0f;
+                playerStatsUI.SetActive(false);
+                clubVendorAnimator.Play("vendorCanvas_fish_open");
+                
             }
             else if(inClubTrigger== true)
             {
-                PlayerMovement.speed = 0;
-                animator.SetTrigger("open");
+                PlayerData.speed = 0f;
+                playerStatsUI.SetActive(false);
+                clubVendorAnimator.Play("vendorCanvas_club_open");
             }
             else if(inFishTrigger== true)
             {
-
-            }
-
-        }
-        else if (Input.GetKeyDown(KeyCode.E))
-        {
-            if (inDoorTrigger == true)
-            {
-                SceneManager.LoadScene(3);
-            }
-            else if (inRodTrigger == true)
-            {
-                PlayerMovement.speed = 0;
-                animator.SetTrigger("open");
-            }
-            else if (inClubTrigger == true)
-            {
-                PlayerMovement.speed = 0;
-                animator.SetTrigger("open");
-            }
-            else if (inFishTrigger == true)
-            {
-
+                /*PlayerData.speed = 0f;
+                playerStatsUI.SetActive(false);*/
             }
 
         }
 
-        if (inRodTrigger== true)
+        /*if (inRodTrigger== true)
         {
             if (Input.GetButton("Cancel"))
             {
-                animator.SetTrigger("close");
-                PlayerMovement.speed = 100;
+                fishVendorAnimator.Play("vendorCanvas_close");
+                PlayerData.speed = 150f;
             }
             
         }
@@ -93,10 +76,10 @@ public class LiamTriggerScript : MonoBehaviour
         {
             if (Input.GetButton("Cancel"))
             {
-                animator.SetTrigger("close");
-                PlayerMovement.speed = 100;
+                clubVendorAnimator.SetTrigger("close");
+                PlayerData.speed = 150f;
             }
-        }
+        }*/
 
     }
 
@@ -115,7 +98,6 @@ public class LiamTriggerScript : MonoBehaviour
             Debug.Log("is in rod upgrade");
             promptBack.enabled = true;
             promptUI.text = "Enter: Upgrade Gear";
-            menu.SetActive(true);
         }
         else if(isClub == true)
         {
@@ -123,7 +105,6 @@ public class LiamTriggerScript : MonoBehaviour
             Debug.Log("is in club upgrade");
             promptBack.enabled = true;
             promptUI.text = "Enter: Upgrade Club";
-            menu.SetActive(true);
         }
         else if(isFish == true)
         {
@@ -143,12 +124,12 @@ public class LiamTriggerScript : MonoBehaviour
         inFishTrigger = false;
         promptUI.text = "";
         promptBack.enabled = false;
-        menu.SetActive(false);
+        //menu.SetActive(false);
     }
 
-    public void CloseMenu()
+    /*public void CloseMenu()
     {
         animator.SetTrigger("close");
         PlayerMovement.speed = 100;
-    }
+    }*/
 }

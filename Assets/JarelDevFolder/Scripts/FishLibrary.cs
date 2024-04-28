@@ -12,6 +12,31 @@ public static class FishLibrary
     public static float fishSize;
     public static int fishValue;
 
+    public static bool isJunk = false;
+
+    /// <summary>
+    /// Spawn chances; default for nothing is 16 (max)
+    /// </summary>
+    public static int nospawn = 116;
+
+    public static int pondCarpChance = 127;
+    public static int pondBassChance = 138;
+    public static int pondSilverfishChance = 149;
+
+    public static int pondBootChance = 154;
+    public static int pondControllerChance = 159;
+    public static int pondAxolotlChance = 164;
+
+    public static int pondKoiChance = 172;
+    public static int pondSturgeonChance = 180;
+    public static int pondBluegillChance = 188;
+
+    public static int pondGoldfishChance = 192;
+    public static int pondStachefishChance = 196;
+    public static int pondBullroutChance = 200;
+
+    ////////////////////////////////
+
     static float newWeight;
     static float roundedWeight;
     static float newSize;
@@ -33,7 +58,7 @@ public static class FishLibrary
         "Silverfish",
         "Leather Boot",
         "Broken Controller",
-        "???",
+        "Wandering Axolotl",
         "Neon Koi",
         "Doctor Sturgeon",
         "Cobalt Bluegill",
@@ -333,5 +358,74 @@ public static class FishLibrary
         Debug.Log("Calculated final value: " + fishScore);
 
         return fishScore;
+    }
+
+    public static void GenerateSpawnChance()
+    {
+
+    }
+
+    public static void PondSpawnTable(int chance)
+    {
+        //0-16 is nothing
+        //pond Range; the conditions on the right are the fish spawned
+        if ((chance > nospawn) && (chance <= pondCarpChance))
+        {
+            fishID = 0;
+        }
+        else if ((chance > pondCarpChance) && (chance <= pondBassChance))
+        {
+            fishID = 1;
+        }
+        else if ((chance > pondBassChance) && (chance <= pondSilverfishChance))
+        {
+            fishID = 2;
+        }
+        else if ((chance > pondSilverfishChance) && (chance <= pondBootChance))
+        {
+            fishID = 3;
+            isJunk = true;
+            fishQuality = 3;
+        }
+        else if ((chance > pondBootChance) && (chance <= pondControllerChance))
+        {
+            fishID = 4;
+            isJunk = true;
+            fishQuality = 3;
+        }
+        else if ((chance > pondControllerChance) && (chance <= pondAxolotlChance))
+        {
+            fishID = 5;
+            isJunk = true;
+            fishQuality = 3;
+        }
+        else if ((chance > pondAxolotlChance) && (chance <= pondKoiChance))
+        {
+            fishID = 6;
+        }
+        else if ((chance > pondKoiChance) && (chance <= pondSturgeonChance))
+        {
+            fishID = 7;
+        }
+        else if ((chance > pondSturgeonChance) && (chance <= pondBluegillChance))
+        {
+            fishID = 8;
+        }
+        else if ((chance > pondBluegillChance) && (chance <= pondGoldfishChance))
+        {
+            fishID = 9;
+        }
+        else if ((chance > pondGoldfishChance) && (chance <= pondStachefishChance))
+        {
+            fishID = 10;
+        }
+        else if ((chance > pondStachefishChance) && (chance <= pondBullroutChance))
+        {
+            fishID = 11;
+        }
+        else
+        {
+            fishID = -1;
+        }
     }
 }

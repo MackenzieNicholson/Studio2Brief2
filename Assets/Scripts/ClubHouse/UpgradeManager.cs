@@ -1,101 +1,803 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UpgradeManager : MonoBehaviour
 {
     public int upgradeCap;
 
-    public int upgradeCount1;
-    public int upgradeCost1;
-
-    public int upgradeCount2;
-    public int upgradeCost2;
-
-    public int upgradeCount3;
-    public int upgradeCost3;
-
-    public int upgradeCount4;
-    public int upgradeCost4;
-
-    public int upgradeCost5;
+    public TextMeshProUGUI clubScore;
+    public TextMeshProUGUI clubMoney;
+    public TextMeshProUGUI fishHaul;
 
     public TextMeshProUGUI lureText;
     public TextMeshProUGUI rodText;
     public TextMeshProUGUI bucketText;
     public TextMeshProUGUI baitText;
-    public TextMeshProUGUI areaText;
-    public TextMeshProUGUI capText;
 
+    public GameObject vendorModeUI;
+    public GameObject gearModeUI;
+    public GameObject fishModeUI;
+    public GameObject exitVendorUI;
+    public GameObject noFishHelp;
+    public GameObject cycleUI;
+    public GameObject fishOptionsUI;
+    public GameObject playerStatsUI;
+
+    public TextMeshProUGUI clubScoreStat;
+    public TextMeshProUGUI clubMoneyStat;
+
+    public bool fishCanvasOpen = false;
+    public bool clubCanvasOpen = false;
+
+    int fishInventory = 0;
+    int currentFishSelect = 0;
+
+    public GameObject fishIconSpawn;
+    public GameObject fishgearCanvas;
+    public GameObject clubhouseCanvas;
+
+    public TextMeshProUGUI fishDetails;
+    public TextMeshProUGUI fishName;
+    public TextMeshProUGUI clubOptions;
+    public TextMeshProUGUI gearOptions;
+    public TextMeshProUGUI vendorModeText;
+
+    public Button selectHookUpgradeButton;
+    public Button selectRodUpgradeButton;
+    public Button selectBucketUpgradeButton;
+    public Button selectBobberUpgradeButton;
+
+    public Button wallButton;
+    public Button floorButton;
+    public Button aquariumButton;
+    public Button membershipButton;
+    public Button transpoButton;
+
+    public TextMeshProUGUI transpoButtonText;
+
+    GameObject fishIcon;
+
+    Animator animator;
+
+    int hookCost = 200;
+    int rodCost = 1500;
+    int bucketCost = 200;
+    int bobberCost = 100;
+
+    int wallCost = 1000;
+    int floorCost = 1000;
+    int tankCost = 1000;
+    int memberCost = 1000;
+    int transportCost = 1000;
+    void Start()
+    {
+        animator = GetComponent<Animator>();
+        fishModeUI.SetActive(false);
+        gearModeUI.SetActive(false);
+        noFishHelp.SetActive(false);
+        fishgearCanvas.SetActive(false);
+        clubhouseCanvas.SetActive(false);
+
+        clubScoreStat.text = PlayerData.playerScore.ToString();
+        clubMoneyStat.text = PlayerData.playerMoney.ToString();
+        fishHaul.text = PlayerData.playerFish.ToString() + "/" + PlayerData.fishLimit.ToString();
+
+        CheckIdTags(); //needed for UI updates when scene is reloaded
+    }
     // Update is called once per frame
     void Update()
     {
-        lureText.text = "Rarer Fish " + upgradeCost1 + "$";
-        rodText.text = "More Casts " + upgradeCost2 + "$";
-        bucketText.text = "Bucket Capacity " + upgradeCost3 + "$";
-        baitText.text = "Easy Catch " + upgradeCost4 + "$";
-        areaText.text = "New Area N/A";
-        capText.text = "More Upgrades " + upgradeCost5 + "$";
+        if (Input.GetButton("Cancel"))
+        {
+            if (fishCanvasOpen)
+            {
+                CloseFishVendor();
+            }
+            else if (clubCanvasOpen)
+            {
+                CloseClubVendor();
+            }
+        }
     }
 
-    public void BetterFish() //lure
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///Functions for Upgrades UI Canvas
+    public void ManageFishUI()
     {
-        if (upgradeCount1 < upgradeCap)
-        {
-            if(upgradeCost1 <= PlayerData.playerMoney)
-            {
-                PlayerData.lureID += 1;
-                PlayerData.playerMoney = PlayerData.playerMoney - upgradeCost1;
-                upgradeCount1 += 1;
-            }
-        }
-    }
-    public void MoreCasts() //rod
-    {
-        if (upgradeCount2 < upgradeCap)
-        {
-            if (upgradeCost2 <= PlayerData.playerMoney)
-            {
-                PlayerData.rodID += 1;
-                PlayerData.playerMoney = PlayerData.playerMoney - upgradeCost2;
-                upgradeCount2 += 1;
-            }
-        }
-    }
-    public void BiggerBasket() //bucket
-    {
-        if (upgradeCount3 < upgradeCap)
-        {
-            if (upgradeCost3 <= PlayerData.playerMoney)
-            {
-                PlayerData.bucketID += 1;
-                PlayerData.playerMoney = PlayerData.playerMoney - upgradeCost3;
-                upgradeCount3 += 1;
-            }
-        }
-    }
-    public void EasierGame() //bait
-    {
-        if (upgradeCount4 < upgradeCap)
-        {
-            if (upgradeCost4 <= PlayerData.playerMoney)
-            {
-                PlayerData.baitID += 1;
-                PlayerData.playerMoney = PlayerData.playerMoney - upgradeCost4;
-                upgradeCount4 += 1;
-            }
-        }
-    }
-    public void NewArea()
-    {
+        fishModeUI.SetActive(true);
+        vendorModeUI.SetActive(false);
 
-    }
-    public void MoreUpgrades()
-    {
-        if (upgradeCost5 <= FishManager.earnedpoints)
+        fishInventory = PlayerData.fishData.Count;
+        currentFishSelect = 0;
+        fishDetails.text = "";
+
+        if (fishInventory <= 0)
         {
-            upgradeCap += 1;
+            cycleUI.SetActive(false);
+            fishOptionsUI.SetActive(false);
+            noFishHelp.SetActive(true);
+        }
+        else
+        {
+            cycleUI.SetActive(true);
+            fishOptionsUI.SetActive(true);
+            noFishHelp.SetActive(false);
+
+            DisplayFishItem();
+        }
+    }
+
+    void DisplayFishItem()
+    {
+        if (fishIcon != null)
+        {
+            Destroy(fishIcon);
+        }
+        fishIcon = Instantiate(FishLibrary.fishImages[PlayerData.fishData[currentFishSelect].fishID], fishIconSpawn.transform);
+
+        fishDetails.text = "Quality: " + FishLibrary.fishQualityText[PlayerData.fishData[currentFishSelect].fishQuality] +
+                                "\n\nWeight: " + PlayerData.fishData[currentFishSelect].fishWeight.ToString() + "kg" +
+                                "\n\nSize: " + PlayerData.fishData[currentFishSelect].fishSize.ToString() + "cm" + "\n\nValue: " + PlayerData.fishData[currentFishSelect].fishValue;
+
+        fishName.text = FishLibrary.fishNames[PlayerData.fishData[currentFishSelect].fishID];
+    }
+
+    public void CycleNextFish()
+    {
+        if (currentFishSelect < fishInventory)
+        {
+            currentFishSelect++;
+            DisplayFishItem();
+        }
+    }
+
+    public void CyclePreviousFish()
+    {
+        if (currentFishSelect > 0)
+        {
+            currentFishSelect--;
+            DisplayFishItem();
+        }
+    }
+
+    public void ReturnToModes()
+    {
+        fishModeUI.SetActive(false);
+        gearModeUI.SetActive(false);
+        vendorModeUI.SetActive(true);
+    }
+
+    public void ManageGearUI()
+    {
+        gearModeUI.SetActive(true);
+        vendorModeUI.SetActive(false);
+    }
+
+    public void CloseFishVendor()
+    {
+        PlayerData.speed = 150f;
+        playerStatsUI.SetActive(true);
+        clubScoreStat.text = PlayerData.playerScore.ToString();
+        clubMoneyStat.text = PlayerData.playerMoney.ToString();
+        animator.Play("vendorCanvas_fish_close");
+    }
+
+    void SetFishCanvasOpen()
+    {
+        fishCanvasOpen = true;
+    }
+
+    void SetFishCanvasFalse()
+    {
+        ReturnToModes();
+        fishCanvasOpen = false;
+        fishgearCanvas.SetActive(false);
+    }
+
+    public void CloseClubVendor()
+    {
+        PlayerData.speed = 150f;
+        playerStatsUI.SetActive(true);
+        clubScoreStat.text = PlayerData.playerScore.ToString();
+        clubMoneyStat.text = PlayerData.playerMoney.ToString();
+        animator.Play("vendorCanvas_club_close");
+    }
+    void SetClubCanvasOpen()
+    {
+        clubCanvasOpen = true;
+    }
+
+    void SetClubCanvasFalse()
+    {
+        clubCanvasOpen = false;
+    }
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///Keep fish or sell
+    public void SellFish()
+    {
+        PlayerData.playerMoney += PlayerData.fishData[currentFishSelect].fishValue;
+        clubMoney.text = PlayerData.playerMoney.ToString();
+        PlayerData.fishData.Remove(PlayerData.fishData[currentFishSelect]);
+
+        PlayerData.playerFish--;
+        fishHaul.text = PlayerData.playerFish.ToString() + "/" + PlayerData.fishLimit.ToString();
+        
+        fishInventory = PlayerData.fishData.Count;
+        currentFishSelect = 0;
+        fishDetails.text = "";
+        Destroy(fishIcon);
+
+        if (fishInventory == 0)
+        {
+            cycleUI.SetActive(false);
+            fishOptionsUI.SetActive(false);
+            noFishHelp.SetActive(true);
+        }
+        else
+        {
+            DisplayFishItem();
+        }
+    }
+
+    public void KeepFish()
+    {
+        PlayerData.playerScore += PlayerData.fishData[currentFishSelect].fishValue;
+        clubScore.text = PlayerData.playerScore.ToString();
+        PlayerData.clubFishData.Add(PlayerData.fishData[currentFishSelect]);
+        PlayerData.fishData.Remove(PlayerData.fishData[currentFishSelect]);
+
+        PlayerData.playerFish--;
+        fishHaul.text = PlayerData.playerFish.ToString() + "/" + PlayerData.fishLimit.ToString();
+
+        fishInventory = PlayerData.fishData.Count;
+        currentFishSelect = 0;
+        fishDetails.text = "";
+        Destroy(fishIcon);
+
+        if (fishInventory == 0)
+        {
+            cycleUI.SetActive(false);
+            fishOptionsUI.SetActive(false);
+            noFishHelp.SetActive(true);
+        }
+        else
+        {
+            DisplayFishItem();
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///Gear Upgrade button functions
+    public void UpgradeHook() //lure
+    {
+        if ((PlayerData.lureID < 3) && (hookCost <= PlayerData.playerMoney))
+        {
+            switch (PlayerData.lureID)
+            {
+                case 0:
+                    PlayerData.lureID++;
+                    PlayerData.playerMoney -= hookCost;
+                    PlayerData.HookUpdateOne();
+                    hookCost = 400;
+                    gearOptions.text = "Increase chances of catching a fish instead of junk or a whole lot of nothing. Or a whole lot of junk.\n\n\nFish chance++\n\n\nCost: $" + hookCost.ToString();
+                    break;
+                case 1:
+                    PlayerData.lureID++;
+                    PlayerData.playerMoney -= hookCost;
+                    PlayerData.HookUpdateTwo();
+                    hookCost = 600;
+                    gearOptions.text = "Increase chances of catching a fish instead of junk or a whole lot of nothing. Or a whole lot of junk.\n\n\nFish chance+++\n\n\nCost: $" + hookCost.ToString();
+                    break;
+                case 2:
+                    PlayerData.lureID++;
+                    PlayerData.playerMoney -= hookCost;
+                    PlayerData.HookUpdateThree();
+                    gearOptions.text = "All upgrades purchased";
+                    selectHookUpgradeButton.interactable = false;
+                    break;
+                default:
+                    break;
+            }
+            clubMoney.text = PlayerData.playerMoney.ToString();
+        }
+        else if (hookCost > PlayerData.playerMoney)
+        {
+            gearOptions.text = "No money! Maybe sell more fish?";
+        }
+    }
+
+    public void UpgradeBobber() //bobber
+    {
+        if ((PlayerData.bobberID < 2) && (bobberCost <= PlayerData.playerMoney))
+        {
+            switch(PlayerData.bobberID)
+            {
+                case 0:
+                    PlayerData.bobberID++;
+                    PlayerData.playerMoney -= bobberCost;
+                    bobberCost = 200;
+                    gearOptions.text = "Increase delay before fish escapes by +1 second\n\n\nCost: $" + bucketCost.ToString();
+                    break;
+                case 1:
+                    PlayerData.bobberID++;
+                    PlayerData.playerMoney -= bobberCost;
+                    gearOptions.text = "All upgrades purchased";
+                    selectBobberUpgradeButton.interactable = false;
+                    break;
+                default:
+                    break;
+            }
+            clubMoney.text = PlayerData.playerMoney.ToString();
+        }
+        else if (bobberCost > PlayerData.playerMoney)
+        {
+            gearOptions.text = "No money! Maybe sell more fish?";
+        }
+    }
+
+    public void UpgradeRod() //rod
+    {
+        if ((PlayerData.rodID < 2) && (rodCost <= PlayerData.playerMoney))
+        {
+            switch (PlayerData.rodID)
+            {
+                case 0:
+                    PlayerData.rodID++;
+                    PlayerData.playerMoney -= rodCost;
+                    PlayerData.castLimit = 14;
+                    rodCost = 3000;
+                    gearOptions.text = "Do more with your rod!\n\n\nCast limit: 16\n\n\nCost: $" + rodCost.ToString();
+                    break;
+                case 1:
+                    PlayerData.rodID++;
+                    PlayerData.playerMoney -= rodCost;
+                    PlayerData.castLimit = 16;
+                    rodCost = 5000;
+                    gearOptions.text = "Do more with your rod!\n\n\nCast limit: 18\n\n\nCost: $" + rodCost.ToString();
+                    break;
+                case 2:
+                    PlayerData.rodID++;
+                    PlayerData.playerMoney -= rodCost;
+                    PlayerData.castLimit = 18;
+                    gearOptions.text = "All upgrades purchased";
+                    selectRodUpgradeButton.interactable = false;
+                    break;
+                default:
+                    break;
+            }
+            clubMoney.text = PlayerData.playerMoney.ToString();
+        }
+        else if (rodCost > PlayerData.playerMoney)
+        {
+            gearOptions.text = "No money! Maybe sell more fish?";
+        }
+    }
+    public void UpgradeBucket() //bucket
+    {
+        if ((PlayerData.bucketID < 5) && (bucketCost <= PlayerData.playerMoney))
+        {
+            switch (PlayerData.bucketID)
+            {
+                case 0:
+                    PlayerData.bucketID++;
+                    PlayerData.playerMoney -= bucketCost;
+                    PlayerData.fishLimit += 2;
+                    fishHaul.text = PlayerData.playerFish.ToString() + "/" + PlayerData.fishLimit.ToString();
+                    bucketCost = 400;
+                    gearOptions.text = "Carry more fish with you!\n\n\nBucket size: 10\n\n\nCost: $" + bucketCost.ToString();
+                    break;
+                case 1:
+                    PlayerData.bucketID++;
+                    PlayerData.playerMoney -= bucketCost;
+                    PlayerData.fishLimit += 2;
+                    fishHaul.text = PlayerData.playerFish.ToString() + "/" + PlayerData.fishLimit.ToString();
+                    bucketCost = 600;
+                    gearOptions.text = "Carry more fish with you!\n\n\nBucket size: 12\n\n\nCost: $" + bucketCost.ToString();
+                    break;
+                case 2:
+                    PlayerData.bucketID++;
+                    PlayerData.playerMoney -= bucketCost;
+                    PlayerData.fishLimit += 2;
+                    fishHaul.text = PlayerData.playerFish.ToString() + "/" + PlayerData.fishLimit.ToString();
+                    bucketCost = 800;
+                    gearOptions.text = "Carry more fish with you!\n\n\nBucket size: 14\n\n\nCost: $" + bucketCost.ToString();
+                    break;
+                case 3:
+                    PlayerData.bucketID++;
+                    PlayerData.playerMoney -= bucketCost;
+                    PlayerData.fishLimit += 2;
+                    fishHaul.text = PlayerData.playerFish.ToString() + "/" + PlayerData.fishLimit.ToString();
+                    bucketCost = 1000;
+                    gearOptions.text = "Carry more fish with you!\n\n\nBucket size: 16\n\n\nCost: $" + bucketCost.ToString();
+                    break;
+                case 4:
+                    PlayerData.bucketID++;
+                    PlayerData.playerMoney -= bucketCost;
+                    PlayerData.fishLimit += 2;
+                    fishHaul.text = PlayerData.playerFish.ToString() + "/" + PlayerData.fishLimit.ToString();
+                    selectBucketUpgradeButton.interactable = false;
+                    gearOptions.text = "All upgrades purchased";
+                    break;
+                default:
+                    break;
+            }
+            clubMoney.text = PlayerData.playerMoney.ToString();
+        }
+        else if (bucketCost > PlayerData.playerMoney)
+        {
+            gearOptions.text = "No money! Maybe sell more fish?";
+        }
+    }
+    public void BaitSelect() //bait
+    {
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// Club Upggrade button functions
+    public void UpgradeWalls()
+    {
+        if ((PlayerData.clubWallID < 3) && (PlayerData.playerMoney >= wallCost))
+        {
+            switch (PlayerData.clubWallID)
+            {
+                case 0:
+                    PlayerData.clubWallID++;
+                    PlayerData.playerMoney -= wallCost;
+                    break;
+                case 1:
+                    PlayerData.clubWallID++;
+                    PlayerData.playerMoney -= wallCost;
+                    wallButton.interactable = false;
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+    public void UpgradeFloor()
+    {
+        if ((PlayerData.clubFloorID < 3) && (PlayerData.playerMoney >= floorCost))
+        {
+            switch (PlayerData.clubWallID)
+            {
+                case 0:
+                    PlayerData.clubFloorID++;
+                    PlayerData.playerMoney -= floorCost;
+                    break;
+                case 1:
+                    PlayerData.clubFloorID++;
+                    PlayerData.playerMoney -= floorCost;
+                    floorButton.interactable = false;
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    public void UpgradeAquarium()
+    {
+        if ((PlayerData.clubAquariumID < 3) && (PlayerData.playerMoney >= tankCost))
+        {
+            switch (PlayerData.clubAquariumID)
+            {
+                case 0:
+                    PlayerData.clubAquariumID++;
+                    PlayerData.playerMoney -= tankCost;
+                    break;
+                case 1:
+                    PlayerData.clubAquariumID++;
+                    PlayerData.playerMoney -= tankCost;
+                    aquariumButton.interactable = false;
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    public void UpgradeMembership()
+    {
+        if ((PlayerData.clubLimitID < 3) && (PlayerData.playerMoney >= memberCost))
+        {
+            switch (PlayerData.clubLimitID)
+            {
+                case 0:
+                    PlayerData.clubLimitID++;
+                    PlayerData.playerMoney -= memberCost;
+                    break;
+                case 1:
+                    PlayerData.clubLimitID++;
+                    PlayerData.playerMoney -= memberCost;
+                    membershipButton.interactable = false;
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    public void UnlockNewArea()
+    {
+        if ((PlayerData.areaID < 3) && (PlayerData.playerMoney >= transportCost))
+        {
+            switch (PlayerData.areaID)
+            {
+                case 0:
+                    PlayerData.areaID++;
+                    PlayerData.playerMoney -= transportCost;
+                    transpoButtonText.text = "Transport Service: Ocean";
+                    transportCost = 2000;
+                    clubOptions.text = "Extends the transportation service to the Pasiv Ocean Park\n\n\n\nCost: $" + transportCost.ToString();
+                    break;
+                case 1:
+                    PlayerData.areaID++;
+                    PlayerData.playerMoney -= transportCost;
+                    transpoButtonText.text = "Transport Service: Storage Upgrade";
+                    transportCost = 4000;
+                    clubOptions.text = "Adds a fish tank to the transportation vehicle to increase fish that can be carried (+4)\n\n\n\nCost: $" + transportCost.ToString();
+                    break;
+                case 2:
+                    PlayerData.areaID++;
+                    PlayerData.playerMoney -= transportCost;
+                    PlayerData.fishLimit += 4;
+                    fishHaul.text = PlayerData.playerFish.ToString() + "/" + PlayerData.fishLimit.ToString();
+                    transpoButtonText.text = "Transport Service";
+                    clubOptions.text = "All upgrades purchased";
+                    transpoButton.interactable = false;
+                    break;
+                default:
+                    break;
+            }
+            clubMoney.text = PlayerData.playerMoney.ToString();
+        }
+        else if (transportCost > PlayerData.playerMoney)
+        {
+            gearOptions.text = "No money! Maybe sell more fish?";
+        }
+    }
+
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///Flavor and descriptor texts that go into the helper text boxes
+    public void FishModeText()
+    {
+        vendorModeText.text = "Check the fish you've caught from your last trip and see which ones you want to keep for the clubhouse or sell.";
+    }
+    public void GearModeText()
+    {
+        vendorModeText.text = "If you have the funds, upgrade your fishing gear to make yourself a better fisherman.";
+    }
+    public void ClearModeText()
+    {
+        vendorModeText.text = "";
+    }
+    
+    //Fishing Gear
+    public void LureText()
+    {
+        switch (PlayerData.lureID)
+        {
+            case 0:
+                gearOptions.text = "Increase chances of catching a fish instead of junk or a whole lot of nothing. Or a whole lot of junk.\n\n\nFish chance+\n\n\nCost: $" + hookCost.ToString();
+                break;
+            case 1:
+                gearOptions.text = "Increase chances of catching a fish instead of junk or a whole lot of nothing. Or a whole lot of junk.\n\n\nFish chance++\n\n\nCost: $" + hookCost.ToString();
+                break;
+            case 2:
+                gearOptions.text = "Increase chances of catching a fish instead of junk or a whole lot of nothing. Or a whole lot of junk.\n\n\nFish chance+++\n\n\nCost: $" + hookCost.ToString();
+                break;
+            default:
+                gearOptions.text = "All upgrades purchased";
+                break;
+        }
+        
+    }
+    public void BobberText()
+    {
+        switch (PlayerData.bobberID)
+        {
+            case 0:
+                gearOptions.text = "Keep fish hooked a bit longer!\n\n\n+1 second before fish escapes\n\n\nCost: $" + bobberCost.ToString();
+                break;
+            case 1:
+                gearOptions.text = "Keep fish hooked a bit longer!\n\n\n+1 second before fish escapes\n\n\nCost: $" + bobberCost.ToString();
+                break;
+            default:
+                gearOptions.text = "All upgrades purchased";
+                break;
+        }
+    }
+    public void BucketText()
+    {
+        switch (PlayerData.bucketID)
+        {
+            case 0:
+                gearOptions.text = "Carry more fish with you!\n\n\nBucket size: 8\n\n\nCost: $" + bucketCost.ToString();
+                break;
+            case 1:
+                gearOptions.text = "Carry more fish with you!\n\n\nBucket size: 10\n\n\nCost: $" + bucketCost.ToString();
+                break;
+            case 2:
+                gearOptions.text = "Carry more fish with you!\n\n\nBucket size: 12\n\n\nCost: $" + bucketCost.ToString();
+                break;
+            case 3:
+                gearOptions.text = "Carry more fish with you!\n\n\nBucket size: 14\n\n\nCost: $" + bucketCost.ToString();
+                break;
+            case 4:
+                gearOptions.text = "Carry more fish with you!\n\n\nBucket size: 16\n\n\nCost: $" + bucketCost.ToString();
+                break;
+            default:
+                gearOptions.text = "All upgrades purchased";
+                break;
+        }
+    }
+    public void BaitText()
+    {
+        gearOptions.text = "Feeling ignored by the one you desire most? Lead with a snack!\n\n\nSee bait selection";
+    }
+    public void RodText()
+    {
+        switch (PlayerData.rodID)
+        {
+            case 0:
+                gearOptions.text = "Do more with your rod!\n\n\nCast limit: 14\n\n\nCost: $" + rodCost.ToString();
+                break;
+            case 1:
+                gearOptions.text = "Do more with your rod!\n\n\nCast limit: 16\n\n\nCost: $" + rodCost.ToString();
+                break;
+            case 2:
+                gearOptions.text = "Do more with your rod!\n\n\nCast limit: 18\n\n\nCost: $" + rodCost.ToString();
+                break;
+            default:
+                gearOptions.text = "All upgrades purchased";
+                break;
+        }
+    }
+
+    //Clubhouse
+    public void FloorText()
+    {
+        clubOptions.text = "Repair the clubhouse's floor";
+    }
+    public void WallsText()
+    {
+        clubOptions.text = "Repair the clubhouse's walls";
+    }
+    public void AquariumText()
+    {
+        clubOptions.text = "Upgrade the aquarium to store more fish for the clubhouse";
+    }
+    public void MembershipText()
+    {
+        clubOptions.text = "Increase the club's membership capacity";
+    }
+    public void TransportText()
+    {
+        switch (PlayerData.areaID)
+        {
+            case 0:
+                clubOptions.text = "Unlocks a transportation service to the Brisby River\n\n\n\nCost: $" + transportCost.ToString();
+                break;
+            case 1:
+                clubOptions.text = "Extends the transportation service to the Pasiv Ocean Park\n\n\n\nCost: $" + transportCost.ToString();
+                break;
+            case 2:
+                clubOptions.text = "Adds a fish tank to the transportation vehicle to increase fish that can be carried (+4)\n\n\n\nCost: $" + transportCost.ToString();
+                break;
+            default:
+                clubOptions.text = "All upgrades purchased";
+                break;
+        }
+    }
+
+    public void EmptyText()
+    {
+        clubOptions.text = "";
+        gearOptions.text = "";
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///
+
+    void CheckIdTags()
+    {
+        clubMoney.text = PlayerData.playerMoney.ToString();
+        clubScore.text = PlayerData.playerScore.ToString();
+        switch (PlayerData.areaID)
+        {
+            case 0:
+                transpoButtonText.text = "Transport Service: River";
+                transportCost = 1000;
+                break;
+            case 1:
+                transpoButtonText.text = "Transport Service: Ocean";
+                transportCost = 2000;
+                break;
+            case 2:
+                transpoButtonText.text = "Transport Service: Storage Upgrade";
+                transportCost = 4000;
+                break;
+            default:
+                transpoButtonText.text = "Transport Service";
+                transpoButton.interactable = false;
+                break;
+        }
+
+        switch (PlayerData.lureID)
+        {
+            case 0:
+                hookCost = 200;
+                break;
+            case 1:
+                hookCost = 400;
+                break;
+            case 2:
+                hookCost = 600;
+                break;
+            default:
+                selectHookUpgradeButton.interactable = false;
+                break;
+        }
+
+        switch (PlayerData.rodID)
+        {
+            case 0:
+                rodCost = 1500;
+                break;
+            case 1:
+                rodCost = 3000;
+                break;
+            case 2:
+                rodCost = 5000;
+                break;
+            default:
+                selectRodUpgradeButton.interactable = false;
+                break;
+        }
+
+        switch (PlayerData.bucketID)
+        {
+            case 0:
+                bucketCost = 200;
+                break;
+            case 1:
+                bucketCost = 400;
+                break;
+            case 2:
+                bucketCost = 600;
+                break;
+            case 3:
+                bucketCost = 800;
+                break;
+            case 4:
+                bucketCost = 1000;
+                break;
+            default:
+                selectBucketUpgradeButton.interactable = false;
+                break;
+        }
+
+        switch(PlayerData.bobberID)
+        {
+            case 0:
+                bucketCost = 100;
+                break;
+            case 1:
+                bucketCost = 200;
+                break;
+            default:
+                selectBucketUpgradeButton.interactable = false;
+                break;
         }
     }
 }

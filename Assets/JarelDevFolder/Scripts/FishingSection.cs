@@ -18,12 +18,8 @@ public class FishingSection : MonoBehaviour
     public GameObject catchCanvas;
 
     public GameObject fishingAlert;
-    public float vertSpeed = 65000f;
-    public float horzSpeed = 1000f;
 
     int chanceToBite;
-    int catchDiff = 1;
-    bool isJunk = false;
     bool castWaiting = false;
     bool inWater = false; //for when there is a catch alert; see WaitToCatch coroutine
 
@@ -38,12 +34,11 @@ public class FishingSection : MonoBehaviour
     {
         playerAnimator = GameObject.Find("playerSprite").GetComponent<Animator>();
         fishingHook = GameObject.Find("hookDetector");
-        isJunk = false;
+        FishLibrary.isJunk = false;
         fishingAlert.SetActive(false);
         rhythmSet.SetActive(false);
-        PlayerData.playerFish = 0;
         playerFishText.text = PlayerData.playerFish.ToString() + "/" + PlayerData.fishLimit.ToString();
-        PlayerData.playerCasts = 12;
+        PlayerData.playerCasts = PlayerData.castLimit;
         playerCastsText.text = PlayerData.playerCasts.ToString() + "/" + PlayerData.castLimit.ToString();
     }
 
@@ -52,54 +47,48 @@ public class FishingSection : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            if (!PlayerData.beatPlaying)
+            if(!PlayerData.isFishing)
             {
-                if (!PlayerData.isInUI) //none of these trigger if true
+                if (PlayerData.playerCasts > 0)
                 {
-                    if (!PlayerData.isFishing)
+                    if (PlayerData.playerFish < PlayerData.fishLimit)
                     {
-                        if (PlayerData.playerCasts > 0)
-                        {
-                            if (PlayerData.playerFish < PlayerData.fishLimit)
-                            {
-                                PlayerData.isFishing = true;
-                                playerAnimator.Play("player_cast");
-                            }
-                            else
-                            {
-                                Debug.Log("Carrying too much fish right now...");
-                            }
-                        }
-                        else
-                        {
-                            Debug.Log("Need to fix the rod...");
-                        }
-                    }
-                    else if (PlayerData.hasCatch)
-                    {
-                        inWater = false;
-                        StopCoroutine(WaitToCatch());
-                        fishingAlert.SetActive(false);
-                        if (isJunk)
-                        {
-                            playerAnimator.Play("player_rod_catch");
-                            StartCoroutine(GenerateCatch());
-                        }
-                        else
-                        {
-                            scoreManager.scoreCount = 100;
-                            rhythmSet.SetActive(true);
-                            playerAnimator.Play("player_rod_pull");
-                            StartCoroutine(rhythmGame.RhythmGameStart());
-                            StartCoroutine(RhythmScoreCheck());
-                        }
+                        PlayerData.isFishing = true;
+                        playerAnimator.Play("player_cast");
                     }
                     else
                     {
-                        castWaiting = false;
-                        playerAnimator.Play("player_rod_catch");
+                        Debug.Log("Carrying too much fish right now...");
                     }
                 }
+                else
+                {
+                    Debug.Log("Need to fix the rod...");
+                }
+            }
+            else if (PlayerData.hasCatch)
+            {
+                inWater = false;
+                StopCoroutine(WaitToCatch());
+                fishingAlert.SetActive(false);
+                if (FishLibrary.isJunk)
+                {
+                    playerAnimator.Play("player_rod_catch");
+                    StartCoroutine(GenerateCatch());
+                }
+                else
+                {
+                    scoreManager.scoreCount = 100;
+                    rhythmSet.SetActive(true);
+                    playerAnimator.Play("player_rod_pull");
+                    StartCoroutine(rhythmGame.RhythmGameStart());
+                    StartCoroutine(RhythmScoreCheck());
+                }
+            }
+            else
+            {
+                castWaiting = false;
+                playerAnimator.Play("player_rod_catch");
             }
         }
     }
@@ -124,7 +113,6 @@ public class FishingSection : MonoBehaviour
 
     void NewCatch()
     {
-        PlayerData.isInUI = true;
         playerAnimator.Play("player_rod_catch");
         PlayerData.beatPlaying = false;
         rhythmSet.SetActive(false);
@@ -137,58 +125,19 @@ public class FishingSection : MonoBehaviour
         castWaiting = true;
         while (castWaiting)
         {
-            Debug.Log("Waiting for catch");
-            chanceToBite = Random.Range(0, 100);
-            chanceToBite = PlayerData.CatchChanceMod(chanceToBite); //dependent on active lure
+            //Debug.Log("Waiting for catch");
+            chanceToBite = Random.Range(0, 201);
+            if (chanceToBite < 0) //in case random value becomes bugged; hopefully useful
+            {
+                chanceToBite = 17;
+            }
+            else if (chanceToBite > 100)
+            {
+                chanceToBite = 99;
+            }
             yield return new WaitForSeconds(5f);
-            if (chanceToBite >= 45 && chanceToBite <= 79) //common fish and junk pool
-            {
-                FishLibrary.fishID = Random.Range(0, 6);
-                if (FishLibrary.fishID < 0) //in case random value becomes bugged, set to lowest; hopefully useful
-                {
-                    FishLibrary.fishID = 0;
-                }
-                catchDiff = 1;
-                switch (FishLibrary.fishID)
-                {
-                    case 3:
-                        isJunk = true;
-                        FishLibrary.fishQuality = 3;
-                        break;
-                    case 4:
-                        isJunk = true;
-                        FishLibrary.fishQuality = 3;
-                        break;
-                    case 5:
-                        isJunk = true;
-                        FishLibrary.fishQuality = 3;
-                        break;
-                    default:
-                        isJunk = false;
-                        break;
-                }
-            }
-            else if (chanceToBite >= 80 && chanceToBite <= 94) //rare fish
-            {
-                FishLibrary.fishID = Random.Range(6, 9);
-                if (FishLibrary.fishID < 0) //in case random value becomes bugged, set to lowest; hopefully useful
-                {
-                    FishLibrary.fishID = 6;
-                }
-                catchDiff = 2;
-                PlayerData.CatchDiffMod(catchDiff); //pass into PlayerData to cache difficulty for next rhythm minigame
-            }
-            else if (chanceToBite >= 95 && chanceToBite <= 99) //exotic fish
-            {
-                FishLibrary.fishID = Random.Range(9, 12);
-                if (FishLibrary.fishID < 0) //in case random value becomes bugged, set to lowest; hopefully useful
-                {
-                    FishLibrary.fishID = 9;
-                }
-                catchDiff = 3;
-                PlayerData.CatchDiffMod(catchDiff);
-            }
-            if (chanceToBite > 29) //as soon as there's a "bite", this includes junk
+            FishLibrary.PondSpawnTable(chanceToBite);
+            if (chanceToBite > FishLibrary.nospawn) //as soon as there's a "bite", this includes junk
             {
                 PlayerData.playerCasts--;
                 playerCastsText.text = PlayerData.playerCasts.ToString() + "/" + PlayerData.castLimit.ToString();
@@ -220,11 +169,11 @@ public class FishingSection : MonoBehaviour
 
     IEnumerator GenerateCatch()
     {
-        if (isJunk)
+        if (FishLibrary.isJunk)
         {
             newCatch = Instantiate(FishLibrary.fishObjects[FishLibrary.fishID], fishingHook.transform.position, Quaternion.identity);
             rb = newCatch.GetComponent<Rigidbody>();
-            isJunk = false;
+            FishLibrary.isJunk = false;
         }
         else
         {
@@ -237,15 +186,14 @@ public class FishingSection : MonoBehaviour
 
         while (newCatch.transform.position.y < transform.position.y)
         {
-            rb.AddForce(Vector3.up * vertSpeed * Time.deltaTime);
-            rb.AddForce(Vector3.left * horzSpeed * Time.deltaTime);
+            rb.AddForce(Vector3.up * PlayerData.vertSpeed * Time.deltaTime);
+            rb.AddForce(Vector3.left * PlayerData.horzSpeed * Time.deltaTime);
             yield return null;
         }
 
         yield return new WaitForSeconds(1f);
         Debug.Log("Enabling canvas");
         catchCanvas.SetActive(true);
-        PlayerData.isInUI = true;
         catchUIanimator.Play("catchUI_start");
     }
 

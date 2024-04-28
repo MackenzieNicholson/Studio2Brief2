@@ -28,19 +28,30 @@ public static class PlayerData
         }
     }
 
-
+    public static float speed = 150.0f;
     public static int castLimit = 12;
     public static int playerSkinID = 0;
-    public static int rodID = 0; //default bamboo rod - determines cast limit
-    public static int bobberID = 0; //default no bobber - gives more time to catch
-    public static int lureID = 0; //default no lure - increases catch chance
-    public static int baitID = 0; //default no bait - reduces catch/rhythm difficulty
     public static int playerScore = 0;
-    public static int playerMoney = 0;
+    public static int playerMoney = 10000;
     public static int fishLimit = 6;
-    public static int bucketID = 0; //determines fish capacity per session
+    public static int clubFishCap = 12;
+    public static int clubMemberCap = 3;
+    public static int clubRenown = 0;
+
+    public static int bucketID = 0; //determines fish capacity per trip
+    public static int rodID = 0; //default bamboo rod - determines cast limit
+    public static int bobberID = 0; //default no bobber - gives more time before fish escapes
+    public static int lureID = 0; //default no lure - increases catch chance
+    public static int baitID = 0; //default no bait - increases chance for specific fish
+
+    public static int areaID = 0;
+    public static int clubWallID = 0;
+    public static int clubFloorID = 0;
+    public static int clubAquariumID = 0;
+    public static int clubLimitID = 0;
 
     public static List<FishManager> fishData = new List<FishManager>();
+    public static List<FishManager> clubFishData = new List<FishManager>();
 
     //for game logic
     public static bool beatPlaying = false;
@@ -52,10 +63,12 @@ public static class PlayerData
     public static bool tossBack = false;
     public static int playerCasts = 0;
     public static int playerFish = 0;
+    public static float vertSpeed = 65000f;
+    public static float horzSpeed = 10000f;
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public static int CatchChanceMod(int modifier)
     {
-        int newModifier = lureID * 5;
+        int newModifier = 100 * (lureID / 10);
         modifier += newModifier; //adjust as needed
         if (modifier > 99)
         {
@@ -77,5 +90,65 @@ public static class PlayerData
     {
         FishManager addFish = new FishManager(FishLibrary.fishID, FishLibrary.fishWeight, FishLibrary.fishSize, FishLibrary.fishQuality, FishLibrary.fishValue);
         fishData.Add(addFish);
+    }
+
+    public static void HookUpdateOne()
+    {
+        FishLibrary.nospawn = 113;
+
+        FishLibrary.pondCarpChance = 126;
+        FishLibrary.pondBassChance = 139;
+        FishLibrary.pondSilverfishChance = 152;
+
+        FishLibrary.pondBootChance = 155;
+        FishLibrary.pondControllerChance = 158;
+        FishLibrary.pondAxolotlChance = 161;
+
+        FishLibrary.pondKoiChance = 169;
+        FishLibrary.pondSturgeonChance = 177;
+        FishLibrary.pondBluegillChance = 185;
+
+        FishLibrary.pondGoldfishChance = 190;
+        FishLibrary.pondStachefishChance = 195;
+    }
+
+    public static void HookUpdateTwo()
+    {
+        FishLibrary.nospawn = 110;
+
+        FishLibrary.pondCarpChance = 125;
+        FishLibrary.pondBassChance = 139;
+        FishLibrary.pondSilverfishChance = 153;
+
+        FishLibrary.pondBootChance = 155;
+        FishLibrary.pondControllerChance = 157;
+        FishLibrary.pondAxolotlChance = 161;
+
+        FishLibrary.pondKoiChance = 168;
+        FishLibrary.pondSturgeonChance = 175;
+        FishLibrary.pondBluegillChance = 182;
+
+        FishLibrary.pondGoldfishChance = 188;
+        FishLibrary.pondStachefishChance = 194;
+    }
+
+    public static void HookUpdateThree()
+    {
+        FishLibrary.nospawn = 108;
+
+        FishLibrary.pondCarpChance = 123;
+        FishLibrary.pondBassChance = 137;
+        FishLibrary.pondSilverfishChance = 151;
+
+        FishLibrary.pondBootChance = 152;
+        FishLibrary.pondControllerChance = 153;
+        FishLibrary.pondAxolotlChance = 155;
+
+        FishLibrary.pondKoiChance = 163;
+        FishLibrary.pondSturgeonChance = 171;
+        FishLibrary.pondBluegillChance = 179;
+
+        FishLibrary.pondGoldfishChance = 186;
+        FishLibrary.pondStachefishChance = 193;
     }
 }

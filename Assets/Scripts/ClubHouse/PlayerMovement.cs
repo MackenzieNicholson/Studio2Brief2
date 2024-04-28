@@ -5,7 +5,6 @@ using UnityEngine.EventSystems;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public static float speed = 150.0f;
     public bool isFishing = false;
 
     float horizontalInput;
@@ -35,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
         {
             moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
             moveDirection = transform.TransformDirection(moveDirection);
-            moveDirection *= speed;
+            moveDirection *= PlayerData.speed;
 
             controller.Move(moveDirection * Time.deltaTime);
 

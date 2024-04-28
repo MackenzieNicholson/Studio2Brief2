@@ -6,8 +6,6 @@ using UnityEngine.UI;
 
 public class ClubManager : MonoBehaviour
 {
-    public TextMeshProUGUI points;
-
     public TextMeshProUGUI rodText;
     public TextMeshProUGUI clubText;
     public TextMeshProUGUI fishText;
@@ -27,13 +25,16 @@ public class ClubManager : MonoBehaviour
     public GameObject tutorialMenu;
     public static bool tutorialSeen;
 
+    public GameObject playerClubStats;
+
     // Start is called before the first frame update
     void Start()
     {
         if (tutorialSeen == false)
         {
+            playerClubStats.SetActive(false);
             tutorialMenu.SetActive(true);
-            PlayerMovement.speed = 0;
+            PlayerData.speed = 0;
         }
 
         rodImage.enabled = false;
@@ -50,7 +51,6 @@ public class ClubManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        points.text = "Points: " + PlayerData.playerScore.ToString() + "\nMoney: " + PlayerData.playerMoney.ToString();
     }
 
     public void Next()
@@ -89,8 +89,9 @@ public class ClubManager : MonoBehaviour
 
     public void Close()
     {
+        playerClubStats.SetActive(true);
         tutorialMenu.SetActive(false);
         tutorialSeen = true;
-        PlayerMovement.speed = 100;
+        PlayerData.speed = 150f;
     }
 }

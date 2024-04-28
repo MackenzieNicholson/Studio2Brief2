@@ -9,7 +9,6 @@ public class CatchUiManager : MonoBehaviour
 {
     public TextMeshProUGUI dialogBoxText;
     public TextMeshProUGUI ratingBoxText;
-    public TextMeshProUGUI fishingScoreText;
     public TextMeshProUGUI keptFishText;
 
     public GameObject dialogTextUI;
@@ -126,7 +125,6 @@ public class CatchUiManager : MonoBehaviour
     {
         PlayerData.playerScore += FishLibrary.fishValue;
         PlayerData.playerMoney += FishLibrary.fishValue;
-        fishingScoreText.text = PlayerData.playerScore.ToString();
         PlayerData.playerFish++;
         keptFishText.text = PlayerData.playerFish.ToString() + "/" + PlayerData.fishLimit.ToString();
         PlayerData.PassFishValues();
@@ -158,7 +156,6 @@ public class CatchUiManager : MonoBehaviour
 
     void SetUItoFalse()
     {
-        PlayerData.isInUI = false;
         PlayerData.isFishing = false;
         PlayerData.hasCatch = false;
         fishOptionsUI.SetActive(false);
@@ -170,8 +167,8 @@ public class CatchUiManager : MonoBehaviour
     {
         while (fishingGame.newCatch.transform.position.y < 11.5f)
         {
-            fishingGame.rb.AddForce(Vector3.up * 65000f * Time.deltaTime);
-            fishingGame.rb.AddForce(Vector3.right * 1000f * Time.deltaTime);
+            fishingGame.rb.AddForce(Vector3.up * PlayerData.vertSpeed * Time.deltaTime);
+            fishingGame.rb.AddForce(Vector3.right * PlayerData.horzSpeed * Time.deltaTime);
             yield return null;
         }
     }
