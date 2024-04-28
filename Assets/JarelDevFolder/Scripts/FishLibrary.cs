@@ -354,15 +354,10 @@ public static class FishLibrary
             newScoreF = newScoreF * fishWeight;
         }*/
         Debug.Log("Calculated raw value: " + newScoreF);
-        int fishScore = Mathf.CeilToInt(newScoreF) * fishQuality;
+        int fishScore = Mathf.CeilToInt(fishWeight * (newScoreF * fishQuality));
         Debug.Log("Calculated final value: " + fishScore);
 
         return fishScore;
-    }
-
-    public static void GenerateSpawnChance()
-    {
-
     }
 
     public static void PondSpawnTable(int chance)

@@ -165,7 +165,7 @@ public class CatchUiManager : MonoBehaviour
 
     IEnumerator TossFish()
     {
-        while (fishingGame.newCatch.transform.position.y < 11.5f)
+        while (fishingGame.newCatch.transform.position.y < 23f)
         {
             fishingGame.rb.AddForce(Vector3.up * PlayerData.vertSpeed * Time.deltaTime);
             fishingGame.rb.AddForce(Vector3.right * PlayerData.horzSpeed * Time.deltaTime);

@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -12,6 +13,8 @@ public class UpgradeManager : MonoBehaviour
     public TextMeshProUGUI clubScore;
     public TextMeshProUGUI clubMoney;
     public TextMeshProUGUI fishHaul;
+    public TextMeshProUGUI renownText;
+    public TextMeshProUGUI memberNum;
 
     public TextMeshProUGUI lureText;
     public TextMeshProUGUI rodText;
@@ -29,6 +32,7 @@ public class UpgradeManager : MonoBehaviour
 
     public TextMeshProUGUI clubScoreStat;
     public TextMeshProUGUI clubMoneyStat;
+    public TextMeshProUGUI clubFishStat;
 
     public bool fishCanvasOpen = false;
     public bool clubCanvasOpen = false;
@@ -59,6 +63,16 @@ public class UpgradeManager : MonoBehaviour
 
     public TextMeshProUGUI transpoButtonText;
 
+    public Material wallMaterial;
+    public Texture wallBrokenTxtr;
+    public Texture wallFixedTxtr;
+    public Texture wallNewTxtr;
+
+    public Material floorMaterial;
+    public Texture floorBrokenTxtr;
+    public Texture floorFixedTxtr;
+    public Texture floorNewTxtr;
+
     GameObject fishIcon;
 
     Animator animator;
@@ -68,10 +82,10 @@ public class UpgradeManager : MonoBehaviour
     int bucketCost = 200;
     int bobberCost = 100;
 
-    int wallCost = 1000;
-    int floorCost = 1000;
+    int wallCost = 750;
+    int floorCost = 250;
     int tankCost = 1000;
-    int memberCost = 1000;
+    int memberCost = 450;
     int transportCost = 1000;
     void Start()
     {
@@ -82,9 +96,14 @@ public class UpgradeManager : MonoBehaviour
         fishgearCanvas.SetActive(false);
         clubhouseCanvas.SetActive(false);
 
+        PlayerData.PlayerRenownUpdate();
+
         clubScoreStat.text = PlayerData.playerScore.ToString();
         clubMoneyStat.text = PlayerData.playerMoney.ToString();
         fishHaul.text = PlayerData.playerFish.ToString() + "/" + PlayerData.fishLimit.ToString();
+        memberNum.text = PlayerData.memberCount.ToString();
+        renownText.text = PlayerData.clubRenown.ToString();
+        clubFishStat.text = PlayerData.clubFishData.Count.ToString() + "/" + PlayerData.clubFishCap.ToString();
 
         CheckIdTags(); //needed for UI updates when scene is reloaded
     }
@@ -254,8 +273,9 @@ public class UpgradeManager : MonoBehaviour
 
         PlayerData.playerFish--;
         fishHaul.text = PlayerData.playerFish.ToString() + "/" + PlayerData.fishLimit.ToString();
-
         fishInventory = PlayerData.fishData.Count;
+
+        clubFishStat.text = PlayerData.clubFishData.Count.ToString() + "/" + PlayerData.clubFishCap.ToString();
         currentFishSelect = 0;
         fishDetails.text = "";
         Destroy(fishIcon);
@@ -443,17 +463,28 @@ public class UpgradeManager : MonoBehaviour
     /// Club Upggrade button functions
     public void UpgradeWalls()
     {
-        if ((PlayerData.clubWallID < 3) && (PlayerData.playerMoney >= wallCost))
+        if ((PlayerData.clubWallID < 2) && (PlayerData.playerMoney >= wallCost))
         {
             switch (PlayerData.clubWallID)
             {
                 case 0:
                     PlayerData.clubWallID++;
                     PlayerData.playerMoney -= wallCost;
+                    wallCost = 1500;
+                    PlayerData.baseRenownMod += 1;
+                    PlayerData.PlayerRenownUpdate();
+                    renownText.text = PlayerData.clubRenown.ToString();
+                    wallMaterial.mainTexture = wallFixedTxtr;
+                    clubOptions.text = "Replace the wall with better material\n\n\nCost: $" + wallCost.ToString();
                     break;
                 case 1:
                     PlayerData.clubWallID++;
                     PlayerData.playerMoney -= wallCost;
+                    PlayerData.baseRenownMod += 3;
+                    PlayerData.PlayerRenownUpdate();
+                    renownText.text = PlayerData.clubRenown.ToString();
+                    wallMaterial.mainTexture = wallNewTxtr;
+                    clubOptions.text = "All upgrades purchased";
                     wallButton.interactable = false;
                     break;
                 default:
@@ -463,17 +494,28 @@ public class UpgradeManager : MonoBehaviour
     }
     public void UpgradeFloor()
     {
-        if ((PlayerData.clubFloorID < 3) && (PlayerData.playerMoney >= floorCost))
+        if ((PlayerData.clubFloorID < 2) && (PlayerData.playerMoney >= floorCost))
         {
-            switch (PlayerData.clubWallID)
+            switch (PlayerData.clubFloorID)
             {
                 case 0:
                     PlayerData.clubFloorID++;
                     PlayerData.playerMoney -= floorCost;
+                    floorCost = 500;
+                    PlayerData.baseRenownMod += 1;
+                    PlayerData.PlayerRenownUpdate();
+                    renownText.text = PlayerData.clubRenown.ToString();
+                    floorMaterial.mainTexture = floorFixedTxtr;
+                    clubOptions.text = "Replace the floor with better material\n\n\nCost: $" + floorCost.ToString();
                     break;
                 case 1:
                     PlayerData.clubFloorID++;
                     PlayerData.playerMoney -= floorCost;
+                    PlayerData.baseRenownMod += 3;
+                    PlayerData.PlayerRenownUpdate();
+                    renownText.text = PlayerData.clubRenown.ToString();
+                    floorMaterial.mainTexture = floorNewTxtr;
+                    clubOptions.text = "All upgrades purchased";
                     floorButton.interactable = false;
                     break;
                 default:
@@ -505,17 +547,36 @@ public class UpgradeManager : MonoBehaviour
 
     public void UpgradeMembership()
     {
-        if ((PlayerData.clubLimitID < 3) && (PlayerData.playerMoney >= memberCost))
+        if ((PlayerData.clubLimitID < 4) && (PlayerData.playerMoney >= memberCost))
         {
             switch (PlayerData.clubLimitID)
             {
                 case 0:
                     PlayerData.clubLimitID++;
+                    PlayerData.clubMemberCap += 3;
                     PlayerData.playerMoney -= memberCost;
+                    memberCost = 900;
+                    clubOptions.text = "Increase the clubhouse's membership capacity from 6 -> 10.\n\n\n\nCost: $" + memberCost.ToString();
                     break;
                 case 1:
                     PlayerData.clubLimitID++;
+                    PlayerData.clubMemberCap += 6;
                     PlayerData.playerMoney -= memberCost;
+                    memberCost = 1500;
+                    clubOptions.text = "Increase the clubhouse's membership capacity from 10 -> 20.\n\n\n\nCost: $" + memberCost.ToString();
+                    break;
+                case 2:
+                    PlayerData.clubLimitID++;
+                    PlayerData.clubMemberCap += 10;
+                    PlayerData.playerMoney -= memberCost;
+                    memberCost = 2000;
+                    clubOptions.text = "Increase the clubhouse's membership capacity from 20 -> 30.\n\n\n\nCost: $" + memberCost.ToString();
+                    break;
+                case 3:
+                    PlayerData.clubLimitID++;
+                    PlayerData.clubMemberCap += 10;
+                    PlayerData.playerMoney -= memberCost;
+                    clubOptions.text = "Membership limit reached: " + PlayerData.clubMemberCap.ToString();
                     membershipButton.interactable = false;
                     break;
                 default:
@@ -580,7 +641,8 @@ public class UpgradeManager : MonoBehaviour
     {
         vendorModeText.text = "";
     }
-    
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //Fishing Gear
     public void LureText()
     {
@@ -663,14 +725,37 @@ public class UpgradeManager : MonoBehaviour
         }
     }
 
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //Clubhouse
     public void FloorText()
     {
-        clubOptions.text = "Repair the clubhouse's floor";
+        switch (PlayerData.clubFloorID)
+        {
+            case 0:
+                clubOptions.text = "Repair the club floor\n\n\nCost: $" + floorCost.ToString();
+                break;
+            case 1:
+                clubOptions.text = "Replace the floor with better material\n\n\nCost: $" + floorCost.ToString();
+                break;
+            default:
+                clubOptions.text = "All upgrades purchased.";
+                break;
+        }
     }
     public void WallsText()
     {
-        clubOptions.text = "Repair the clubhouse's walls";
+        switch (PlayerData.clubWallID)
+        {
+            case 0:
+                clubOptions.text = "Repair the club wall\n\n\nCost: $" + wallCost.ToString();
+                break;
+            case 1:
+                clubOptions.text = "Replace the wall with better material\n\n\nCost: $" + wallCost.ToString();
+                break;
+            default:
+                clubOptions.text = "All upgrades purchased.";
+                break;
+        }
     }
     public void AquariumText()
     {
@@ -678,7 +763,24 @@ public class UpgradeManager : MonoBehaviour
     }
     public void MembershipText()
     {
-        clubOptions.text = "Increase the club's membership capacity";
+        switch (PlayerData.clubLimitID)
+        {
+            case 0:
+                clubOptions.text = "Increase the clubhouse's membership capacity from 1 -> 4.\n\n\n\nCost: $" + memberCost.ToString();
+                break;
+            case 1:
+                clubOptions.text = "Increase the clubhouse's membership capacity from 4 -> 10.\n\n\n\nCost: $" + memberCost.ToString();
+                break;
+            case 2:
+                clubOptions.text = "Increase the clubhouse's membership capacity from 10 -> 20.\n\n\n\nCost: $" + memberCost.ToString();
+                break;
+            case 3:
+                clubOptions.text = "Increase the clubhouse's membership capacity from 20 -> 30.\n\n\n\nCost: $" + memberCost.ToString();
+                break;
+            default:
+                clubOptions.text = "Membership limit reached: " + PlayerData.clubMemberCap.ToString();
+                break;
+        }
     }
     public void TransportText()
     {
@@ -797,6 +899,57 @@ public class UpgradeManager : MonoBehaviour
                 break;
             default:
                 selectBucketUpgradeButton.interactable = false;
+                break;
+        }
+
+        switch (PlayerData.clubLimitID)
+        {
+            case 0:
+                memberCost = 450;
+                break;
+            case 1:
+                memberCost = 900;
+                break;
+            case 2:
+                memberCost = 1500;
+                break;
+            case 3:
+                memberCost = 2500;
+                break;
+            default:
+                membershipButton.interactable = false;
+                break;
+        }
+
+        switch (PlayerData.clubWallID)
+        {
+            case 0:
+                wallCost = 750;
+                wallMaterial.mainTexture = wallBrokenTxtr;
+                break;
+            case 1:
+                wallCost = 1500;
+                wallMaterial.mainTexture = wallFixedTxtr;
+                break;
+            default:
+                wallMaterial.mainTexture = wallNewTxtr;
+                wallButton.interactable = false;
+                break;
+        }
+
+        switch (PlayerData.clubFloorID)
+        {
+            case 0:
+                floorCost = 250;
+                floorMaterial.mainTexture = floorBrokenTxtr;
+                break;
+            case 1:
+                floorCost = 500;
+                floorMaterial.mainTexture = floorFixedTxtr;
+                break;
+            default:
+                floorMaterial.mainTexture = floorNewTxtr;
+                floorButton.interactable = false;
                 break;
         }
     }

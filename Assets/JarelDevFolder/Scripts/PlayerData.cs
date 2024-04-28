@@ -35,8 +35,10 @@ public static class PlayerData
     public static int playerMoney = 10000;
     public static int fishLimit = 6;
     public static int clubFishCap = 12;
-    public static int clubMemberCap = 3;
+    public static int clubMemberCap = 1;
+    public static int memberCount = 1;
     public static int clubRenown = 0;
+    public static int baseRenownMod = 10;
 
     public static int bucketID = 0; //determines fish capacity per trip
     public static int rodID = 0; //default bamboo rod - determines cast limit
@@ -150,5 +152,10 @@ public static class PlayerData
 
         FishLibrary.pondGoldfishChance = 186;
         FishLibrary.pondStachefishChance = 193;
+    }
+
+    public static void PlayerRenownUpdate()
+    {
+        clubRenown = playerScore * ((memberCount + baseRenownMod) /100);
     }
 }

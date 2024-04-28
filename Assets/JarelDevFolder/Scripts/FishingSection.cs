@@ -125,17 +125,17 @@ public class FishingSection : MonoBehaviour
         castWaiting = true;
         while (castWaiting)
         {
-            //Debug.Log("Waiting for catch");
             chanceToBite = Random.Range(0, 201);
             if (chanceToBite < 0) //in case random value becomes bugged; hopefully useful
             {
-                chanceToBite = 17;
+                chanceToBite = 117;
             }
-            else if (chanceToBite > 100)
+            else if (chanceToBite > 200)
             {
-                chanceToBite = 99;
+                chanceToBite = 199;
             }
             yield return new WaitForSeconds(5f);
+            Debug.Log("Waiting for catch. Rolled chance: " + chanceToBite);
             FishLibrary.PondSpawnTable(chanceToBite);
             if (chanceToBite > FishLibrary.nospawn) //as soon as there's a "bite", this includes junk
             {

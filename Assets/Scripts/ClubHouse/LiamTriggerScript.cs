@@ -97,14 +97,14 @@ public class LiamTriggerScript : MonoBehaviour
             inRodTrigger = true;
             Debug.Log("is in rod upgrade");
             promptBack.enabled = true;
-            promptUI.text = "Enter: Upgrade Gear";
+            promptUI.text = "Enter: Fishing Vendor";
         }
         else if(isClub == true)
         {
             inClubTrigger = true;
             Debug.Log("is in club upgrade");
             promptBack.enabled = true;
-            promptUI.text = "Enter: Upgrade Club";
+            promptUI.text = "Enter: Clubhouse Vendor";
         }
         else if(isFish == true)
         {
