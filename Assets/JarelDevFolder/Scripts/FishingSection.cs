@@ -100,15 +100,6 @@ public class FishingSection : MonoBehaviour
             Debug.Log("Hook in the water");
             StartCoroutine(SpawnTablePond());
         }
-        else if (PlayerData.tossBack)
-        {
-            if (other.gameObject.layer == LayerMask.NameToLayer("Fish"))
-            {
-                PlayerData.tossBack = false;
-                Debug.Log("Fish Removed from scene");
-                Destroy(other);
-            }
-        }
     }
 
     void NewCatch()
@@ -235,5 +226,27 @@ public class FishingSection : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    public void ReturnToSea()
+    {
+        StartCoroutine(TossFish());
+    }
+    IEnumerator TossFish()
+    {
+        Debug.Log("Sending fish back to sea");
+        GameObject rejectFish = newCatch;
+        while (rejectFish.transform.position.y < 11f)
+        {
+            rejectFish.GetComponent<Rigidbody>().AddForce(Vector3.up * PlayerData.vertSpeed * Time.deltaTime);
+            rejectFish.GetComponent<Rigidbody>().AddForce(Vector3.right * PlayerData.horzSpeed * Time.deltaTime);
+            yield return null;
+        }
+        while (rejectFish.transform.position.y > -10f)
+        {
+            rejectFish.GetComponent<Rigidbody>().AddForce(Vector3.right * PlayerData.horzSpeed * Time.deltaTime);
+            yield return null;
+        }
+        Destroy(rejectFish);
     }
 }

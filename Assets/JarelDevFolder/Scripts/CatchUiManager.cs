@@ -123,8 +123,6 @@ public class CatchUiManager : MonoBehaviour
 
     public void KeepFish()
     {
-        PlayerData.playerScore += FishLibrary.fishValue;
-        PlayerData.playerMoney += FishLibrary.fishValue;
         PlayerData.playerFish++;
         keptFishText.text = PlayerData.playerFish.ToString() + "/" + PlayerData.fishLimit.ToString();
         PlayerData.PassFishValues();
@@ -134,7 +132,7 @@ public class CatchUiManager : MonoBehaviour
 
     public void ReturnFish()
     {
-        StartCoroutine(TossFish());
+        fishingGame.ReturnToSea();
         CloseUI();
     }
 
@@ -161,15 +159,5 @@ public class CatchUiManager : MonoBehaviour
         fishOptionsUI.SetActive(false);
         Destroy(newFishUI);
         gameObject.SetActive(false);
-    }
-
-    IEnumerator TossFish()
-    {
-        while (fishingGame.newCatch.transform.position.y < 23f)
-        {
-            fishingGame.rb.AddForce(Vector3.up * PlayerData.vertSpeed * Time.deltaTime);
-            fishingGame.rb.AddForce(Vector3.right * PlayerData.horzSpeed * Time.deltaTime);
-            yield return null;
-        }
     }
 }

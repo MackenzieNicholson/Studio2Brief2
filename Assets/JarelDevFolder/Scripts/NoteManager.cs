@@ -123,7 +123,7 @@ public class NoteManager : MonoBehaviour
                 Vector2 noteBoundA = new Vector2(noteImage.rectTransform.position.x, noteEdgeDown);
                 Vector2 noteBoundB = new Vector2(precedingNoteManager.noteImage.rectTransform.position.x, precedingNoteManager.noteEdgeUp);
                 float noteDistance = Vector2.Distance(noteBoundA, noteBoundB);
-                float newPos = noteImage.rectTransform.position.y + noteDistance + 2f;
+                float newPos = noteImage.rectTransform.position.y + noteDistance + 30f;
                 Vector2 adjustPos = new Vector3(noteImage.rectTransform.position.x, newPos);
                 noteImage.rectTransform.position = adjustPos;
                 //Debug.Log("Overlap resolved");

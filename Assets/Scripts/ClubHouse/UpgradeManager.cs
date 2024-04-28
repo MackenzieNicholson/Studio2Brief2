@@ -84,7 +84,7 @@ public class UpgradeManager : MonoBehaviour
 
     int wallCost = 750;
     int floorCost = 250;
-    int tankCost = 1000;
+    int tankCost = 300;
     int memberCost = 450;
     int transportCost = 1000;
     void Start()
@@ -168,7 +168,7 @@ public class UpgradeManager : MonoBehaviour
 
     public void CycleNextFish()
     {
-        if (currentFishSelect < fishInventory)
+        if (currentFishSelect < (fishInventory - 1))
         {
             currentFishSelect++;
             DisplayFishItem();
@@ -526,17 +526,40 @@ public class UpgradeManager : MonoBehaviour
 
     public void UpgradeAquarium()
     {
-        if ((PlayerData.clubAquariumID < 3) && (PlayerData.playerMoney >= tankCost))
+        if ((PlayerData.clubAquariumID < 4) && (PlayerData.playerMoney >= tankCost))
         {
             switch (PlayerData.clubAquariumID)
             {
                 case 0:
                     PlayerData.clubAquariumID++;
                     PlayerData.playerMoney -= tankCost;
+                    PlayerData.clubFishCap = 12;
+                    clubFishStat.text = PlayerData.clubFishData.Count.ToString() + "/" + PlayerData.clubFishCap.ToString();
+                    tankCost = 800;
+                    clubOptions.text = "Increase aquarium capacity to 20.\n\n\nCost: $" + tankCost.ToString();
                     break;
                 case 1:
                     PlayerData.clubAquariumID++;
                     PlayerData.playerMoney -= tankCost;
+                    PlayerData.clubFishCap = 20;
+                    clubFishStat.text = PlayerData.clubFishData.Count.ToString() + "/" + PlayerData.clubFishCap.ToString();
+                    tankCost = 1600;
+                    clubOptions.text = "Increase aquarium capacity to 36.\n\n\nCost: $" + tankCost.ToString();
+                    break;
+                case 2:
+                    PlayerData.clubAquariumID++;
+                    PlayerData.playerMoney -= tankCost;
+                    PlayerData.clubFishCap = 36;
+                    clubFishStat.text = PlayerData.clubFishData.Count.ToString() + "/" + PlayerData.clubFishCap.ToString();
+                    tankCost = 2400;
+                    clubOptions.text = "Increase aquarium capacity to 60.\n\n\nCost: $" + tankCost.ToString();
+                    break;
+                case 3:
+                    PlayerData.clubAquariumID++;
+                    PlayerData.playerMoney -= tankCost;
+                    PlayerData.clubFishCap = 60;
+                    clubFishStat.text = PlayerData.clubFishData.Count.ToString() + "/" + PlayerData.clubFishCap.ToString();
+                    clubOptions.text = "All upgrades purchased.";
                     aquariumButton.interactable = false;
                     break;
                 default:
@@ -759,7 +782,24 @@ public class UpgradeManager : MonoBehaviour
     }
     public void AquariumText()
     {
-        clubOptions.text = "Upgrade the aquarium to store more fish for the clubhouse";
+        switch (PlayerData.clubAquariumID)
+        {
+            case 0:
+                clubOptions.text = "Increase aquarium capacity to 12.\n\n\nCost: $" + tankCost.ToString();
+                break;
+            case 1:
+                clubOptions.text = "Increase aquarium capacity to 20.\n\n\nCost: $" + tankCost.ToString();
+                break;
+            case 2:
+                clubOptions.text = "Increase aquarium capacity to 36.\n\n\nCost: $" + tankCost.ToString();
+                break;
+            case 3:
+                clubOptions.text = "Increase aquarium capacity to 60.\n\n\nCost: $" + tankCost.ToString();
+                break;
+            default:
+                clubOptions.text = "All upgrades purchased.";
+                break;
+        }
     }
     public void MembershipText()
     {
@@ -950,6 +990,25 @@ public class UpgradeManager : MonoBehaviour
             default:
                 floorMaterial.mainTexture = floorNewTxtr;
                 floorButton.interactable = false;
+                break;
+        }
+
+        switch (PlayerData.clubAquariumID)
+        {
+            case 0:
+                tankCost = 300;
+                break;
+            case 1:
+                tankCost = 800;
+                break;
+            case 2:
+                tankCost = 1600;
+                break;
+            case 3:
+                tankCost = 2400;
+                break;
+            default:
+                aquariumButton.interactable = false;
                 break;
         }
     }
