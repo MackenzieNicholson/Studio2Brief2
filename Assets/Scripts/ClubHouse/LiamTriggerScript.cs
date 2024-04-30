@@ -8,17 +8,14 @@ using UnityEngine.UI;
 
 public class LiamTriggerScript : MonoBehaviour
 {
-    public bool isDoor;
-    public bool isRod;
-    public bool isClub;
-    public bool isFish;
-
-    private bool inDoorTrigger;
-    private bool inRodTrigger;
-    private bool inClubTrigger;
-    private bool inFishTrigger;
+    public bool isDoor = false;
+    public bool isRod = false;
+    public bool isClub = false;
+    public bool isFish = false;
 
     public Animator clubVendorAnimator;
+    public Animator mapAnimator;
+    public Animator aquariumAnimator;
     public GameObject vendorCanvasUI;
     public GameObject fishVendorUI;
     public GameObject clubVendorUI;
@@ -26,6 +23,8 @@ public class LiamTriggerScript : MonoBehaviour
 
     public TextMeshProUGUI promptUI;
     public Image promptBack;
+
+    public GameObject promptButton;
 
     private void Start()
     {
@@ -36,100 +35,55 @@ public class LiamTriggerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButton("Submit") || Input.GetKeyDown(KeyCode.E))
-        {
-            if(inDoorTrigger== true)
-            {
-                SceneManager.LoadScene(3);
-            }
-            else if(inRodTrigger== true)
-            {
-                PlayerData.speed = 0f;
-                playerStatsUI.SetActive(false);
-                clubVendorAnimator.Play("vendorCanvas_fish_open");
-                
-            }
-            else if(inClubTrigger== true)
-            {
-                PlayerData.speed = 0f;
-                playerStatsUI.SetActive(false);
-                clubVendorAnimator.Play("vendorCanvas_club_open");
-            }
-            else if(inFishTrigger== true)
-            {
-                /*PlayerData.speed = 0f;
-                playerStatsUI.SetActive(false);*/
-            }
-
-        }
-
-        /*if (inRodTrigger== true)
-        {
-            if (Input.GetButton("Cancel"))
-            {
-                fishVendorAnimator.Play("vendorCanvas_close");
-                PlayerData.speed = 150f;
-            }
-            
-        }
-        else if (inClubTrigger == true)
-        {
-            if (Input.GetButton("Cancel"))
-            {
-                clubVendorAnimator.SetTrigger("close");
-                PlayerData.speed = 150f;
-            }
-        }*/
 
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void OpenFishVendor()
     {
-        if(isDoor == true)
-        {
-            inDoorTrigger = true;
-            Debug.Log("is in door");
-            promptBack.enabled = true;
-            promptUI.text = "Enter: Go Fishing";
-        }
-        else if(isRod == true)
-        {
-            inRodTrigger = true;
-            Debug.Log("is in rod upgrade");
-            promptBack.enabled = true;
-            promptUI.text = "Enter: Fishing Vendor";
-        }
-        else if(isClub == true)
-        {
-            inClubTrigger = true;
-            Debug.Log("is in club upgrade");
-            promptBack.enabled = true;
-            promptUI.text = "Enter: Clubhouse Vendor";
-        }
-        else if(isFish == true)
-        {
-            inFishTrigger = true;
-            Debug.Log("is in fish tank");
-            promptBack.enabled = true;
-            promptUI.text = "Enter: Check Fish";
-        }
+        PlayerData.speed = 0f;
+        playerStatsUI.SetActive(false);
+        clubVendorAnimator.Play("vendorCanvas_fish_open");
     }
 
-
-    private void OnTriggerExit(Collider other)
+    public void OpenAquarium()
     {
-        inDoorTrigger = false;
-        inRodTrigger = false;
-        inClubTrigger = false;
-        inFishTrigger = false;
-        promptUI.text = "";
-        promptBack.enabled = false;
-        //menu.SetActive(false);
+        PlayerData.speed = 0f;
+        playerStatsUI.SetActive(false);
+        aquariumAnimator.Play("aquarium_open");
     }
 
-    /*public void CloseMenu()
+    public void OpenClubVendor()
     {
-        animator.SetTrigger("close");
-        PlayerMovement.speed = 100;
-    }*/
+        PlayerData.speed = 0f;
+        playerStatsUI.SetActive(false);
+        clubVendorAnimator.Play("vendorCanvas_club_open");
+    }
+
+    public void OpenLocationSelect()
+    {
+        PlayerData.speed = 0f;
+        playerStatsUI.SetActive(false);
+        mapAnimator.Play("mapCanvas_open");
+    }
+
+    public void PromptClick()
+    {
+        promptButton.SetActive(false);
+        if (isDoor)
+        {
+            OpenLocationSelect();
+        }
+        else if (isRod)
+        {
+            OpenFishVendor();
+        }
+        else if (isClub)
+        {
+            OpenClubVendor();
+        }
+        else if (isFish)
+        {
+            OpenAquarium();
+        }
+    }
 }

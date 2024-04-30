@@ -104,7 +104,7 @@ public class NoteManager : MonoBehaviour
         float bottomY = corners[0].y; // Bottom-left corner's y-coordinate
 
         Vector2 yBounds = new Vector2(topY, bottomY);
-        noteRadius = (yBounds.x - yBounds.y) / 2f + 3f; // 3f is to give a wider margin of error when timing hits; any larger than 3f is no good and would probably break the challenge;
+        noteRadius = ((yBounds.x - yBounds.y) / 2f) + 3f; // 3f is to give a wider margin of error when timing hits; any larger than 3f is no good and would probably break the challenge;
 
         noteEdgeUp = noteImage.rectTransform.position.y + noteRadius;
         noteEdgeDown = noteImage.rectTransform.position.y - noteRadius;

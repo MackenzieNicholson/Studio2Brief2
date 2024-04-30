@@ -894,6 +894,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1789642149}
+    - target: {fileID: 3539409164942315810, guid: 68e60042df23127468e1d911b6740e93, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 999
+      objectReference: {fileID: 0}
+    - target: {fileID: 3539409164942315810, guid: 68e60042df23127468e1d911b6740e93, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 4239674422891896069, guid: 68e60042df23127468e1d911b6740e93, type: 3}
       propertyPath: fishingGame
       value: 
@@ -976,6 +984,52 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4702436786825238221, guid: 68e60042df23127468e1d911b6740e93, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5934829811112637484, guid: 68e60042df23127468e1d911b6740e93, type: 3}
+      propertyPath: m_text
+      value: 'Press Q to fish/reel in
+
+
+        To hit the notes use
+
+        A  
+        S   K   L'
+      objectReference: {fileID: 0}
+    - target: {fileID: 5934829811112637484, guid: 68e60042df23127468e1d911b6740e93, type: 3}
+      propertyPath: m_fontSize
+      value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: 5934829811112637484, guid: 68e60042df23127468e1d911b6740e93, type: 3}
+      propertyPath: m_margin.w
+      value: -92.48551
+      objectReference: {fileID: 0}
+    - target: {fileID: 5934829811112637484, guid: 68e60042df23127468e1d911b6740e93, type: 3}
+      propertyPath: m_margin.z
+      value: 148.53838
+      objectReference: {fileID: 0}
+    - target: {fileID: 5934829811112637484, guid: 68e60042df23127468e1d911b6740e93, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
+    - target: {fileID: 5934829811112637484, guid: 68e60042df23127468e1d911b6740e93, type: 3}
+      propertyPath: m_fontStyle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5934829811112637484, guid: 68e60042df23127468e1d911b6740e93, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: 5934829811112637484, guid: 68e60042df23127468e1d911b6740e93, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
+    - target: {fileID: 5934829811112637484, guid: 68e60042df23127468e1d911b6740e93, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5934829811112637484, guid: 68e60042df23127468e1d911b6740e93, type: 3}
+      propertyPath: m_hasFontAssetChanged
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

@@ -73,6 +73,8 @@ public class UpgradeManager : MonoBehaviour
     public Texture floorFixedTxtr;
     public Texture floorNewTxtr;
 
+    public LiamTriggerScript triggerScript;
+
     GameObject fishIcon;
 
     Animator animator;
@@ -134,6 +136,7 @@ public class UpgradeManager : MonoBehaviour
         fishInventory = PlayerData.fishData.Count;
         currentFishSelect = 0;
         fishDetails.text = "";
+        fishName.text = "";
 
         if (fishInventory <= 0)
         {
@@ -204,6 +207,7 @@ public class UpgradeManager : MonoBehaviour
         clubScoreStat.text = PlayerData.playerScore.ToString();
         clubMoneyStat.text = PlayerData.playerMoney.ToString();
         animator.Play("vendorCanvas_fish_close");
+        triggerScript.promptButton.SetActive(true);
     }
 
     void SetFishCanvasOpen()
@@ -225,6 +229,7 @@ public class UpgradeManager : MonoBehaviour
         clubScoreStat.text = PlayerData.playerScore.ToString();
         clubMoneyStat.text = PlayerData.playerMoney.ToString();
         animator.Play("vendorCanvas_club_close");
+        triggerScript.promptButton.SetActive(true);
     }
     void SetClubCanvasOpen()
     {
@@ -250,6 +255,7 @@ public class UpgradeManager : MonoBehaviour
         fishInventory = PlayerData.fishData.Count;
         currentFishSelect = 0;
         fishDetails.text = "";
+        fishName.text = "";
         Destroy(fishIcon);
 
         if (fishInventory == 0)
@@ -278,6 +284,7 @@ public class UpgradeManager : MonoBehaviour
         clubFishStat.text = PlayerData.clubFishData.Count.ToString() + "/" + PlayerData.clubFishCap.ToString();
         currentFishSelect = 0;
         fishDetails.text = "";
+        fishName.text = "";
         Destroy(fishIcon);
 
         if (fishInventory == 0)
@@ -619,7 +626,7 @@ public class UpgradeManager : MonoBehaviour
                     PlayerData.playerMoney -= transportCost;
                     transpoButtonText.text = "Transport Service: Ocean";
                     transportCost = 2000;
-                    clubOptions.text = "Extends the transportation service to the Pasiv Ocean Park\n\n\n\nCost: $" + transportCost.ToString();
+                    clubOptions.text = "Extends the transportation service to the Ocean Park\n\n\n\nCost: $" + transportCost.ToString();
                     break;
                 case 1:
                     PlayerData.areaID++;
@@ -827,10 +834,10 @@ public class UpgradeManager : MonoBehaviour
         switch (PlayerData.areaID)
         {
             case 0:
-                clubOptions.text = "Unlocks a transportation service to the Brisby River\n\n\n\nCost: $" + transportCost.ToString();
+                clubOptions.text = "Unlocks a transportation service to Riverside\n\n\n\nCost: $" + transportCost.ToString();
                 break;
             case 1:
-                clubOptions.text = "Extends the transportation service to the Pasiv Ocean Park\n\n\n\nCost: $" + transportCost.ToString();
+                clubOptions.text = "Extends the transportation service to the Ocean Park\n\n\n\nCost: $" + transportCost.ToString();
                 break;
             case 2:
                 clubOptions.text = "Adds a fish tank to the transportation vehicle to increase fish that can be carried (+4)\n\n\n\nCost: $" + transportCost.ToString();

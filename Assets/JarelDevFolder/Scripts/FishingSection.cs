@@ -32,6 +32,7 @@ public class FishingSection : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        PlayerData.speed = 150f;
         playerAnimator = GameObject.Find("playerSprite").GetComponent<Animator>();
         fishingHook = GameObject.Find("hookDetector");
         FishLibrary.isJunk = false;
