@@ -15,6 +15,7 @@ public class UpgradeManager : MonoBehaviour
     public TextMeshProUGUI fishHaul;
     public TextMeshProUGUI renownText;
     public TextMeshProUGUI memberNum;
+    public TextMeshProUGUI clubUpgradeMoney;
 
     public TextMeshProUGUI lureText;
     public TextMeshProUGUI rodText;
@@ -272,6 +273,9 @@ public class UpgradeManager : MonoBehaviour
 
     public void KeepFish()
     {
+        PlayerData.PlayerRenownUpdate();
+        renownText.text = PlayerData.clubRenown.ToString();
+
         PlayerData.playerScore += PlayerData.fishData[currentFishSelect].fishValue;
         clubScore.text = PlayerData.playerScore.ToString();
         PlayerData.clubFishData.Add(PlayerData.fishData[currentFishSelect]);
@@ -497,6 +501,12 @@ public class UpgradeManager : MonoBehaviour
                 default:
                     break;
             }
+            clubMoney.text = PlayerData.playerMoney.ToString();
+            clubUpgradeMoney.text = PlayerData.playerMoney.ToString();
+        }
+        else if (wallCost > PlayerData.playerMoney)
+        {
+            clubOptions.text = "No money! Maybe sell more fish?";
         }
     }
     public void UpgradeFloor()
@@ -528,6 +538,12 @@ public class UpgradeManager : MonoBehaviour
                 default:
                     break;
             }
+            clubMoney.text = PlayerData.playerMoney.ToString();
+            clubUpgradeMoney.text = PlayerData.playerMoney.ToString();
+        }
+        else if (floorCost > PlayerData.playerMoney)
+        {
+            clubOptions.text = "No money! Maybe sell more fish?";
         }
     }
 
@@ -572,6 +588,12 @@ public class UpgradeManager : MonoBehaviour
                 default:
                     break;
             }
+            clubMoney.text = PlayerData.playerMoney.ToString();
+            clubUpgradeMoney.text = PlayerData.playerMoney.ToString();
+        }
+        else if (tankCost > PlayerData.playerMoney)
+        {
+            clubOptions.text = "No money! Maybe sell more fish?";
         }
     }
 
@@ -612,6 +634,12 @@ public class UpgradeManager : MonoBehaviour
                 default:
                     break;
             }
+            clubMoney.text = PlayerData.playerMoney.ToString();
+            clubUpgradeMoney.text = PlayerData.playerMoney.ToString();
+        }
+        else if (memberCost > PlayerData.playerMoney)
+        {
+            clubOptions.text = "No money! Maybe sell more fish?";
         }
     }
 
@@ -648,10 +676,11 @@ public class UpgradeManager : MonoBehaviour
                     break;
             }
             clubMoney.text = PlayerData.playerMoney.ToString();
+            clubUpgradeMoney.text = PlayerData.playerMoney.ToString();
         }
         else if (transportCost > PlayerData.playerMoney)
         {
-            gearOptions.text = "No money! Maybe sell more fish?";
+            clubOptions.text = "No money! Maybe sell more fish?";
         }
     }
 

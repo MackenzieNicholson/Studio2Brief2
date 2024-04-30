@@ -32,7 +32,7 @@ public static class PlayerData
     public static int castLimit = 12;
     public static int playerSkinID = 0;
     public static int playerScore = 0;
-    public static int playerMoney = 10000;
+    public static int playerMoney = 0;
     public static int fishLimit = 6;
     public static int clubFishCap = 12;
     public static int clubMemberCap = 1;
