@@ -34,6 +34,7 @@ public static class FishLibrary
     public static int pondGoldfishChance = 192;
     public static int pondStachefishChance = 196;
     public static int pondBullroutChance = 200;
+    public static int axolotlColor = 0;
 
     ////////////////////////////////
 
@@ -61,10 +62,10 @@ public static class FishLibrary
         "Wandering Axolotl",
         "Neon Koi",
         "Doctor Sturgeon",
-        "Cobalt Bluegill",
+        "Lemon Bluegill",
         "Goldfish",
-        "Pencilstache Fish",
-        "Raging Bullrout"
+        "Mustache Fish",
+        "Red Bullrout"
     };
 
     public static List<GameObject> fishObjects = new List<GameObject>();

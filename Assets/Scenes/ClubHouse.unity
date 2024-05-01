@@ -7486,6 +7486,30 @@ PrefabInstance:
       value: 0.58504325
       objectReference: {fileID: 0}
     - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
+      propertyPath: bass
+      value: 
+      objectReference: {fileID: 84456107062246924, guid: b46d7e350887cb04790f390ae6cf738a, type: 3}
+    - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
+      propertyPath: axolotl
+      value: 
+      objectReference: {fileID: 9000695027957501580, guid: f0d9b27d4e569c2419347e1f477e1eab, type: 3}
+    - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
+      propertyPath: bluegill
+      value: 
+      objectReference: {fileID: 84456107062246924, guid: debcf88312e2522439ba77f07f392e00, type: 3}
+    - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
+      propertyPath: bullrout
+      value: 
+      objectReference: {fileID: 84456107062246924, guid: a9410cafca328874c9ed3916600e62be, type: 3}
+    - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
+      propertyPath: mustache
+      value: 
+      objectReference: {fileID: 84456107062246924, guid: 2d05488884dc82d49b0c59c9278c1ea5, type: 3}
+    - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
+      propertyPath: sturgeon
+      value: 
+      objectReference: {fileID: 84456107062246924, guid: 3fa73b2a4ac37f34dbf16cb2f1dc4b11, type: 3}
+    - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
       propertyPath: koiImageUI
       value: 
       objectReference: {fileID: 1726119298645069735, guid: 5f4114e293fcb654381d3cb572a48d94, type: 3}
@@ -7496,7 +7520,7 @@ PrefabInstance:
     - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
       propertyPath: bassImageUI
       value: 
-      objectReference: {fileID: 8755499267656022383, guid: 24d2e3dad17790f4bb830e3d42594ece, type: 3}
+      objectReference: {fileID: 8755499267656022383, guid: 4a70ec23b3d3bc34582e0e24d73f2522, type: 3}
     - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
       propertyPath: bootImageUI
       value: 
@@ -7510,13 +7534,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1726119298645069735, guid: 334fd991ee01e124ea69a6455bd29c4b, type: 3}
     - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
+      propertyPath: axolotlImageUI
+      value: 
+      objectReference: {fileID: 1726119298645069735, guid: 01b283d8860bf4947987712a1441921d, type: 3}
+    - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
+      propertyPath: gameController
+      value: 
+      objectReference: {fileID: 9000695027957501580, guid: 28f0df63ef7df0d47b2a9b683b9dbc11, type: 3}
+    - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
       propertyPath: bluegillImageUI
       value: 
-      objectReference: {fileID: 1726119298645069735, guid: 5f4114e293fcb654381d3cb572a48d94, type: 3}
+      objectReference: {fileID: 8755499267656022383, guid: 68cfb2bf72044224fbe355b4585d77ff, type: 3}
     - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
       propertyPath: bullroutImageUI
       value: 
-      objectReference: {fileID: 6929820852827895007, guid: a4a926d79b8c26944ad69196a47b9b23, type: 3}
+      objectReference: {fileID: 8755499267656022383, guid: e49189261a8f8e141ac1d6b5dd71f4ed, type: 3}
     - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
       propertyPath: goldfishImageUI
       value: 
@@ -7524,15 +7556,15 @@ PrefabInstance:
     - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
       propertyPath: mustacheImageUI
       value: 
-      objectReference: {fileID: 6929820852827895007, guid: a4a926d79b8c26944ad69196a47b9b23, type: 3}
+      objectReference: {fileID: 8755499267656022383, guid: 8c6b29637f970e0449258ded7de6b6ce, type: 3}
     - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
       propertyPath: sturgeonImageUI
       value: 
-      objectReference: {fileID: 1726119298645069735, guid: 5f4114e293fcb654381d3cb572a48d94, type: 3}
+      objectReference: {fileID: 8755499267656022383, guid: 2c5472afddeb00c45ae9e9fba8694c26, type: 3}
     - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
       propertyPath: controllerImageUI
       value: 
-      objectReference: {fileID: 1726119298645069735, guid: 334fd991ee01e124ea69a6455bd29c4b, type: 3}
+      objectReference: {fileID: 1726119298645069735, guid: 1a8df4e6f47558d44b5ffc6d2881996c, type: 3}
     - target: {fileID: 2310521240634540820, guid: 11028158d73cdfa4680ff016184115da, type: 3}
       propertyPath: silverfishImageUI
       value: 
@@ -7627,6 +7659,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6663934688303559957, guid: 11028158d73cdfa4680ff016184115da, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7051641278500295770, guid: 11028158d73cdfa4680ff016184115da, type: 3}
+      propertyPath: m_ExcludeLayers.m_Bits
+      value: 512
+      objectReference: {fileID: 0}
+    - target: {fileID: 7051641278500295770, guid: 11028158d73cdfa4680ff016184115da, type: 3}
+      propertyPath: m_IncludeLayers.m_Bits
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7540596235926001419, guid: 11028158d73cdfa4680ff016184115da, type: 3}
@@ -10661,7 +10701,7 @@ MonoBehaviour:
   fishHaul: {fileID: 1276885951}
   renownText: {fileID: 817293745}
   memberNum: {fileID: 1686186883}
-  clubUpgradeMoney: {fileID: 0}
+  clubUpgradeMoney: {fileID: 1580827985}
   lureText: {fileID: 1275904695}
   rodText: {fileID: 1958925000}
   bucketText: {fileID: 699351791}
@@ -15412,7 +15452,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 1636222301}
   m_OnClick:
     m_PersistentCalls:

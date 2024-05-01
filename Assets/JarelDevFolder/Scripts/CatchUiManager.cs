@@ -18,10 +18,6 @@ public class CatchUiManager : MonoBehaviour
     public GameObject keepButtonUI;
     public GameObject returnButtonUI;
 
-    public GameObject carpImageUI;
-    public GameObject goldfishImageUI;
-    public GameObject koiImageUI;
-
     public GameObject fishResultImage;
 
     public FishingSection fishingGame;
@@ -51,11 +47,58 @@ public class CatchUiManager : MonoBehaviour
         dialogTextUI.SetActive(true);
         if (FishLibrary.fishQuality == 3)
         {
-            dialogBoxText.text = "Just some random junk...";
+            switch(FishLibrary.fishID)
+            {
+                case 3:
+                    dialogBoxText.text = "A boot. Doesn't look your size...";
+                    break;
+                case 4:
+                    dialogBoxText.text = "A controller that got thrown too far...";
+                    break;
+                case 5:
+                    dialogBoxText.text = "You've been visited by a wandering axolotl!";
+                    break;
+                default:
+                    dialogBoxText.text = "Just some random junk...";
+                    break;
+            }
         }
         else
         {
-            dialogBoxText.text = "You caught a " + FishLibrary.fishNames[FishLibrary.fishID] + "!\n";
+            switch(FishLibrary.fishID)
+            {
+                case 0:
+                    dialogBoxText.text = "You encountered a wild majestic carp! Did it... just try to splash?";
+                    break;
+                case 1:
+                    dialogBoxText.text = "A bass has dropped!";
+                    break;
+                case 2:
+                    dialogBoxText.text = "You caught a silverfish! Get it? Silver & fish? Like goldfish...?";
+                    break;
+                case 6:
+                    dialogBoxText.text = "A neon koi lights up your line!";
+                    break;
+                case 7:
+                    dialogBoxText.text = "The doctor sturgeon is in! Because it... sounds like surgeon...";
+                    break;
+                case 8:
+                    dialogBoxText.text = "Life has given you a lemon[ade] bluegill!";
+                    break;
+                case 9:
+                    dialogBoxText.text = "You caught a goldfish! Something something first place...";
+                    break;
+                case 10:
+                    dialogBoxText.text = "A fish with a glorious mustache! A distinguished gentleman!";
+                    break;
+                case 11:
+                    dialogBoxText.text = "PSA: Red Bullrouts do not give you wings!";
+                    break;
+                default:
+                    dialogBoxText.text = "You caught a " + FishLibrary.fishNames[FishLibrary.fishID] + "!\n";
+                    break;
+            }
+            
         }
         
     }

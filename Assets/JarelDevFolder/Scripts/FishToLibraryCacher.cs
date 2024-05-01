@@ -9,7 +9,7 @@ public class FishToLibraryCacher : MonoBehaviour
     public GameObject silverfishImageUI;
     public GameObject bootImageUI;
     public GameObject controllerImageUI;
-    public GameObject junkImageUI;
+    public GameObject axolotlImageUI;
     public GameObject koiImageUI;
     public GameObject sturgeonImageUI;
     public GameObject bluegillImageUI;
@@ -22,7 +22,7 @@ public class FishToLibraryCacher : MonoBehaviour
     public GameObject silverfish;
     public GameObject leatherBoot;
     public GameObject gameController;
-    public GameObject junkObject;
+    public GameObject axolotl;
     public GameObject koi;
     public GameObject sturgeon;
     public GameObject bluegill;
@@ -48,8 +48,8 @@ public class FishToLibraryCacher : MonoBehaviour
             FishLibrary.fishObjects.Add(gameController);
             FishLibrary.fishImages.Add(controllerImageUI);
 
-            FishLibrary.fishObjects.Add(junkObject);
-            FishLibrary.fishImages.Add(junkImageUI);
+            FishLibrary.fishObjects.Add(axolotl);
+            FishLibrary.fishImages.Add(axolotlImageUI);
 
             FishLibrary.fishObjects.Add(koi);
             FishLibrary.fishImages.Add(koiImageUI);

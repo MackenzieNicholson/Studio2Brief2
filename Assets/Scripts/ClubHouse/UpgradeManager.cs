@@ -273,11 +273,13 @@ public class UpgradeManager : MonoBehaviour
 
     public void KeepFish()
     {
-        PlayerData.PlayerRenownUpdate();
-        renownText.text = PlayerData.clubRenown.ToString();
 
         PlayerData.playerScore += PlayerData.fishData[currentFishSelect].fishValue;
         clubScore.text = PlayerData.playerScore.ToString();
+
+        PlayerData.PlayerRenownUpdate();
+        renownText.text = PlayerData.clubRenown.ToString();
+
         PlayerData.clubFishData.Add(PlayerData.fishData[currentFishSelect]);
         PlayerData.fishData.Remove(PlayerData.fishData[currentFishSelect]);
 

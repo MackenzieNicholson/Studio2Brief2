@@ -48,7 +48,7 @@ public class FishingSection : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            if(!PlayerData.isFishing)
+            if(!PlayerData.isFishing) //cast in water
             {
                 if (PlayerData.playerCasts > 0)
                 {
@@ -67,7 +67,7 @@ public class FishingSection : MonoBehaviour
                     Debug.Log("Need to fix the rod...");
                 }
             }
-            else if (PlayerData.hasCatch)
+            else if (PlayerData.hasCatch) //fish hooked
             {
                 inWater = false;
                 StopCoroutine(WaitToCatch());
@@ -86,7 +86,7 @@ public class FishingSection : MonoBehaviour
                     StartCoroutine(RhythmScoreCheck());
                 }
             }
-            else
+            else //reeled in too early
             {
                 castWaiting = false;
                 playerAnimator.Play("player_rod_catch");

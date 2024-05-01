@@ -37,8 +37,8 @@ public static class PlayerData
     public static int clubFishCap = 12;
     public static int clubMemberCap = 1;
     public static int memberCount = 1;
-    public static int clubRenown = 0;
     public static int baseRenownMod = 10;
+    public static float clubRenown = 0f;
 
     public static int bucketID = 0; //determines fish capacity per trip
     public static int rodID = 0; //default bamboo rod - determines cast limit
@@ -156,6 +156,7 @@ public static class PlayerData
 
     public static void PlayerRenownUpdate()
     {
-        clubRenown = playerScore * ((memberCount + baseRenownMod) /100);
+        float roundedRenown = playerScore * ((memberCount + baseRenownMod) / 100);
+        clubRenown = Mathf.Round(roundedRenown * 100.0f) / 100.0f; //limit to hundredths decimal place if random decimal value is too large
     }
 }
