@@ -67,7 +67,7 @@ public class FishingSection : MonoBehaviour
                     Debug.Log("Need to fix the rod...");
                 }
             }
-            else if (PlayerData.hasCatch) //fish hooked
+            else if (PlayerData.hasCatch && !PlayerData.beatPlaying) //fish hooked
             {
                 inWater = false;
                 StopCoroutine(WaitToCatch());
