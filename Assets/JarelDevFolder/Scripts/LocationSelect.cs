@@ -23,6 +23,8 @@ public class LocationSelect : MonoBehaviour
 
     Animator animator;
 
+    public AudioSource soundpoint;
+
     bool isOpen = false;
     // Start is called before the first frame update
     void Start()
@@ -63,6 +65,7 @@ public class LocationSelect : MonoBehaviour
     // Update is called once per frame
     public void ClickClose()
     {
+        soundpoint.PlayOneShot(AudioContainer.paperRolling_close);
         PlayerData.speed = 150f;
         statsUI.SetActive(true);
         animator.Play("mapCanvas_close");
@@ -74,6 +77,7 @@ public class LocationSelect : MonoBehaviour
     }
     void SetCanvasTrue()
     {
+        soundpoint.PlayOneShot(AudioContainer.paperRolling_open);
         isOpen = true;
         mapCanvas.SetActive(true);
     }

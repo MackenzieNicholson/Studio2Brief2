@@ -29,6 +29,15 @@ public class FishToLibraryCacher : MonoBehaviour
     public GameObject goldfish;
     public GameObject mustache;
     public GameObject bullrout;
+
+    public AudioClip paperOpen;
+    public AudioClip paperClose;
+    public AudioClip paperRolling_open;
+    public AudioClip paperRolling_close;
+    public AudioClip money;
+    public AudioClip money_register;
+    public AudioClip noMoney;
+
     void Start()
     {
         if (!FishLibrary.isCached)
@@ -69,6 +78,14 @@ public class FishToLibraryCacher : MonoBehaviour
             FishLibrary.fishObjects.Add(bullrout);
             FishLibrary.fishImages.Add(bullroutImageUI);
 
+
+            AudioContainer.paperOpen = paperOpen;
+            AudioContainer.paperClose = paperClose;
+            AudioContainer.money = money;
+            AudioContainer.paperRolling_open = paperRolling_open;
+            AudioContainer.paperRolling_close = paperRolling_close;
+            AudioContainer.money_register = money_register;
+            AudioContainer.noMoney = noMoney;
 
             //keep game from restarting this in other instances after the first instance
             FishLibrary.isCached = true;

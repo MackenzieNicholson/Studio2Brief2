@@ -73,6 +73,8 @@ public class UpgradeManager : MonoBehaviour
     public Texture floorFixedTxtr;
     public Texture floorNewTxtr;
 
+    public AudioSource soundpoint;
+
     public LiamTriggerScript triggerScript;
 
     GameObject fishIcon;
@@ -206,12 +208,14 @@ public class UpgradeManager : MonoBehaviour
         playerStatsUI.SetActive(true);
         clubScoreStat.text = PlayerData.playerScore.ToString();
         clubMoneyStat.text = PlayerData.playerMoney.ToString();
+        soundpoint.PlayOneShot(AudioContainer.paperClose);
         animator.Play("vendorCanvas_fish_close");
         triggerScript.promptButton.SetActive(true);
     }
 
     void SetFishCanvasOpen()
     {
+        soundpoint.PlayOneShot(AudioContainer.paperOpen);
         fishCanvasOpen = true;
     }
 
@@ -224,6 +228,7 @@ public class UpgradeManager : MonoBehaviour
 
     public void CloseClubVendor()
     {
+        soundpoint.PlayOneShot(AudioContainer.paperRolling_close);
         PlayerData.speed = 150f;
         playerStatsUI.SetActive(true);
         clubScoreStat.text = PlayerData.playerScore.ToString();
@@ -233,6 +238,7 @@ public class UpgradeManager : MonoBehaviour
     }
     void SetClubCanvasOpen()
     {
+        soundpoint.PlayOneShot(AudioContainer.paperRolling_open);
         clubCanvasOpen = true;
     }
 
@@ -245,6 +251,7 @@ public class UpgradeManager : MonoBehaviour
     ///Keep fish or sell
     public void SellFish()
     {
+        soundpoint.PlayOneShot(AudioContainer.money);
         PlayerData.playerMoney += PlayerData.fishData[currentFishSelect].fishValue;
         clubMoney.text = PlayerData.playerMoney.ToString();
         PlayerData.fishData.Remove(PlayerData.fishData[currentFishSelect]);
@@ -314,6 +321,7 @@ public class UpgradeManager : MonoBehaviour
             switch (PlayerData.lureID)
             {
                 case 0:
+                    soundpoint.PlayOneShot(AudioContainer.money_register);
                     PlayerData.lureID++;
                     PlayerData.playerMoney -= hookCost;
                     PlayerData.HookUpdateOne();
@@ -321,6 +329,7 @@ public class UpgradeManager : MonoBehaviour
                     gearOptions.text = "Increase chances of catching a fish instead of junk or a whole lot of nothing. Or a whole lot of junk.\n\n\nFish chance++\n\n\nCost: $" + hookCost.ToString();
                     break;
                 case 1:
+                    soundpoint.PlayOneShot(AudioContainer.money_register);
                     PlayerData.lureID++;
                     PlayerData.playerMoney -= hookCost;
                     PlayerData.HookUpdateTwo();
@@ -328,6 +337,7 @@ public class UpgradeManager : MonoBehaviour
                     gearOptions.text = "Increase chances of catching a fish instead of junk or a whole lot of nothing. Or a whole lot of junk.\n\n\nFish chance+++\n\n\nCost: $" + hookCost.ToString();
                     break;
                 case 2:
+                    soundpoint.PlayOneShot(AudioContainer.money_register);
                     PlayerData.lureID++;
                     PlayerData.playerMoney -= hookCost;
                     PlayerData.HookUpdateThree();
@@ -341,6 +351,7 @@ public class UpgradeManager : MonoBehaviour
         }
         else if (hookCost > PlayerData.playerMoney)
         {
+            soundpoint.PlayOneShot(AudioContainer.noMoney);
             gearOptions.text = "No money! Maybe sell more fish?";
         }
     }
@@ -352,12 +363,14 @@ public class UpgradeManager : MonoBehaviour
             switch(PlayerData.bobberID)
             {
                 case 0:
+                    soundpoint.PlayOneShot(AudioContainer.money_register);
                     PlayerData.bobberID++;
                     PlayerData.playerMoney -= bobberCost;
                     bobberCost = 200;
                     gearOptions.text = "Increase delay before fish escapes by +1 second\n\n\nCost: $" + bucketCost.ToString();
                     break;
                 case 1:
+                    soundpoint.PlayOneShot(AudioContainer.money_register);
                     PlayerData.bobberID++;
                     PlayerData.playerMoney -= bobberCost;
                     gearOptions.text = "All upgrades purchased";
@@ -370,6 +383,7 @@ public class UpgradeManager : MonoBehaviour
         }
         else if (bobberCost > PlayerData.playerMoney)
         {
+            soundpoint.PlayOneShot(AudioContainer.noMoney);
             gearOptions.text = "No money! Maybe sell more fish?";
         }
     }
@@ -381,6 +395,7 @@ public class UpgradeManager : MonoBehaviour
             switch (PlayerData.rodID)
             {
                 case 0:
+                    soundpoint.PlayOneShot(AudioContainer.money_register);
                     PlayerData.rodID++;
                     PlayerData.playerMoney -= rodCost;
                     PlayerData.castLimit = 14;
@@ -388,6 +403,7 @@ public class UpgradeManager : MonoBehaviour
                     gearOptions.text = "Do more with your rod!\n\n\nCast limit: 16\n\n\nCost: $" + rodCost.ToString();
                     break;
                 case 1:
+                    soundpoint.PlayOneShot(AudioContainer.money_register);
                     PlayerData.rodID++;
                     PlayerData.playerMoney -= rodCost;
                     PlayerData.castLimit = 16;
@@ -395,6 +411,7 @@ public class UpgradeManager : MonoBehaviour
                     gearOptions.text = "Do more with your rod!\n\n\nCast limit: 18\n\n\nCost: $" + rodCost.ToString();
                     break;
                 case 2:
+                    soundpoint.PlayOneShot(AudioContainer.money_register);
                     PlayerData.rodID++;
                     PlayerData.playerMoney -= rodCost;
                     PlayerData.castLimit = 18;
@@ -408,6 +425,7 @@ public class UpgradeManager : MonoBehaviour
         }
         else if (rodCost > PlayerData.playerMoney)
         {
+            soundpoint.PlayOneShot(AudioContainer.noMoney);
             gearOptions.text = "No money! Maybe sell more fish?";
         }
     }
@@ -418,6 +436,7 @@ public class UpgradeManager : MonoBehaviour
             switch (PlayerData.bucketID)
             {
                 case 0:
+                    soundpoint.PlayOneShot(AudioContainer.money_register);
                     PlayerData.bucketID++;
                     PlayerData.playerMoney -= bucketCost;
                     PlayerData.fishLimit += 2;
@@ -426,6 +445,7 @@ public class UpgradeManager : MonoBehaviour
                     gearOptions.text = "Carry more fish with you!\n\n\nBucket size: 10\n\n\nCost: $" + bucketCost.ToString();
                     break;
                 case 1:
+                    soundpoint.PlayOneShot(AudioContainer.money_register);
                     PlayerData.bucketID++;
                     PlayerData.playerMoney -= bucketCost;
                     PlayerData.fishLimit += 2;
@@ -434,6 +454,7 @@ public class UpgradeManager : MonoBehaviour
                     gearOptions.text = "Carry more fish with you!\n\n\nBucket size: 12\n\n\nCost: $" + bucketCost.ToString();
                     break;
                 case 2:
+                    soundpoint.PlayOneShot(AudioContainer.money_register);
                     PlayerData.bucketID++;
                     PlayerData.playerMoney -= bucketCost;
                     PlayerData.fishLimit += 2;
@@ -442,6 +463,7 @@ public class UpgradeManager : MonoBehaviour
                     gearOptions.text = "Carry more fish with you!\n\n\nBucket size: 14\n\n\nCost: $" + bucketCost.ToString();
                     break;
                 case 3:
+                    soundpoint.PlayOneShot(AudioContainer.money_register);
                     PlayerData.bucketID++;
                     PlayerData.playerMoney -= bucketCost;
                     PlayerData.fishLimit += 2;
@@ -450,6 +472,7 @@ public class UpgradeManager : MonoBehaviour
                     gearOptions.text = "Carry more fish with you!\n\n\nBucket size: 16\n\n\nCost: $" + bucketCost.ToString();
                     break;
                 case 4:
+                    soundpoint.PlayOneShot(AudioContainer.money_register);
                     PlayerData.bucketID++;
                     PlayerData.playerMoney -= bucketCost;
                     PlayerData.fishLimit += 2;
@@ -464,6 +487,7 @@ public class UpgradeManager : MonoBehaviour
         }
         else if (bucketCost > PlayerData.playerMoney)
         {
+            soundpoint.PlayOneShot(AudioContainer.noMoney);
             gearOptions.text = "No money! Maybe sell more fish?";
         }
     }
@@ -480,6 +504,7 @@ public class UpgradeManager : MonoBehaviour
             switch (PlayerData.clubWallID)
             {
                 case 0:
+                    soundpoint.PlayOneShot(AudioContainer.money_register);
                     PlayerData.clubWallID++;
                     PlayerData.playerMoney -= wallCost;
                     wallCost = 1500;
@@ -490,6 +515,7 @@ public class UpgradeManager : MonoBehaviour
                     clubOptions.text = "Replace the wall with better material\n\n\nCost: $" + wallCost.ToString();
                     break;
                 case 1:
+                    soundpoint.PlayOneShot(AudioContainer.money_register);
                     PlayerData.clubWallID++;
                     PlayerData.playerMoney -= wallCost;
                     PlayerData.baseRenownMod += 3;
@@ -507,6 +533,7 @@ public class UpgradeManager : MonoBehaviour
         }
         else if (wallCost > PlayerData.playerMoney)
         {
+            soundpoint.PlayOneShot(AudioContainer.noMoney);
             clubOptions.text = "No money! Maybe sell more fish?";
         }
     }
@@ -517,6 +544,7 @@ public class UpgradeManager : MonoBehaviour
             switch (PlayerData.clubFloorID)
             {
                 case 0:
+                    soundpoint.PlayOneShot(AudioContainer.money_register);
                     PlayerData.clubFloorID++;
                     PlayerData.playerMoney -= floorCost;
                     floorCost = 500;
@@ -527,6 +555,7 @@ public class UpgradeManager : MonoBehaviour
                     clubOptions.text = "Replace the floor with better material\n\n\nCost: $" + floorCost.ToString();
                     break;
                 case 1:
+                    soundpoint.PlayOneShot(AudioContainer.money_register);
                     PlayerData.clubFloorID++;
                     PlayerData.playerMoney -= floorCost;
                     PlayerData.baseRenownMod += 3;
@@ -544,6 +573,7 @@ public class UpgradeManager : MonoBehaviour
         }
         else if (floorCost > PlayerData.playerMoney)
         {
+            soundpoint.PlayOneShot(AudioContainer.noMoney);
             clubOptions.text = "No money! Maybe sell more fish?";
         }
     }
@@ -555,6 +585,7 @@ public class UpgradeManager : MonoBehaviour
             switch (PlayerData.clubAquariumID)
             {
                 case 0:
+                    soundpoint.PlayOneShot(AudioContainer.money_register);
                     PlayerData.clubAquariumID++;
                     PlayerData.playerMoney -= tankCost;
                     PlayerData.clubFishCap = 12;
@@ -563,6 +594,7 @@ public class UpgradeManager : MonoBehaviour
                     clubOptions.text = "Increase aquarium capacity to 20.\n\n\nCost: $" + tankCost.ToString();
                     break;
                 case 1:
+                    soundpoint.PlayOneShot(AudioContainer.money_register);
                     PlayerData.clubAquariumID++;
                     PlayerData.playerMoney -= tankCost;
                     PlayerData.clubFishCap = 20;
@@ -571,6 +603,7 @@ public class UpgradeManager : MonoBehaviour
                     clubOptions.text = "Increase aquarium capacity to 36.\n\n\nCost: $" + tankCost.ToString();
                     break;
                 case 2:
+                    soundpoint.PlayOneShot(AudioContainer.money_register);
                     PlayerData.clubAquariumID++;
                     PlayerData.playerMoney -= tankCost;
                     PlayerData.clubFishCap = 36;
@@ -579,6 +612,7 @@ public class UpgradeManager : MonoBehaviour
                     clubOptions.text = "Increase aquarium capacity to 60.\n\n\nCost: $" + tankCost.ToString();
                     break;
                 case 3:
+                    soundpoint.PlayOneShot(AudioContainer.money_register);
                     PlayerData.clubAquariumID++;
                     PlayerData.playerMoney -= tankCost;
                     PlayerData.clubFishCap = 60;
@@ -594,6 +628,7 @@ public class UpgradeManager : MonoBehaviour
         }
         else if (tankCost > PlayerData.playerMoney)
         {
+            soundpoint.PlayOneShot(AudioContainer.noMoney);
             clubOptions.text = "No money! Maybe sell more fish?";
         }
     }
@@ -605,6 +640,7 @@ public class UpgradeManager : MonoBehaviour
             switch (PlayerData.clubLimitID)
             {
                 case 0:
+                    soundpoint.PlayOneShot(AudioContainer.money_register);
                     PlayerData.clubLimitID++;
                     PlayerData.clubMemberCap += 3;
                     PlayerData.playerMoney -= memberCost;
@@ -612,6 +648,7 @@ public class UpgradeManager : MonoBehaviour
                     clubOptions.text = "Increase the clubhouse's membership capacity from 6 -> 10.\n\n\n\nCost: $" + memberCost.ToString();
                     break;
                 case 1:
+                    soundpoint.PlayOneShot(AudioContainer.money_register);
                     PlayerData.clubLimitID++;
                     PlayerData.clubMemberCap += 6;
                     PlayerData.playerMoney -= memberCost;
@@ -619,6 +656,7 @@ public class UpgradeManager : MonoBehaviour
                     clubOptions.text = "Increase the clubhouse's membership capacity from 10 -> 20.\n\n\n\nCost: $" + memberCost.ToString();
                     break;
                 case 2:
+                    soundpoint.PlayOneShot(AudioContainer.money_register);
                     PlayerData.clubLimitID++;
                     PlayerData.clubMemberCap += 10;
                     PlayerData.playerMoney -= memberCost;
@@ -640,6 +678,7 @@ public class UpgradeManager : MonoBehaviour
         }
         else if (memberCost > PlayerData.playerMoney)
         {
+            soundpoint.PlayOneShot(AudioContainer.noMoney);
             clubOptions.text = "No money! Maybe sell more fish?";
         }
     }
@@ -651,6 +690,7 @@ public class UpgradeManager : MonoBehaviour
             switch (PlayerData.areaID)
             {
                 case 0:
+                    soundpoint.PlayOneShot(AudioContainer.money_register);
                     PlayerData.areaID++;
                     PlayerData.playerMoney -= transportCost;
                     transpoButtonText.text = "Transport Service: Ocean";
@@ -658,6 +698,7 @@ public class UpgradeManager : MonoBehaviour
                     clubOptions.text = "Extends the transportation service to the Ocean Park\n\n\n\nCost: $" + transportCost.ToString();
                     break;
                 case 1:
+                    soundpoint.PlayOneShot(AudioContainer.money_register);
                     PlayerData.areaID++;
                     PlayerData.playerMoney -= transportCost;
                     transpoButtonText.text = "Transport Service: Storage Upgrade";
@@ -665,6 +706,7 @@ public class UpgradeManager : MonoBehaviour
                     clubOptions.text = "Adds a fish tank to the transportation vehicle to increase fish that can be carried (+4)\n\n\n\nCost: $" + transportCost.ToString();
                     break;
                 case 2:
+                    soundpoint.PlayOneShot(AudioContainer.money_register);
                     PlayerData.areaID++;
                     PlayerData.playerMoney -= transportCost;
                     PlayerData.fishLimit += 4;
@@ -681,6 +723,7 @@ public class UpgradeManager : MonoBehaviour
         }
         else if (transportCost > PlayerData.playerMoney)
         {
+            soundpoint.PlayOneShot(AudioContainer.noMoney);
             clubOptions.text = "No money! Maybe sell more fish?";
         }
     }
