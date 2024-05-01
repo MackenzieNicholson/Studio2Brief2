@@ -27,7 +27,7 @@ public static class PlayerData
             fishValue = value;
         }
     }
-
+    public static bool usingClubUI = false;
     public static float speed = 150.0f;
     public static int castLimit = 12;
     public static int playerSkinID = 0;

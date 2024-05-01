@@ -62,10 +62,15 @@ public class LocationSelect : MonoBehaviour
         }
     }
 
+
+    public void PlayAudioClose()
+    {
+        PlayerData.usingClubUI = false;
+        soundpoint.PlayOneShot(AudioContainer.paperRolling_close);
+    }
     // Update is called once per frame
     public void ClickClose()
     {
-        soundpoint.PlayOneShot(AudioContainer.paperRolling_close);
         PlayerData.speed = 150f;
         statsUI.SetActive(true);
         animator.Play("mapCanvas_close");
@@ -77,6 +82,7 @@ public class LocationSelect : MonoBehaviour
     }
     void SetCanvasTrue()
     {
+        PlayerData.usingClubUI = true;
         soundpoint.PlayOneShot(AudioContainer.paperRolling_open);
         isOpen = true;
         mapCanvas.SetActive(true);

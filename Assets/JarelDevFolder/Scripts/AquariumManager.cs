@@ -50,11 +50,13 @@ public class AquariumManager : MonoBehaviour
 
     void SetCanvasFalse()
     {
+        PlayerData.usingClubUI = false;
         aquarium.SetActive(false);
     }
 
     void SetCanvasTrue()
     {
+        PlayerData.usingClubUI = true;
         isOpen = true;
         aquarium.SetActive(true);
     }

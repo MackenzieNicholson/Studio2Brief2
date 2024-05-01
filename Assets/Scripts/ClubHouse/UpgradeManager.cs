@@ -127,6 +127,28 @@ public class UpgradeManager : MonoBehaviour
         }
     }
 
+    public void PlayAudioPaperRollingClose()
+    {
+        PlayerData.usingClubUI = false;
+        soundpoint.PlayOneShot(AudioContainer.paperRolling_close);
+    }
+    public void PlayAudioPaperRollingOpen()
+    {
+        PlayerData.usingClubUI = true;
+        soundpoint.PlayOneShot(AudioContainer.paperRolling_open);
+    }
+
+    public void PlayAudioPaperClose()
+    {
+        PlayerData.usingClubUI = false;
+        soundpoint.PlayOneShot(AudioContainer.paperClose);
+    }
+    public void PlayAudioPaperOpen()
+    {
+        PlayerData.usingClubUI = true;
+        soundpoint.PlayOneShot(AudioContainer.paperOpen);
+    }
+
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ///Functions for Upgrades UI Canvas
@@ -208,7 +230,6 @@ public class UpgradeManager : MonoBehaviour
         playerStatsUI.SetActive(true);
         clubScoreStat.text = PlayerData.playerScore.ToString();
         clubMoneyStat.text = PlayerData.playerMoney.ToString();
-        soundpoint.PlayOneShot(AudioContainer.paperClose);
         animator.Play("vendorCanvas_fish_close");
         triggerScript.promptButton.SetActive(true);
     }
@@ -228,7 +249,6 @@ public class UpgradeManager : MonoBehaviour
 
     public void CloseClubVendor()
     {
-        soundpoint.PlayOneShot(AudioContainer.paperRolling_close);
         PlayerData.speed = 150f;
         playerStatsUI.SetActive(true);
         clubScoreStat.text = PlayerData.playerScore.ToString();

@@ -40,6 +40,7 @@ public class LiamTriggerScript : MonoBehaviour
 
     public void OpenFishVendor()
     {
+        PlayerData.usingClubUI = true;
         PlayerData.speed = 0f;
         playerStatsUI.SetActive(false);
         clubVendorAnimator.Play("vendorCanvas_fish_open");
@@ -47,6 +48,7 @@ public class LiamTriggerScript : MonoBehaviour
 
     public void OpenAquarium()
     {
+        PlayerData.usingClubUI = true;
         PlayerData.speed = 0f;
         playerStatsUI.SetActive(false);
         aquariumAnimator.Play("aquarium_open");
@@ -54,6 +56,7 @@ public class LiamTriggerScript : MonoBehaviour
 
     public void OpenClubVendor()
     {
+        PlayerData.usingClubUI = true;
         PlayerData.speed = 0f;
         playerStatsUI.SetActive(false);
         clubVendorAnimator.Play("vendorCanvas_club_open");
@@ -61,6 +64,7 @@ public class LiamTriggerScript : MonoBehaviour
 
     public void OpenLocationSelect()
     {
+        PlayerData.usingClubUI = true;
         PlayerData.speed = 0f;
         playerStatsUI.SetActive(false);
         mapAnimator.Play("mapCanvas_open");
